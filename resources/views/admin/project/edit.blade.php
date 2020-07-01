@@ -1,4 +1,4 @@
-    @extends('admin.layouts.valex_app')
+@extends('admin.layouts.valex_app')
     @section('content')
     <div class="container">
         <div class="breadcrumb-header justify-content-between">
@@ -8,7 +8,6 @@
               </div>
           </div>
       </div>
-
       <div class="row row-sm">
         <div class="col-xl-12">
             <!-- Content Row -->
@@ -31,7 +30,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="col-md-12 form-group {{$errors->has('commencement_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                                {!! Form::text('commencement_date', old('commencement_date', isset($project->commencement_date)?date('d/m/Y', strtotime($project->commencement_date)) :''), [ 'id'=>'commencement_date_id','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+                                {!! Form::text('commencement_date', old('commencement_date', isset($project->commencement_date)? Carbon\Carbon::parse($project->commencement_date)->format('d/m/Y') :''), [ 'id'=>'commencement_date_id','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                                 @if($errors->has('commencement_date'))
                                 <p class="help-block">
                                     <strong>{{ $errors->first('commencement_date') }}</strong>
@@ -46,7 +45,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="col-md-12 form-group {{$errors->has('project_type_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                             {!! Form::select('project_type_id', $projecttype, old('project_type_id', isset($projecttype->id)?$projecttype->id:''), ['id'=>'project_type_id', 'class' => 'form-control', 'placeholder' => '-Select Project Type-']) !!}
+                             {!! Form::select('project_type_id', $projecttype, old('project_type_id', isset($project->getprojecttype->id)?$project->getprojecttype->id:''), ['id'=>'project_type_id', 'class' => 'form-control', 'placeholder' => '-Select Project Type-']) !!}
                              @if($errors->has('project_type_id'))
                              <p class="help-block">
                                 <strong>{{ $errors->first('project_type') }}</strong>
@@ -60,7 +59,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="col-md-12 form-group {{$errors->has('project_name') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                         {!! Form::text('project_name', old('project_name', isset($project->id)?$project->id:''), ['id'=>'project_name', 'class' => 'form-control', 'placeholder' => 'Project Name']) !!}
+                         {!! Form::text('project_name', old('project_name', isset($project->project_name)?$project->project_name:''), ['id'=>'project_name', 'class' => 'form-control', 'placeholder' => 'Project Name']) !!}
                          @if($errors->has('project_name'))
                          <p class="help-block">
                             <strong>{{ $errors->first('project_name') }}</strong>
@@ -75,7 +74,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('commencement_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Date of Commencement<span style="color:red">*</span></label> 
-                        {!! Form::text('commencement_date', old('commencement_date', isset($project->commencement_date)?date('d/m/Y', strtotime($project->commencement_date)) :''), ['id'=>'project_commencement_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+                        {!! Form::text('commencement_date', old('commencement_date', isset($project->commencement_date)?Carbon\Carbon::parse($project->commencement_date)->format('d/m/Y') :''), ['id'=>'project_commencement_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                         @if($errors->has('commencement_date'))
                         <p class="help-block">
                             <strong>{{ $errors->first('commencement_date') }}</strong>
@@ -86,7 +85,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('completion_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Expected Date of Completion<span style="color:red">*</span></label> 
-                        {!! Form::text('completion_date', old('completion_date', isset($project->completion_date)?date('d/m/Y', strtotime($project->completion_date)):''), ['id'=>'expected_date_completion', 'class' => 'form-control datepicker', 'placeholder' => 'Project Date']) !!}
+                        {!! Form::text('completion_date', old('completion_date', isset($project->completion_date)?Carbon\Carbon::parse($project->completion_date)->format('d/m/Y'):''), ['id'=>'expected_date_completion', 'class' => 'form-control datepicker', 'placeholder' => 'Project Date']) !!}
                         @if($errors->has('completion_date'))
                         <p class="help-block">
                             <strong>{{ $errors->first('completion_date') }}</strong>
@@ -113,13 +112,12 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('developer') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="developer">Client/Developer<span style="color:red">*</span></label>
-                        <select name='developer' id='developer' class = 'form-control'>
+                        <select name='developer' id='developer' value="{{old('developer')}}"class = 'form-control '>
                         <option value="">-Select-</option>
-                        
                             <?php if(isset($clientdeveloper) && (!empty($clientdeveloper))){
+                                
                                 foreach ($clientdeveloper as $key => $name) { ?>
-                                      <option value="{{ $key }}">{{ $name }}</option>
-                                 
+                                      <option value="{{ $key }}" {{($key == $project->developer) ? 'selected' : ''}}>{{ $name }}</option>
                               <?php  } 
                             } 
                             ?>
@@ -136,7 +134,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('add_developer') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Add New Client/Developer</label>
-                        {!! Form::text('add_developer', old('add_developer', isset($project->developer)?$project->developer:''), ['id'=>'add_developer','readOnly'=>'readOnly','class' => 'form-control', 'placeholder' => 'Add New Client / Developer']) !!}
+                        {!! Form::text('add_developer', old('add_developer'), ['id'=>'add_developer','readOnly'=>'readOnly','class' => 'form-control', 'placeholder' => 'Add New Client / Developer']) !!}
                         @if($errors->has('add_developer'))
                         <p class="help-block">
                             <strong>{{ $errors->first('add_developer') }}</strong>
@@ -155,7 +153,7 @@
                            <option value="">-Select-</option>
                             <?php if(isset($financier) && (!empty($financier))){
                                 foreach ($financier as $key => $name) { ?>
-                                      <option value="{{ $key }}">{{ $name }}</option>
+                                      <option value="{{ $key }}"{{($key == $project->project_financier) ? 'selected' : ''}}>{{ $name }}</option>
                                  
                               <?php  } 
                             } 
@@ -173,7 +171,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('add_project_financier') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Add New Financier</label>
-                        {!! Form::text('add_project_financier', old('add_project_financier', isset($project->project_financier)?$project->project_financier:''), ['id'=>'add_project_financier','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Financier']) !!}
+                        {!! Form::text('add_project_financier', old('add_project_financier'), ['id'=>'add_project_financier','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Financier']) !!}
 
                         @if($errors->has('add_project_financier'))
                         <p class="help-block">
@@ -193,7 +191,7 @@
                            <option value="">-Select-</option>
                             <?php if(isset($quantity) && (!empty($quantity))){
                                 foreach ($quantity as $key => $name) { ?>
-                                      <option value="{{ $key }}">{{ $name }}</option>
+                                      <option value="{{ $key }}" {{($key == $project->surveyor_qty) ? 'selected' : ''}}>{{ $name }}</option>
                                  
                               <?php  } 
                             } 
@@ -211,7 +209,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('add_surveyor_qty') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Add New Quantity</label>
-                        {!! Form::text('add_surveyor_qty', old('surveyor_qty', isset($project->surveyor_qty)?$project->surveyor_qty:''), ['id'=>'add_surveyor_qty','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Quantity']) !!}
+                        {!! Form::text('add_surveyor_qty', old('surveyor_qty'), ['id'=>'add_surveyor_qty','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Quantity']) !!}
 
                         @if($errors->has('add_surveyor_qty'))
                         <p class="help-block">
@@ -228,9 +226,9 @@
                         <label for="title">Mechanical Engineer<span style="color:red">*</span></label>
                            <select name='mech_engg_id' id='mech_engg_id', class = 'form-control '>
                            <option value="">-Select-</option>
-                            <?php if(isset($clientdeveloper) && (!empty($clientdeveloper))){
-                                foreach ($clientdeveloper as $key => $name) { ?>
-                                      <option value="{{ $key }}">{{ $name }}</option>
+                            <?php if(isset($mechanicalEngineer) && (!empty($mechanicalEngineer))){
+                                foreach ($mechanicalEngineer as $key => $name) { ?>
+                                      <option value="{{ $key }}" {{($key == $project->mech_engg) ? 'selected' : ''}} >{{ $name }}</option>
                                  
                               <?php  } 
                             } 
@@ -249,7 +247,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('add_mech_engg') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Add New Mechanical Engineer</label>
-                        {!! Form::text('add_mech_engg', old('add_mech_engg', isset($project->mech_engg)?$project->mech_engg:''), ['id'=>'add_mech_engg','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Mechanical Engineer']) !!}
+                        {!! Form::text('add_mech_engg', old('add_mech_engg'), ['id'=>'add_mech_engg','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Mechanical Engineer']) !!}
                         @if($errors->has('add_mech_engg'))
                         <p class="help-block">
                             <strong>{{ $errors->first('add_mech_engg') }}</strong>
@@ -267,7 +265,7 @@
                            <option value="">-Select-</option>
                             <?php if(isset($architect) && (!empty($architect))){
                                 foreach ($architect as $key => $name) { ?>
-                                      <option value="{{ $key }}">{{ $name }}</option>
+                                      <option value="{{ $key }}" {{($key == $project->architect) ? 'selected' : ''}}>{{ $name }}</option>
                                  
                               <?php  } 
                             } 
@@ -285,7 +283,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('add_architect') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Add New Architect</label>
-                        {!! Form::text('add_architect', old('add_architect', isset($project->architect)?$project->architect:''), ['id'=>'add_architect','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Architect']) !!}
+                        {!! Form::text('add_architect', old('add_architect'), ['id'=>'add_architect','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Architect']) !!}
                         @if($errors->has('add_architect'))
                         <p class="help-block">
                             <strong>{{ $errors->first('add_architect') }}</strong>
@@ -304,7 +302,7 @@
                            <option value="">-Select-</option>
                             <?php if(isset($interior) && (!empty($interior))){
                                 foreach ($interior as $key => $name) { ?>
-                                      <option value="{{ $key }}">{{ $name }}</option>
+                                      <option value="{{ $key }}" {{($key == $project->interior) ? 'selected' : ''}}>{{ $name }}</option>
                                  
                               <?php  } 
                             } 
@@ -323,7 +321,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('add_interior') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Add New Interior</label>
-                        {!! Form::text('add_interior', old('add_interior', isset($project->interior)?$project->interior:''), ['id'=>'add_interior','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Interior']) !!}
+                        {!! Form::text('add_interior', old('add_interior'), ['id'=>'add_interior','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Interior']) !!}
                         @if($errors->has('add_interior'))
                         <p class="help-block">
                             <strong>{{ $errors->first('add_interior') }}</strong>
@@ -341,7 +339,7 @@
                     <option value="">-Select-</option>
                             <?php if(isset($contractor) && (!empty($contractor))){
                                 foreach ($contractor as $key => $name) { ?>
-                                      <option value="{{ $key }}">{{ $name }}</option>
+                                      <option value="{{ $key }}" {{($key == $project->main_contractor) ? 'selected' : ''}}>{{ $name }}</option>
                                  
                               <?php  } 
                             } 
@@ -360,7 +358,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('add_main_contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Add New Main Contractor</label>
-                        {!! Form::text('add_main_contractor', old('add_main_contractor',isset($project->project_name)?$project->project_name:''), ['id'=>'add_main_contractor','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Main Contractor']) !!}
+                        {!! Form::text('add_main_contractor', old('add_main_contractor'), ['id'=>'add_main_contractor','readOnly'=>'readOnly', 'class' => 'form-control', 'placeholder' => 'Add New Main Contractor']) !!}
                         @if($errors->has('add_main_contractor'))
                         <p class="help-block">
                             <strong>{{ $errors->first('add_main_contractor') }}</strong>
@@ -374,7 +372,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="project_type">Category<span style="color:red">*</span></label>
-                        {!! Form::select('sub_contractor_id', $subcontractor, old('sub_contractor_id', isset($projectcategory->id)?$project->project_type_id:''), ['id'=>'category', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
+                        {!! Form::select('sub_contractor_id', $subcontractor, old('sub_contractor_id', isset($project->sub_contractor_id)?$project->sub_contractor_id:''), ['id'=>'category', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
                         @if($errors->has('sub_contractor_id'))
                         <p class="help-block">
                             <strong>{{ $errors->first('sub_contractor_id') }}</strong>
@@ -383,12 +381,12 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="col-md-12 form-group {{$errors->has('contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                        <label for="title">Contractor</label>
+                    <div class="col-md-12 form-group {{$errors->has('sub_contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+                        <label for="title">Contractor<span style="color:red">*</span></label>
                         {!! Form::text('contractor', old('contractor',isset($project->contractor)?$project->contractor:''), ['id'=>'sub_contractor', 'class' => 'form-control', 'placeholder' => 'Add Sub Contractor']) !!}
-                        @if($errors->has('contractor'))
+                        @if($errors->has('sub_contractor'))
                         <p class="help-block">
-                            <strong>{{ $errors->first('contractor') }}</strong>
+                            <strong>{{ $errors->first('sub_contractor') }}</strong>
                         </p>
                         @endif
                     </div>  
@@ -414,15 +412,19 @@
 
             <div class="col-md-12">
                 <label>Project Review :-</label>
+             
                 <div class="field_wrapper presently_field_wrapper">
+                @if(isset($project->Projectenquiry))
+                    @foreach($project->Projectenquiry as $projecttype)
                     <div class="row cls_field_wrapper ">
-                        <div class="col-md-12">
+                  
+                    <div class="col-md-12">
                             <a href="javascript:void(0)" class="add_button crcl_btn"><i class="fa fa-plus"></i></a>   
                         </div>
                         <!-- row 1 -->
                         <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                             <label for="sku">Enq for (product category)<span style="color:red">*</span></label>
-                            {!! Form::select('product_category[]', $productcategory, old('product_category', isset($project->project_type_id)?$project->project_type_id:''), ['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
+                            {!! Form::select('product_category[]', $productcategory, old('product_category', isset($projecttype->product_category_id)?$projecttype->product_category_id:''), ['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
                             @if($errors->has('product_category'))
                             <p class="help-block">
                                 <strong>{{ $errors->first('product_category') }}</strong>
@@ -433,7 +435,7 @@
                         <!-- row 2 -->
                         <div class="col-md-4 form-group {{$errors->has('people_list') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                             <label for="sku">Enq Source (list of people from this project)<span style="color:red">*</span></label>
-                            {!! Form::select('people_list[]', $peoplelist, old('people_list', isset($project->project_type_id)?$project->project_type_id:''), ['id'=>'project_list_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
+                            {!! Form::select('people_list[]', $peoplelist, old('people_list', isset($projecttype->product_category_id)?$projecttype->product_category_id:''), ['id'=>'project_list_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
                             @if($errors->has('people_list'))
                             <p class="help-block">
                                 <strong>{{ $errors->first('people_list') }}</strong>
@@ -443,15 +445,19 @@
                         <!-- row 3 -->
                         <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                             <label for="sku">Expected Date<span style="color:red">*</span></label>
-                            {!! Form::text('expected_date[]', old('expected_date',isset($project->project_name)?$project->project_name:''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'Project Name']) !!}
+                            
+                            {!! Form::text('expected_date[]', old('expected_date',isset($projecttype->expected_date)? Carbon\Carbon::parse($projecttype->expected_date)->format('d/m/Y'):''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'Project Name']) !!}
                             @if($errors->has('expected_date'))
                             <p class="help-block">
                                 <strong>{{ $errors->first('expected_date') }}</strong>
                             </p>
                             @endif
-                        </div>   
+                        </div> 
                     </div>
+                    @endforeach
+                 @endif
                 </div>
+               
             </div>
             <!-- small form end -->
 
@@ -490,7 +496,7 @@
             format: 'mm/dd/yyyy',
             orientation: 'bottom',
             autoclose: true
-        }).datepicker('setDate', 'today');
+        });
     // select 2
    
 
@@ -695,53 +701,30 @@
                 developer: {
                     required: true
                 },
-                // add_developer: {
-                //     required: true
-                // },
                 financier_id: {
                     required: true
                 },
-                // add_project_financier: {
-                //     required: true
-                // },
                 quantity_id: {
                     required: true
                 },
-                // add_surveyor_qty: {
-                //     required: true
-                // },
                 mech_engg_id: {
                     required: true
                 },
-                // add_mech_engg: {
-                //     required: true
-                // },
                 architect_id: {
                     required: true
                 },
-                // add_architect: {
-                //     required: true
-                // },
                 interior_id: {
                     required: true
                 },
-                // add_interior: {
-                //     required: true
-                // },
                 contractor_id: {
                     required: true
                 },
-                // add_main_contractor: {
-                //     required: true
-                // },
                 category: {
                     required: true
-                }
-                ,
+                },
                 sub_contractor: {
                     required: true
-                }
-                ,
+                },
                 commentery: {
                     required: true
                 }

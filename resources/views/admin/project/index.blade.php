@@ -96,7 +96,7 @@
             ],
             columns: [    
                 {data: 'project_name', name: 'project_name'},
-                {data: 'developer', name: 'developer'},
+                {data: 'getdeveloper.name', name: 'getdeveloper.name'},
                 {data: 'project_budget', name: 'project_budget'},
                 {data: 'is_active', name: 'is_active', class: 'text-center', "width": "10%"},
                 {data: 'action', name: 'action', orderable: false, searchable: false, "width": "15%"},
