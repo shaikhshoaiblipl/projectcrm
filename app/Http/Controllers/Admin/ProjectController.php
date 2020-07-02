@@ -20,6 +20,7 @@ use App\Interior;
 use App\MechanicalEngineer;
 use App\Quantity;
 use App\Contractor;
+use Auth;
 
 
 class ProjectController extends Controller
@@ -74,6 +75,9 @@ class ProjectController extends Controller
     {
         $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
         $project =Project::where(['is_active'=>TRUE])->pluck('project_name', 'id');
+
+
+
         $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
         $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
         $architect=Architect::where(['is_active'=>TRUE])->pluck('name', 'id');
@@ -84,11 +88,8 @@ class ProjectController extends Controller
         $quantity=Quantity::where(['is_active'=>TRUE])->pluck('name', 'id');
         $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
 
-      
-        $peoplelist=['1'=>'people1','2'=>'people2'];
-
-
-        return view('admin.project.form',compact('projecttype','project','productcategory','subcontractor','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','peoplelist','contractor'));
+       
+        return view('admin.project.form',compact('projecttype','project','productcategory','subcontractor','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor'));
     }
 
     /**
@@ -99,7 +100,8 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-// dd($request->all());
+
+        // dd($request->all());
         //     $rules = [
         //     'project_name'=>'required',
         //     'project_type_id'=>'required',
@@ -151,7 +153,7 @@ class ProjectController extends Controller
              $data['completion_date'] =  $completion_date;
              $data['contractor'] =  isset($data['contractor'])?$data['contractor']:'';
              $data['sub_contractor_id'] =  isset($data['sub_contractor_id'])?$data['sub_contractor_id']:'';
-         
+             $data['created_by']=Auth::user()->id;
 
                 $project=Project::create($data);
                 // backend start
@@ -237,17 +239,23 @@ class ProjectController extends Controller
 
 
                     }
+              
+
         if(isset($request->product_category)){
             for ($i = 0; $i < count($request->product_category); $i++){
                 $expected_date = date('Y-m-d', strtotime($request->expected_date[$i]));
+                $type=implode(' ',$request->enq_source);
+                $source=explode('-',$type);
                 $data=[
                     'project_id'=>$project->id,
                     'product_category_id' => $request->product_category[$i],
                     'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
-                    'enq_source' => $request->people_list[$i],
+                    'enq_source' => isset($source[0])?$source[0]:0,
+                    'enq_source_type'=>isset($source[1])?$source[1]:''
                 ];
                 ProjectEnquiry::insert($data);
             }
+            
         }
         $request->session()->flash('success',__('global.messages.add'));
         return redirect()->route('admin.project.index');
@@ -283,9 +291,10 @@ class ProjectController extends Controller
         $mechanicalEngineer=MechanicalEngineer::where(['is_active'=>TRUE])->pluck('name', 'id');
         $quantity=Quantity::where(['is_active'=>TRUE])->pluck('name', 'id');
         $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
-        $peoplelist=['1'=>'people1','2'=>'people2'];
-        $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');    
-        return view('admin.project.edit',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','peoplelist','subcontractor'));
+        $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id'); 
+        
+   
+        return view('admin.project.edit',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor'));
         
     }
 
@@ -298,7 +307,8 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
+
+        
         $project = Project::findOrFail($id);
         $rules = [
             'project_name'=>'required',
@@ -421,18 +431,23 @@ class ProjectController extends Controller
             if(isset($request->product_category)){
                 for ($i = 0; $i < count($request->product_category); $i++){
                     $expected_date = date('Y-m-d', strtotime($request->expected_date[$i]));
-                    // $received_date = date('Y-m-d', strtotime($request->received_date[$i]));
-                    // $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$i]));
+                    $received_date = date('Y-m-d', strtotime($request->received_date[$i]));
+                    $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$i]));
+                    $type=implode(' ',$request->enq_source);
+                    $source=explode('-',$type);
                     $data=[
                         'project_id'=>$project->id,
                         'product_category_id' => $request->product_category[$i],
                         'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
-                        'enq_source' => $request->people_list[$i],
-                        // "received_date" => isset($received_date)?$received_date:date('Y-m-d'),
-                        // "quotation_date" => isset($quotation_date)?$quotation_date:date('Y-m-d'),
-                        // "remarks" => isset($request->remarks[$i])?$request->remarks[$i]:'',
-                        // "won_loss" => isset($request->won_loss[$i])?$request->won_loss[$i]:'Loss'
+                        'enq_source' => isset($source[0])?$source[0]:0,
+                        'enq_source_type'=>isset($source[1])?$source[1]:'',
+                        "received_date" => isset($received_date)?$received_date:date('Y-m-d'),
+                        "quotation_date" => isset($quotation_date)?$quotation_date:date('Y-m-d'),
+                        "remarks" => isset($request->remarks[$i])?$request->remarks[$i]:'',
+                        "won_loss" => isset($request->won_loss[$i])?$request->won_loss[$i]:'Loss'
                     ];
+                   
+                   
                     ProjectEnquiry::insert($data);
                 }
             }

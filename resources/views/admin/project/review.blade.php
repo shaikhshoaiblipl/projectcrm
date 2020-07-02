@@ -20,7 +20,7 @@
     <div class="col-xl-12">
       <div class="card">
         <div class="card-header py-3 cstm_hdr">
-             <h6 class="m-0 font-weight-bold text-primary">Project Preview List</h6> 
+             <h6 class="m-0 font-weight-bold text-primary">Project Previews List</h6> 
              
         </div>
         <div class="card-body">
@@ -28,24 +28,22 @@
                 <table class="table table-bordered" width="100%" cellspacing="0" id="projectpreview">
                     <thead>
                         <tr>
-                            <th>Sr.</th>
-                            <th>Product Cat</th>
+                            <th>Product Category</th>
                             <th>Source</th>
                             <th>Expected</th>
                             <th>Received</th>
-                            <th>Quote</th>
+                            <th>Quotation</th>
                             <th>Remarks</th>
                             <th>Status(Lost/Won)</th>                  
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>Sr.</th>
-                            <th>Product Cat</th>
+                            <th>Product Category</th>
                             <th>Source</th>
                             <th>Expected Date</th>
                             <th>Received</th>
-                            <th>Quote</th>
+                            <th>Quotation</th>
                             <th>Remarks</th>
                             <th>Status(Lost/Won)</th>                        
                         </tr>
@@ -95,9 +93,8 @@
                 [10, 25, 50,100,"All"]
             ],
             columns: [
-                {data: 'id', name: 'id'}, 
                 {data: 'getproductcategory.title', name:'getproductcategory.title'},
-                {data: 'enq_source', name: 'enq_source'},
+                {data: 'enq_source_type', name: 'enq_source_type'},
                 {data: 'expected_date', name: 'expected_date'},
                 {data: 'received_date', name: 'received_date'},
                 {data: 'quotation_date', name: 'quotation_date'},
