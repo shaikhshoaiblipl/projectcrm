@@ -372,7 +372,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="project_type">Category<span style="color:red">*</span></label>
-                        {!! Form::select('sub_contractor_id', $subcontractor, old('sub_contractor_id', isset($project->sub_contractor_id)?$project->sub_contractor_id:''), ['id'=>'category', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
+                        {!! Form::select('sub_contractor_id', $subcontractor, old('sub_contractor_id', isset($project->sub_contractor_id)?$project->sub_contractor_id:''), ['id'=>'sub_contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
                         @if($errors->has('sub_contractor_id'))
                         <p class="help-block">
                             <strong>{{ $errors->first('sub_contractor_id') }}</strong>
@@ -382,8 +382,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('sub_contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                        <label for="title">Contractor<span style="color:red">*</span></label>
-                        {!! Form::text('contractor', old('contractor',isset($project->contractor)?$project->contractor:''), ['id'=>'sub_contractor', 'class' => 'form-control', 'placeholder' => 'Add Sub Contractor']) !!}
+                        <label for="title">Contractor</label>
+                        {!! Form::text('contractor', old('contractor',isset($project->contractor)?$project->contractor:''), ['id'=>'contractor', 'class' => 'form-control', 'placeholder' => 'Add Sub Contractor']) !!}
                         @if($errors->has('sub_contractor'))
                         <p class="help-block">
                             <strong>{{ $errors->first('sub_contractor') }}</strong>
@@ -719,10 +719,10 @@
                 contractor_id: {
                     required: true
                 },
-                category: {
+                sub_contractor_id: {
                     required: true
                 },
-                sub_contractor: {
+                contractor: {
                     required: true
                 },
                 commentery: {

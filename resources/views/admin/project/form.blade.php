@@ -113,7 +113,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('developer') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="developer">Client/Developer<span style="color:red">*</span></label>
-                        <select name='developer' id='developer' class = 'form-control'>
+                        <select name='developer' id='developer' class='form-control'>
                         <option value="">-Select-</option>
                         
                             <?php if(isset($clientdeveloper) && (!empty($clientdeveloper))){
@@ -143,7 +143,6 @@
                         </p>
                         @endif
                     </div> 
-
                 </div>
             </div>
             <!-- row 3 -->
@@ -151,7 +150,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('financier_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="financier_id">Financier<span style="color:red">*</span></label>
-                           <select name='financier_id' id='financier_id', class = 'form-control '>
+                           <select name='financier_id' id='financier_id', class='form-control'>
                            <option value="">-Select-</option>
                             <?php if(isset($financier) && (!empty($financier))){
                                 foreach ($financier as $key => $name) { ?>
@@ -374,7 +373,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="project_type">Category<span style="color:red">*</span></label>
-                        {!! Form::select('sub_contractor_id', $subcontractor, old('sub_contractor_id', isset($projectcategory->id)?$project->project_type_id:''), ['id'=>'category', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
+                        {!! Form::select('sub_contractor_id', $subcontractor, old('sub_contractor_id', isset($projectcategory->id)?$project->project_type_id:''), ['id'=>'sub_contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
                         @if($errors->has('sub_contractor_id'))
                         <p class="help-block">
                             <strong>{{ $errors->first('sub_contractor_id') }}</strong>
@@ -385,7 +384,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Contractor</label>
-                        {!! Form::text('contractor', old('contractor',isset($project->contractor)?$project->contractor:''), ['id'=>'sub_contractor', 'class' => 'form-control', 'placeholder' => 'Add Sub Contractor']) !!}
+                        {!! Form::text('contractor', old('contractor',isset($project->contractor)?$project->contractor:''), ['id'=>'contractor', 'class' => 'form-control', 'placeholder' => 'Add Sub Contractor']) !!}
                         @if($errors->has('contractor'))
                         <p class="help-block">
                             <strong>{{ $errors->first('contractor') }}</strong>
@@ -734,14 +733,12 @@
                 // add_main_contractor: {
                 //     required: true
                 // },
-                category: {
+                sub_contractor_id: {
                     required: true
-                }
-                ,
-                sub_contractor: {
+                },
+                contractor: {
                     required: true
-                }
-                ,
+                },
                 commentery: {
                     required: true
                 }
