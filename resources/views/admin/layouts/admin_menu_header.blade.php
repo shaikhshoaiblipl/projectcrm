@@ -74,7 +74,7 @@
 
 									@can('admin.subcontractor.index')
 
-										<li aria-haspopup="true"><a href="{{ route('admin.subcontractor.index') }}" class="slide-item">Sub-Contractors</a></li>
+										<li aria-haspopup="true"><a href="{{ route('admin.subcontractor.index') }}" class="slide-item">Sub-Contractor Category</a></li>
 
 									@endcan
 
