@@ -40,8 +40,13 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getProject(Request $request){   
-        $projects = Project::query()->with('getdeveloper');
+    public function getProject(Request $request){
+        if(Auth::user()->id == 1){
+            $projects = Project::query()->with('getdeveloper');
+        }else{
+            $projects = Project::query()->with('getdeveloper')->where('created_by',Auth::user()->id);
+        }
+        
         return DataTables::of($projects)
         ->editColumn('is_active', function ($project) {
             if($project->is_active == TRUE ){
@@ -289,6 +294,7 @@ class ProjectController extends Controller
             foreach($project->Projectenquiry as $enquiry){
                 if($enquiry->enq_source_type == 'client'){
                     $people_list=Clientdeveloper::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();   
+                    // $people_list->put('type','client');
                 }
                 elseif($enquiry->enq_source_type == 'financier'){
                     $people_list=Financier::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
@@ -319,8 +325,7 @@ class ProjectController extends Controller
                 }   
             }
         }
-
-        
+  
         return view('admin.project.edit',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
         
     }

@@ -8,7 +8,8 @@
           </div>
       </div>
   </div>
-  <div class="row row-sm">
+
+    <div class="row row-sm">
     <div class="col-xl-12">
         <!-- Content Row -->
         <div class="card">
@@ -596,7 +597,7 @@
             orientation: 'bottom',
             autoclose: true,
             
-        });
+        }).datepicker('setDate', 'today');
     // select 2
     
 
