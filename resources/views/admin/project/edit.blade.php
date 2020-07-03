@@ -31,8 +31,8 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="col-md-12 form-group {{$errors->has('commencement_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                        <label for="title">Project Date<span style="color:red">*</span></label> 
-                            {!! Form::text('commencement_date', old('commencement_date', isset($project->commencement_date)? Carbon\Carbon::parse($project->commencement_date)->format('d/m/Y') :''), [ 'id'=>'commencement_date_id','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+                        <label for="title">Date<span style="color:red">*</span></label> 
+                            {!! Form::text('commencement_date', old('commencement_date', isset($project->commencement_date)? Carbon\Carbon::parse($project->commencement_date)->format('m/d/Y') :''), [ 'id'=>'commencement_date_id','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                             @if($errors->has('commencement_date'))
                             <p class="help-block">
                                 <strong>{{ $errors->first('commencement_date') }}</strong>
@@ -45,7 +45,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="col-md-12 form-group {{$errors->has('project_type_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                        <label for="title">Project Type<span style="color:red">*</span></label> 
+                        <label for="title">Type<span style="color:red">*</span></label> 
                             {!! Form::select('project_type_id', $projecttype, old('project_type_id', isset($project->getprojecttype->id)?$project->getprojecttype->id:''), ['id'=>'project_type_id', 'class' => 'form-control', 'placeholder' => '-Select Project Type-']) !!}
                            @if($errors->has('project_type_id'))
                            <p class="help-block">
@@ -60,7 +60,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('project_name') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                    <label for="title">Project Name<span style="color:red">*</span></label> 
+                    <label for="title">Name<span style="color:red">*</span></label> 
                        {!! Form::text('project_name', old('project_name', isset($project->project_name)?$project->project_name:''), ['id'=>'project_name', 'class' => 'form-control', 'placeholder' => 'Project Name']) !!}
                        @if($errors->has('project_name'))
                        <p class="help-block">
@@ -76,7 +76,7 @@
             <div class="col-md-4">
                 <div class="col-md-12 form-group {{$errors->has('commencement_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                     <label for="title">Date of Commencement<span style="color:red">*</span></label> 
-                    {!! Form::text('commencement_date', old('commencement_date', isset($project->commencement_date)?Carbon\Carbon::parse($project->commencement_date)->format('d/m/Y') :''), ['id'=>'project_commencement_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+                    {!! Form::text('commencement_date', old('commencement_date', isset($project->commencement_date)?Carbon\Carbon::parse($project->commencement_date)->format('m/d/Y') :''), ['id'=>'project_commencement_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                     @if($errors->has('commencement_date'))
                     <p class="help-block">
                         <strong>{{ $errors->first('commencement_date') }}</strong>
@@ -87,7 +87,7 @@
             <div class="col-md-4">
                 <div class="col-md-12 form-group {{$errors->has('completion_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                     <label for="title">Expected Date of Completion<span style="color:red">*</span></label> 
-                    {!! Form::text('completion_date', old('completion_date', isset($project->completion_date)?Carbon\Carbon::parse($project->completion_date)->format('d/m/Y'):''), ['id'=>'expected_date_completion', 'class' => 'form-control datepicker', 'placeholder' => 'Project Date']) !!}
+                    {!! Form::text('completion_date', old('completion_date', isset($project->completion_date)?Carbon\Carbon::parse($project->completion_date)->format('m/d/Y'):''), ['id'=>'expected_date_completion', 'class' => 'form-control datepicker', 'placeholder' => 'Project Date']) !!}
                     @if($errors->has('completion_date'))
                     <p class="help-block">
                         <strong>{{ $errors->first('completion_date') }}</strong>
@@ -498,7 +498,7 @@
             <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Expected Date<span style="color:red">*</span></label>
                 
-                {!! Form::text('expected_date[]', old('expected_date',isset($projecttype->expected_date)? Carbon\Carbon::parse($projecttype->expected_date)->format('d/m/Y'):''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'Project Name']) !!}
+                {!! Form::text('expected_date[]', old('expected_date',isset($projecttype->expected_date)? Carbon\Carbon::parse($projecttype->expected_date)->format('m/d/Y'):''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'Project Name']) !!}
                 @if($errors->has('expected_date'))
                 <p class="help-block">
                     <strong>{{ $errors->first('expected_date') }}</strong>
@@ -509,7 +509,7 @@
             <!-- edit mode start -->
             <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Received Date<span style="color:red">*</span></label>
-                {!! Form::text('received_date[]', old('received_date',isset($projecttype->received_date)?Carbon\Carbon::parse($projecttype->received_date)->format('d/m/Y'):''), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'Project Name']) !!}
+                {!! Form::text('received_date[]', old('received_date',isset($projecttype->received_date)?Carbon\Carbon::parse($projecttype->received_date)->format('m/d/Y'):''), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'Project Name']) !!}
                 @if($errors->has('received_date'))
                 <p class="help-block">
                     <strong>{{ $errors->first('received_date') }}</strong>
@@ -518,7 +518,7 @@
             </div> 
             <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Quote Date<span style="color:red">*</span></label>
-                {!! Form::text('quotation_date[]', old('quotation_date',isset($projecttype->quotation_date)?Carbon\Carbon::parse($projecttype->quotation_date)->format('d/m/Y')	:''), ['id'=>'quotation_date', 'class' => 'form-control datepicker', 'placeholder' => 'Quotation Date']) !!}
+                {!! Form::text('quotation_date[]', old('quotation_date',isset($projecttype->quotation_date)?Carbon\Carbon::parse($projecttype->quotation_date)->format('m/d/Y')	:''), ['id'=>'quotation_date', 'class' => 'form-control datepicker', 'placeholder' => 'Quotation Date']) !!}
                 @if($errors->has('quotation_date'))
                 <p class="help-block">
                     <strong>{{ $errors->first('quotation_date') }}</strong>
@@ -625,7 +625,7 @@
             format: 'mm/dd/yyyy',
             orientation: 'bottom',
             autoclose: true
-        }).datepicker('setDate','today');
+        });
       });
 
         //Once remove button is clicked

@@ -100,7 +100,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-
+// dd($request->all());
         // dd($request->all());
         //     $rules = [
         //     'project_name'=>'required',
@@ -222,13 +222,13 @@ class ProjectController extends Controller
                    $project->update(array('surveyor_qty'=>$quantity_id));
 
 
-                    // if(isset($data['sub_contractor'])){
-                    //     $sub_contractor=SubContractor::create(['title'=>$add_surveyor_qty]);
-                    //     $sub_contractor_id=$sub_contractor->id;
-                    // }else{
-                    //     $sub_contractor_id = isset($data['sub_contractor'])?$data['sub_contractor']:0;
-                    // }
-                    //  $project->update(array('sub_contractor_id'=>$sub_contractor_id));
+                    if(isset($data['sub_contractor'])){
+                        $sub_contractor=SubContractor::create(['title'=>$add_surveyor_qty]);
+                        $sub_contractor_id=$sub_contractor->id;
+                    }else{
+                        $sub_contractor_id = isset($data['sub_contractor'])?$data['sub_contractor']:0;
+                    }
+                     $project->update(array('sub_contractor_id'=>$sub_contractor_id));
 
 
                  
@@ -242,19 +242,34 @@ class ProjectController extends Controller
               
 
         if(isset($request->product_category)){
-            for ($i = 0; $i < count($request->product_category); $i++){
-                $expected_date = date('Y-m-d', strtotime($request->expected_date[$i]));
-                $type=implode(' ',$request->enq_source);
-                $source=explode('-',$type);
+            foreach($request->enq_source as $key=>$enq){
+                $source=explode('-',$enq);
+                $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
                 $data=[
                     'project_id'=>$project->id,
-                    'product_category_id' => $request->product_category[$i],
+                    'product_category_id' => $request->product_category[$key],
                     'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
                     'enq_source' => isset($source[0])?$source[0]:0,
                     'enq_source_type'=>isset($source[1])?$source[1]:''
                 ];
                 ProjectEnquiry::insert($data);
+
             }
+
+            // for ($i = 0; $i < count($request->product_category); $i++){
+            //     $expected_date = date('Y-m-d', strtotime($request->expected_date[$i]));
+            //     $type=implode(' ',$request->enq_source);
+            //     $source=explode('-',$type);
+            //     dd($source);
+            //     $data=[
+            //         'project_id'=>$project->id,
+            //         'product_category_id' => $request->product_category[$i],
+            //         'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
+            //         'enq_source' => isset($source[0])?$source[0]:0,
+            //         'enq_source_type'=>isset($source[1])?$source[1]:''
+            //     ];
+            //     ProjectEnquiry::insert($data);
+            // }
             
         }
         $request->session()->flash('success',__('global.messages.add'));
@@ -453,35 +468,63 @@ class ProjectController extends Controller
 
                 }
 
-
-        if(!empty(ProjectEnquiry::where('project_id',$id)->get())){
-            ProjectEnquiry::where('project_id',$id)->delete();
-            if(isset($request->product_category)){
-                for ($i = 0; $i < count($request->product_category); $i++){
-                    $expected_date = date('Y-m-d', strtotime($request->expected_date[$i]));
-                    $received_date = date('Y-m-d', strtotime($request->received_date[$i]));
-                    $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$i]));
-                    $type=implode(' ',$request->enq_source);
-                    $source=explode('-',$type);
-                   
-                    $data=[
-                        'project_id'=>$project->id,
-                        'product_category_id' => $request->product_category[$i],
-                        'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
-                        'enq_source' => isset($source[0])?$source[0]:0,
-                        'enq_source_type'=>isset($source[1])?$source[1]:'',
-                        "received_date" => isset($received_date)?$received_date:date('Y-m-d'),
-                        "quotation_date" => isset($quotation_date)?$quotation_date:date('Y-m-d'),
-                        "remarks" => isset($request->remarks[$i])?$request->remarks[$i]:'',
-                        "won_loss" => isset($request->won_loss[$i])?$request->won_loss[$i]:'Loss'
-                    ];
-                    // print_r($source[2]);
-                    // die;
-                   
-                    ProjectEnquiry::insert($data);
+                if(!empty(ProjectEnquiry::where('project_id',$id)->get())){
+                ProjectEnquiry::where('project_id',$id)->delete();
+                if(isset($request->product_category)){
+                    foreach($request->enq_source as $key=>$enq){
+                        $source=explode('-',$enq);
+                        $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
+                        $received_date = date('Y-m-d', strtotime($request->received_date[$key]));
+                        $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$key]));
+                        $data=[
+                            'project_id'=>$project->id,
+                            'product_category_id' => $request->product_category[$key],
+                            'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
+                            'enq_source' => isset($source[0])?$source[0]:0,
+                            'enq_source_type'=>isset($source[1])?$source[1]:'',
+                            "received_date" => isset($received_date)?$received_date:date('Y-m-d'),
+                            "quotation_date" => isset($quotation_date)?$quotation_date:date('Y-m-d'),
+                            "remarks" => isset($request->remarks[$key])?$request->remarks[$key]:'',
+                            "won_loss" => isset($request->won_loss[$key])?$request->won_loss[$key]:'Loss'
+                        ];
+                        ProjectEnquiry::insert($data);
+        
+                    }
                 }
             }
-        }
+
+
+
+
+        // if(!empty(ProjectEnquiry::where('project_id',$id)->get())){
+        //     ProjectEnquiry::where('project_id',$id)->delete();
+        //     if(isset($request->product_category)){
+        //         for ($i = 0; $i < count($request->product_category); $i++){
+        //             $expected_date = date('Y-m-d', strtotime($request->expected_date[$i]));
+        //             $received_date = date('Y-m-d', strtotime($request->received_date[$i]));
+        //             $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$i]));
+        //             $type=implode(' ',$request->enq_source);
+        //             $source=explode('-',$type);
+                   
+                   
+        //             $data=[
+        //                 'project_id'=>$project->id,
+        //                 'product_category_id' => $request->product_category[$i],
+        //                 'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
+        //                 'enq_source' => isset($source[0])?$source[0]:0,
+        //                 'enq_source_type'=>isset($source[1])?$source[1]:'',
+        //                 "received_date" => isset($received_date)?$received_date:date('Y-m-d'),
+        //                 "quotation_date" => isset($quotation_date)?$quotation_date:date('Y-m-d'),
+        //                 "remarks" => isset($request->remarks[$i])?$request->remarks[$i]:'',
+        //                 "won_loss" => isset($request->won_loss[$i])?$request->won_loss[$i]:'Loss'
+        //             ];
+        //             // print_r($source[2]);
+        //             // die;
+                   
+        //             ProjectEnquiry::insert($data);
+        //         }
+        //     }
+        // }
         $request->session()->flash('success',__('global.messages.update'));
         return redirect()->route('admin.project.index');
    

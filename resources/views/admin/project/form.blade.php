@@ -30,7 +30,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="col-md-12 form-group {{$errors->has('commencement_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                            <label for="title">Project Date<span style="color:red">*</span></label> 
+                            <label for="title">Date<span style="color:red">*</span></label> 
                                 {!! Form::text('commencement_date', old('commencement_date', isset($project->commencement_date)?date('d/m/Y', strtotime($project->commencement_date)) :''), [ 'id'=>'commencement_date_id','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                                 @if($errors->has('commencement_date'))
                                 <p class="help-block">
@@ -46,7 +46,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="col-md-12 form-group {{$errors->has('project_type_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                            <label for="title">Project Type<span style="color:red">*</span></label> 
+                            <label for="title">Type<span style="color:red">*</span></label> 
                              {!! Form::select('project_type_id', $projecttype, old('project_type_id', isset($projecttype->id)?$projecttype->id:''), ['id'=>'project_type_id', 'class' => 'form-control', 'placeholder' => '-Select Project Type-']) !!}
                              @if($errors->has('project_type_id'))
                              <p class="help-block">
@@ -61,7 +61,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="col-md-12 form-group {{$errors->has('project_name') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                        <label for="title">Project Name<span style="color:red">*</span></label> 
+                        <label for="title">Name<span style="color:red">*</span></label> 
                          {!! Form::text('project_name', old('project_name', isset($project->id)?$project->id:''), ['id'=>'project_name', 'class' => 'form-control', 'placeholder' => 'Project Name']) !!}
                          @if($errors->has('project_name'))
                          <p class="help-block">
