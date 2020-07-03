@@ -14,7 +14,7 @@ class Project extends Model
     protected $table = "project";
 
     protected $fillable = [
-        'created_by','project_name','project_type_id','project_date','commencement_date','completion_date','project_budget','developer','project_financier','surveyor_qty','commentery','mech_engg','architect','interior','main_contractor','project_category_id','sub_contractor_id','is_active','contractor'
+        'contractor_id','created_by','project_name','project_type_id','project_date','commencement_date','completion_date','project_budget','developer','project_financier','surveyor_qty','commentery','mech_engg','architect','interior','main_contractor_id','project_category_id','is_active','contractor'
     ];
     public function Projectenquiry()  
     {
@@ -40,13 +40,13 @@ class Project extends Model
         return $this->belongsTo('App\Interior','interior','id');
     }
     public function getmcontractor(){         
-        return $this->belongsTo('App\Contractor','main_contractor','id');
+        return $this->belongsTo('App\Contractor','main_contractor_id','id');
     }
     public function getpcategory(){         
         return $this->belongsTo('App\ProductCategory','project_category_id','id');
     }
     public function getsubcontractor(){         
-        return $this->belongsTo('App\SubContractor','sub_contractor_id','id');
+        return $this->belongsTo('App\SubContractor','contractor_id','id');
     }
     public function getprojecttype(){         
         return $this->belongsTo('App\ProjectType','project_type_id','id');

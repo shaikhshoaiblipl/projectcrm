@@ -14,13 +14,14 @@ use App\Project;
 use App\ProjectEnquiry;
 use Carbon\Carbon;
 use App\Architect;
-use App\Clientdeveloper;
+// use App\Clientdeveloper;
 use App\Financier;
 use App\Interior;
 use App\MechanicalEngineer;
 use App\Quantity;
 use App\Contractor;
 use Auth;
+use App\Client;
 
 
 class ProjectController extends Controller
@@ -86,13 +87,14 @@ class ProjectController extends Controller
         $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
         $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
         $architect=Architect::where(['is_active'=>TRUE])->pluck('name', 'id');
-        $clientdeveloper=Clientdeveloper::where(['is_active'=>TRUE])->pluck('name', 'id');
+        $clientdeveloper=Client::where(['is_active'=>TRUE])->pluck('name', 'id');
         $financier=Financier::where(['is_active'=>TRUE])->pluck('name', 'id');
         $interior=Interior::where(['is_active'=>TRUE])->pluck('name', 'id');
         $mechanicalEngineer=MechanicalEngineer::where(['is_active'=>TRUE])->pluck('name', 'id');
         $quantity=Quantity::where(['is_active'=>TRUE])->pluck('name', 'id');
         $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
-
+       
+        
         
         return view('admin.project.form',compact('projecttype','project','productcategory','subcontractor','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor'));
     }
@@ -105,26 +107,26 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-// dd($request->all());
-        // dd($request->all());
-        //     $rules = [
-        //     'project_name'=>'required',
-        //     'project_type_id'=>'required',
-        //     'project_date'=>'required',
-        //     'commencement_date'=>'required',
-        //     'completion_date'=>'required',
-        //     'project_budget'=>'required',
-        //     'developer'=>'required',
-        //     'project_financier'=>'required',
-        //     'surveyor_qty'=>'required',
-        //     'commentery'=>'required',
-        //     'mech_engg'=>'required',
-        //     'architect'=>'required',
-        //     'interior'=>'required',
-        //     'main_contractor'=>'required',
-        //     'project_category_id'=>'required',
-        //     'sub_contractor_id'=>'required', 
-        //      ];
+       
+        
+            $rules = [
+            'project_name'=>'required',
+            'project_type_id'=>'required',
+            'project_date'=>'required',
+            'commencement_date'=>'required',
+            'completion_date'=>'required',
+            'project_budget'=>'required',
+            'developer'=>'required',
+            'project_financier'=>'required',
+            'surveyor_qty'=>'required',
+            'commentery'=>'required',
+            'mech_engg'=>'required',
+            'architect'=>'required',
+            'interior'=>'required',
+            'main_contractor'=>'required',
+            'project_category_id'=>'required',
+            'sub_contractor_id'=>'required', 
+             ];
        
         // $request->validate($rules);
 
@@ -164,7 +166,7 @@ class ProjectController extends Controller
     
     if($project->id > 0){
         if($data['developer']=='add_new_client'){
-            $developer=Clientdeveloper::create(['name'=>$add_developer]);
+            $developer=Client::create(['name'=>$add_developer]);
             $developer_id=$developer->id;
         }else{
             $developer_id = isset($data['developer'])?$data['developer']:0;
@@ -280,10 +282,11 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $project = Project::with('getprojecttype','Projectenquiry','getdeveloper','getfinancier','getquantity','getmengineer','getarchitect','getinterior','getmcontractor','getpcategory','getsubcontractor')->findOrFail($id);
+      
         $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
         $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
         $architect=Architect::where(['is_active'=>TRUE])->pluck('name', 'id');
-        $clientdeveloper=Clientdeveloper::where(['is_active'=>TRUE])->pluck('name', 'id');
+        $clientdeveloper=Client::where(['is_active'=>TRUE])->pluck('name', 'id');
         $financier=Financier::where(['is_active'=>TRUE])->pluck('name', 'id');
         $interior=Interior::where(['is_active'=>TRUE])->pluck('name', 'id');
         $mechanicalEngineer=MechanicalEngineer::where(['is_active'=>TRUE])->pluck('name', 'id');
@@ -293,8 +296,9 @@ class ProjectController extends Controller
         if(isset($project->Projectenquiry)){
             foreach($project->Projectenquiry as $enquiry){
                 if($enquiry->enq_source_type == 'client'){
-                    $people_list=Clientdeveloper::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();   
+                    $people_list=Client::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();   
                     // $people_list->put('type','client');
+                    $people_list=$people_list->id-'client';
                 }
                 elseif($enquiry->enq_source_type == 'financier'){
                     $people_list=Financier::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
@@ -325,7 +329,6 @@ class ProjectController extends Controller
                 }   
             }
         }
-  
         return view('admin.project.edit',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
         
     }
@@ -384,7 +387,7 @@ class ProjectController extends Controller
     
     if($project->id > 0){
         if($data['developer']=='add_new_client'){
-            $developer=Clientdeveloper::create(['name'=>$add_developer]);
+            $developer=Client::create(['name'=>$add_developer]);
             $developer_id=$developer->id;
         }else{
             $developer_id = isset($data['developer'])?$data['developer']:0;

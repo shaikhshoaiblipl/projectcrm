@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ClientDeveloper extends Migration
+class CreateClient extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class ClientDeveloper extends Migration
      */
     public function up()
     {
-        Schema::create('clientdeveloper', function (Blueprint $table) {
+        Schema::create('client', function (Blueprint $table) {
             $table->bigIncrements('id');
-             $table->UnsignedInteger('project_id')->nullable();
-             $table->string('name');
-             $table->tinyInteger('is_active')->default(1);
+                 $table->string('name')->nullable();
+                 $table->tinyInteger('is_active')->default(1);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class ClientDeveloper extends Migration
      */
     public function down()
     {
-       Schema::dropIfExists('clientdeveloper');
+        Schema::dropIfExists('client');
     }
 }
