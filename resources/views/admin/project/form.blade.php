@@ -645,8 +645,6 @@
             $("#add_mech_engg").attr("readonly", true); 
         }
     });
-
-
     $('#architect_id').select2({
         placeholder: '-Select-'
         
@@ -664,8 +662,6 @@
             $("#add_architect").attr("readonly", true); 
         }
     });
-
-
     $('#interior_id').select2({
         placeholder: '-Select-'
         
@@ -683,10 +679,6 @@
             $("#add_interior").attr("readonly", true); 
         }
     });
-
-
-
-
     $('#contractor_id').select2({
         placeholder: '-Select-'
         
@@ -704,19 +696,8 @@
             $("#add_main_contractor").attr("readonly", true); 
         }
     });
-
-
-
-
-
-
-
-
     });
-
 </script>
-
-
 <script type="text/javascript">
     jQuery(document).ready(function(){
         jQuery('#frmproject').validate({

@@ -291,10 +291,45 @@ class ProjectController extends Controller
         $mechanicalEngineer=MechanicalEngineer::where(['is_active'=>TRUE])->pluck('name', 'id');
         $quantity=Quantity::where(['is_active'=>TRUE])->pluck('name', 'id');
         $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
-        $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id'); 
+        $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
+        if(isset($project->Projectenquiry)){
+            foreach($project->Projectenquiry as $enquiry){
+                if($enquiry->enq_source_type == 'client'){
+                    $people_list=Clientdeveloper::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
+                    
+                }
+                elseif($enquiry->enq_source_type == 'financier'){
+                    $people_list=Financier::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
+                    // $people_list->put('type','financier');
+                }
+                elseif($enquiry->enq_source_type == 'quantity'){
+                    $people_list=Quantity::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
+                    // $people_list->put('type','quantity');
+                }
+                elseif($enquiry->enq_source_type == 'engineer'){
+                    $people_list=MechanicalEngineer::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
+                    // $people_list->put('type','engineer');
+                } elseif($enquiry->enq_source_type == 'architect'){
+                    $people_list=Architect::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
+                    // $people_list->put('type','architect');
+
+                } elseif($enquiry->enq_source_type == 'interior'){
+                    $people_list=Interior::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
+                    // $people_list->put('type','interior');
+
+                } elseif($enquiry->enq_source_type == 'contractor'){
+                    $people_list=Contractor::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
+                    // $people_list->put('type','contractor');
+
+                } 
+                else{
+                    $people_list=''; 
+                }   
+                }
+        }
+
         
-   
-        return view('admin.project.edit',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor'));
+        return view('admin.project.edit',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
         
     }
 
@@ -308,7 +343,7 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
 
-        
+    //    dd($request->all()); 
         $project = Project::findOrFail($id);
         $rules = [
             'project_name'=>'required',
@@ -416,13 +451,6 @@ class ProjectController extends Controller
                    $project->update(array('surveyor_qty'=>$quantity_id));
 
 
-                    // if(isset($data['sub_contractor'])){
-                    //     $sub_contractor=SubContractor::create(['title'=>$add_surveyor_qty]);
-                    //     $sub_contractor_id=$sub_contractor->id;
-                    // }else{
-                    //     $sub_contractor_id = isset($data['sub_contractor'])?$data['sub_contractor']:0;
-                    // }
-                    //  $project->update(array('sub_contractor_id'=>$sub_contractor_id));
                 }
 
 
@@ -435,6 +463,7 @@ class ProjectController extends Controller
                     $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$i]));
                     $type=implode(' ',$request->enq_source);
                     $source=explode('-',$type);
+                   
                     $data=[
                         'project_id'=>$project->id,
                         'product_category_id' => $request->product_category[$i],
@@ -446,7 +475,8 @@ class ProjectController extends Controller
                         "remarks" => isset($request->remarks[$i])?$request->remarks[$i]:'',
                         "won_loss" => isset($request->won_loss[$i])?$request->won_loss[$i]:'Loss'
                     ];
-                   
+                    // print_r($source[2]);
+                    // die;
                    
                     ProjectEnquiry::insert($data);
                 }

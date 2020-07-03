@@ -8,6 +8,7 @@
           </div>
       </div>
   </div>
+ 
   <div class="row row-sm">
     <div class="col-xl-12">
         <!-- Content Row -->
@@ -432,7 +433,6 @@
                 </p>
                 @endif 
             </div>
-
             <!-- row 2 -->
             <div class="col-md-4 form-group {{$errors->has('enq_source') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                             <label for="sku">Enq Source (list of people from this project)<span style="color:red">*</span></label>
@@ -440,38 +440,51 @@
                             <option value="">-Select-</option>
                                 <optgroup label="Client/Developer">
                                 @if(isset($project->getdeveloper))
-                                <option value="{{$project->getdeveloper->id}}-{{'client'}}">{{$project->getdeveloper->name}}</option>
+                                @foreach($people_list as $people)
+                                <option value="{{$project->getdeveloper->id}}-{{'client'}}" {{($project->getdeveloper->id == $people->id) ? 'selected' : ''}} >{{$project->getdeveloper->name}}</option>
+                                @endforeach
                                 @endif                               
                                 </optgroup>
                                 <optgroup label="Financier">
                                 @if(isset($project->getfinancier))
-                                <option value="{{$project->getfinancier->id}}-{{'financier'}}">{{$project->getfinancier->name}}</option>
-                               
+                                @foreach($people_list as $people)
+                                <option value="{{$project->getfinancier->id}}-{{'financier'}}" {{($project->getfinancier->id == $people->id) ? 'selected' : ''}}>{{$project->getfinancier->name}}</option>
+                                @endforeach
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Quantity">
                                 @if(isset($project->getquantity))
-                                <option value="{{$project->getquantity->id}}-{{'quantity'}}">{{$project->getquantity->name}}</option>
+                                @foreach($people_list as $people)
+                                <option value="{{$project->getquantity->id}}-{{'quantity'}}" {{($project->getquantity->id == $people->id) ? 'selected' : ''}}>{{$project->getquantity->name}}</option>
+                                @endforeach
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Mechanical Engineer">
                                 @if(isset($project->getmengineer))
-                                <option value="{{$project->getmengineer->id}}-{{'engineer'}}">{{$project->getmengineer->name}}</option>
+                                @foreach($people_list as $people)
+                                <option value="{{$project->getmengineer->id}}-{{'engineer'}}" {{($project->getmengineer->id == $people->id) ? 'selected' : ''}}>{{$project->getmengineer->name}}</option>
+                                @endforeach
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Architect">
                                 @if(isset($project->getarchitect))
-                                <option value="{{$project->getarchitect->id}}-{{'architect'}}">{{$project->getarchitect->name}}</option>
+                                @foreach($people_list as $people)
+                                <option value="{{$project->getarchitect->id}}-{{'architect'}}" {{($project->getarchitect->id == $people->id) ? 'selected' : ''}}>{{$project->getarchitect->name}}</option>
+                                @endforeach
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Interior">
                                 @if(isset($project->getinterior))
-                                <option value="{{$project->getinterior->id}}-{{'interior'}}">{{$project->getinterior->name}}</option>
+                                @foreach($people_list as $people)
+                                <option value="{{$project->getinterior->id}}-{{'interior'}}" {{($project->getinterior->id == $people->id) ? 'selected' : ''}}>{{$project->getinterior->name}}</option>
+                                @endforeach
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Main Contractor">
                                 @if(isset($project->getmcontractor))
-                                <option value="{{$project->getmcontractor->id}}-{{'contractor'}}">{{$project->getmcontractor->name}}</option>
+                                @foreach($people_list as $people)
+                                <option value="{{$project->getmcontractor->id}}-{{'contractor'}}" {{($project->getmcontractor->id == $people->id) ? 'selected' : ''}}>{{$project->getmcontractor->name}}</option>
+                                @endforeach
                                 @endif  
                                 </optgroup>
                             </select>
@@ -582,8 +595,9 @@
         $('.datepicker').datepicker({
             format: 'mm/dd/yyyy',
             orientation: 'bottom',
-            autoclose: true
-        });
+            autoclose: true,
+            
+        }).datepicker('setDate', 'today');
     // select 2
     
 
