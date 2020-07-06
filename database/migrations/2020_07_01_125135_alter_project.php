@@ -14,7 +14,7 @@ class AlterProject extends Migration
     public function up()
     {
         Schema::table('project', function (Blueprint $table) {
-            $table->string('contractor')->after('sub_contractor_id')->nullable();
+            $table->string('contractor')->after('contractor_id')->nullable();
           });
     }
 

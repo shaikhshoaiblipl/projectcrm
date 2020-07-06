@@ -14,7 +14,6 @@ use App\Project;
 use App\ProjectEnquiry;
 use Carbon\Carbon;
 use App\Architect;
-// use App\Clientdeveloper;
 use App\Financier;
 use App\Interior;
 use App\MechanicalEngineer;
@@ -81,9 +80,6 @@ class ProjectController extends Controller
     {
         $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
         $project =Project::where(['is_active'=>TRUE])->pluck('project_name', 'id');
-
-
-
         $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
         $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
         $architect=Architect::where(['is_active'=>TRUE])->pluck('name', 'id');
@@ -93,8 +89,7 @@ class ProjectController extends Controller
         $mechanicalEngineer=MechanicalEngineer::where(['is_active'=>TRUE])->pluck('name', 'id');
         $quantity=Quantity::where(['is_active'=>TRUE])->pluck('name', 'id');
         $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
-       
-        
+
         
         return view('admin.project.form',compact('projecttype','project','productcategory','subcontractor','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor'));
     }
@@ -107,26 +102,26 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-       
-        
-            $rules = [
-            'project_name'=>'required',
-            'project_type_id'=>'required',
-            'project_date'=>'required',
-            'commencement_date'=>'required',
-            'completion_date'=>'required',
-            'project_budget'=>'required',
-            'developer'=>'required',
-            'project_financier'=>'required',
-            'surveyor_qty'=>'required',
-            'commentery'=>'required',
-            'mech_engg'=>'required',
-            'architect'=>'required',
-            'interior'=>'required',
-            'main_contractor'=>'required',
-            'project_category_id'=>'required',
-            'sub_contractor_id'=>'required', 
-             ];
+// dd($request->all());
+        // dd($request->all());
+        //     $rules = [
+        //     'project_name'=>'required',
+        //     'project_type_id'=>'required',
+        //     'project_date'=>'required',
+        //     'commencement_date'=>'required',
+        //     'completion_date'=>'required',
+        //     'project_budget'=>'required',
+        //     'developer'=>'required',
+        //     'project_financier'=>'required',
+        //     'surveyor_qty'=>'required',
+        //     'commentery'=>'required',
+        //     'mech_engg'=>'required',
+        //     'architect'=>'required',
+        //     'interior'=>'required',
+        //     'main_contractor'=>'required',
+        //     'project_category_id'=>'required',
+        //     'sub_contractor_id'=>'required', 
+        //      ];
        
         // $request->validate($rules);
 
@@ -143,7 +138,6 @@ class ProjectController extends Controller
         $add_architect=isset($data['add_architect'])?$data['add_architect']:'';
         $add_interior=isset($data['add_interior'])?$data['add_interior']:'';
         $add_main_contractor=isset($data['add_main_contractor'])?$data['add_main_contractor']:'';
-        $sub_contractor=isset($data['sub_contractor'])?$data['sub_contractor']:'';
         
 
         if($project_date!=''){
@@ -159,8 +153,15 @@ class ProjectController extends Controller
     $data['commencement_date'] =  $commencement_date;
     $data['completion_date'] =  $completion_date;
     $data['contractor'] =  isset($data['contractor'])?$data['contractor']:'';
-    $data['sub_contractor_id'] =  isset($data['sub_contractor_id'])?$data['sub_contractor_id']:'';
-    $data['created_by']=Auth::user()->id;
+    $data['contractor_id'] =  isset($data['contractor_id'])?$data['contractor_id']:'';
+    $data['created_by']=Auth::user()->id;  
+    $data['main_contractor'] =  isset($data['main_contractor'])?$data['main_contractor']:'';
+    $data['mech_engg'] =  isset($data['mech_engg_id'])?$data['mech_engg_id']:'';
+    $data['project_financier'] =  isset($data['financier_id'])?$data['financier_id']:'';
+    $data['surveyor_qty'] =  isset($data['quantity_id'])?$data['quantity_id']:'';
+    $data['architect'] =  isset($data['architect_id'])?$data['architect_id']:'';
+    $data['interior'] =  isset($data['interior_id'])?$data['interior_id']:'';
+
     $project=Project::create($data);
                 // backend start
     
@@ -210,11 +211,11 @@ class ProjectController extends Controller
         }
         $project->update(array('interior'=>$interior_id));
 
-        if($data['contractor_id']=='add_new_contractor'){
+        if($data['main_contractor']=='add_new_contractor'){
             $contractor=Contractor::create(['name'=>$add_main_contractor]);
             $contractor_id=$contractor->id;
         }else{
-            $contractor_id = isset($data['contractor_id'])?$data['contractor_id']:0;
+            $contractor_id = isset($data['main_contractor'])?$data['main_contractor']:0;
         }
         $project->update(array('main_contractor'=>$contractor_id));
 
@@ -228,14 +229,7 @@ class ProjectController extends Controller
         $project->update(array('surveyor_qty'=>$quantity_id));
 
 
-        if(isset($data['sub_contractor'])){
-            $sub_contractor=SubContractor::create(['title'=>$add_surveyor_qty]);
-            $sub_contractor_id=$sub_contractor->id;
-        }else{
-            $sub_contractor_id = isset($data['sub_contractor'])?$data['sub_contractor']:0;
-        }
-        $project->update(array('sub_contractor_id'=>$sub_contractor_id));
-
+    
 
 
                 // backend end
@@ -282,7 +276,6 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $project = Project::with('getprojecttype','Projectenquiry','getdeveloper','getfinancier','getquantity','getmengineer','getarchitect','getinterior','getmcontractor','getpcategory','getsubcontractor')->findOrFail($id);
-      
         $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
         $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
         $architect=Architect::where(['is_active'=>TRUE])->pluck('name', 'id');
@@ -293,42 +286,45 @@ class ProjectController extends Controller
         $quantity=Quantity::where(['is_active'=>TRUE])->pluck('name', 'id');
         $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
         $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
+        $people_list='';
         if(isset($project->Projectenquiry)){
-            foreach($project->Projectenquiry as $enquiry){
-                if($enquiry->enq_source_type == 'client'){
-                    $people_list=Client::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();   
-                    // $people_list->put('type','client');
-                    $people_list=$people_list->id-'client';
-                }
-                elseif($enquiry->enq_source_type == 'financier'){
-                    $people_list=Financier::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
-                    // $people_list->put('type','financier');
-                }
-                elseif($enquiry->enq_source_type == 'quantity'){
-                    $people_list=Quantity::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
-                    // $people_list->put('type','quantity');
-                }
-                elseif($enquiry->enq_source_type == 'engineer'){
-                    $people_list=MechanicalEngineer::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
-                    // $people_list->put('type','engineer');
-                } elseif($enquiry->enq_source_type == 'architect'){
-                    $people_list=Architect::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
-                    // $people_list->put('type','architect');
-
-                } elseif($enquiry->enq_source_type == 'interior'){
-                    $people_list=Interior::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
-                    // $people_list->put('type','interior');
-
-                } elseif($enquiry->enq_source_type == 'contractor'){
-                    $people_list=Contractor::where('id',$enquiry->enq_source)->where('is_active',1)->select('id','name')->get();
-                    // $people_list->put('type','contractor');
-
-                } 
-                else{
-                    $people_list=''; 
-                }   
-            }
+        foreach($project->Projectenquiry as $people){
+        if($people->enq_source_type == 'client'){
+        $people_list=Client::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+        $people_list=$people_list->id.'-'.'client';
+      
         }
+        elseif($people->enq_source_type == 'financier'){
+        $people_list=Financier::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+        $people_list=$people_list->id.'-'.'financier';
+        }
+        elseif($people->enq_source_type == 'quantity'){
+         $people_list=Quantity::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+         $people_list=$people_list->id.'-'.'quantity';
+        }
+        elseif($people->enq_source_type == 'engineer'){
+         $people_list=MechanicalEngineer::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+         $people_list=$people_list->id.'-'.'engineer';
+        }
+        elseif($people->enq_source_type == 'architect'){
+         $people_list=Architect::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+         $people_list=$people_list->id.'-'.'architect';
+        }
+        elseif($people->enq_source_type == 'interior'){
+         $people_list=Interior::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+         $people_list=$people_list->id.'-'.'interior';
+        }
+        elseif($people->enq_source_type == 'contractor'){
+        $people_list=Contractor::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+        $people_list=$people_list->id.'-'.'contractor';
+        }
+        else{
+
+        }
+          }
+
+        }
+         
         return view('admin.project.edit',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
         
     }
@@ -343,7 +339,7 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
 
-     
+    //  dd($request->all());
         $project = Project::findOrFail($id);
         $rules = [
             'project_name'=>'required',
@@ -361,8 +357,9 @@ class ProjectController extends Controller
         $add_architect=isset($data['add_architect'])?$data['add_architect']:'';
         $add_interior=isset($data['add_interior'])?$data['add_interior']:'';
         $add_main_contractor=isset($data['add_main_contractor'])?$data['add_main_contractor']:'';
-        $sub_contractor=isset($data['sub_contractor'])?$data['sub_contractor']:'';
-        
+        // $sub_contractor=isset($data['sub_contractor'])?$data['sub_contractor']:'';
+        $data['mech_engg'] =  isset($data['mech_engg_id'])?$data['mech_engg_id']:'';
+
 
         if($project_date!=''){
          $project_date=date('Y-m-d',strtotime($project_date));
@@ -378,8 +375,13 @@ class ProjectController extends Controller
     $data['completion_date'] =  $completion_date;
 
     $data['contractor'] =  isset($data['contractor'])?$data['contractor']:'';
-    $data['sub_contractor_id'] =  isset($data['sub_contractor_id'])?$data['sub_contractor_id']:'';
-    
+    $data['contractor_id'] =  isset($data['contractor_id'])?$data['contractor_id']:'';
+    $data['main_contractor'] =  isset($data['main_contractor'])?$data['main_contractor']:'';
+    $data['mech_engg'] =  isset($data['mech_engg_id'])?$data['mech_engg_id']:'';
+    $data['project_financier'] =  isset($data['financier_id'])?$data['financier_id']:'';
+    $data['surveyor_qty'] =  isset($data['quantity_id'])?$data['quantity_id']:'';
+    $data['architect'] =  isset($data['architect_id'])?$data['architect_id']:'';
+    $data['interior'] =  isset($data['interior_id'])?$data['interior_id']:'';
     
 
     $project->update($data);
@@ -431,11 +433,11 @@ class ProjectController extends Controller
         }
         $project->update(array('interior'=>$interior_id));
 
-        if($data['contractor_id']=='add_new_contractor'){
+        if($data['main_contractor']=='add_new_contractor'){
             $contractor=Contractor::create(['name'=>$add_main_contractor]);
             $contractor_id=$contractor->id;
         }else{
-            $contractor_id = isset($data['contractor_id'])?$data['contractor_id']:0;
+            $contractor_id = isset($data['main_contractor'])?$data['main_contractor']:0;
         }
         $project->update(array('main_contractor'=>$contractor_id));
 

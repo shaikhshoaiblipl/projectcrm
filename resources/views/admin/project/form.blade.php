@@ -8,7 +8,6 @@
               </div>
           </div>
       </div>
-     
       <div class="row row-sm">
         <div class="col-xl-12">
             <!-- Content Row -->
@@ -30,9 +29,9 @@
                     <!-- row 1 -->
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="col-md-12 form-group {{$errors->has('project_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+                            <div class="col-md-12 form-group {{$errors->has('commencement_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                             <label for="title">Date<span style="color:red">*</span></label> 
-                                {!! Form::text('project_date', old('project_date', isset($project->project_date)?date('d/m/Y', strtotime($project->project_date)) :''), [ 'id'=>'project_date_id','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+                                {!! Form::text('project_date', old('project_date', isset($project->project_date)?date('d/m/Y', strtotime($project->project_date)) :''), [ 'id'=>'project_date','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                                 @if($errors->has('project_date'))
                                 <p class="help-block">
                                     <strong>{{ $errors->first('project_date') }}</strong>
@@ -89,7 +88,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('completion_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Expected Date of Completion<span style="color:red">*</span></label> 
-                        {!! Form::text('completion_date', old('completion_date', isset($project->completion_date)?date('d/m/Y', strtotime($project->completion_date)):''), ['id'=>'expected_date_completion', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+                        {!! Form::text('completion_date', old('completion_date', isset($project->completion_date)?date('d/m/Y', strtotime($project->completion_date)):''), ['id'=>'completion_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                         @if($errors->has('completion_date'))
                         <p class="help-block">
                             <strong>{{ $errors->first('completion_date') }}</strong>
@@ -101,6 +100,7 @@
                     <div class="col-md-12 form-group {{$errors->has('project_budget') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Budget(Shilling)<span style="color:red">*</span></label> 
                         {!! Form::number('project_budget', old('project_budget', isset($project->project_budget)?$project->project_budget:''), ['id'=>'project_budget', 'class' => 'form-control', 'placeholder' => 'Project Budget']) !!}
+
                         @if($errors->has('project_budget'))
                         <p class="help-block">
                             <strong>{{ $errors->first('project_budget') }}</strong>
@@ -336,9 +336,9 @@
             <!-- row 8 -->
             <div class="row">
                 <div class="col-md-4">
-                    <div class="col-md-12 form-group {{$errors->has('main_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+                    <div class="col-md-12 form-group {{$errors->has('main_contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Main Contractor<span style="color:red">*</span></label>
-                    <select name='main_contractor_id' id='main_contractor', class = 'form-control '>
+                    <select name='main_contractor' id='main_contractor'  class = 'form-control'>
                     <option value="">-Select-</option>
                             <?php if(isset($contractor) && (!empty($contractor))){
                                 foreach ($contractor as $key => $name) { ?>
@@ -375,10 +375,10 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="project_type">Category</label>
-                        {!! Form::select('contractor_id', $subcontractor, old('contractor_id', isset($projectcategory->id)?$project->project_type_id:''), ['id'=>'sub_contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
-                        @if($errors->has('sub_contractor_id'))
+                        {!! Form::select('contractor_id', $subcontractor, old('contractor_id', isset($projectcategory->id)?$project->project_type_id:''), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
+                        @if($errors->has('contractor_id'))
                         <p class="help-block">
-                            <strong>{{ $errors->first('sub_contractor_id') }}</strong>
+                            <strong>{{ $errors->first('contractor_id') }}</strong>
                         </p>
                         @endif                       
                     </div>
@@ -422,7 +422,7 @@
                         </div>
                         <!-- row 1 -->
                         <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                            <label for="sku">Enq for (product category)</label>
+                            <label for="sku">Enquiry for (product category)</label>
                             {!! Form::select('product_category[]', $productcategory, old('product_category', isset($project->project_type_id)?$project->project_type_id:''), ['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
                             @if($errors->has('product_category'))
                             <p class="help-block">
@@ -432,53 +432,53 @@
                         </div>
                         <!-- row 2 -->
                         <div class="col-md-4 form-group {{$errors->has('people_list') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                            <label for="sku">Enq Source (list of people from this project)</label>
+                            <label for="sku">Enquiry Source (list of people from this project)</label>
                             <select name="enq_source[]" id="enq_source" class="form-control">
                             <option value="">-Select-</option>
-                                @if(isset($clientdeveloper))
                                 <optgroup label="Client/Developer">
+                                @if(isset($clientdeveloper))
                                 @foreach($clientdeveloper as $key=>$client)
                                 <option value="{{$key}}-{{'client'}}">{{$client}}</option>
                                 @endforeach
                                 @endif                               
                                 </optgroup>
-                                @if(isset($financier))
                                 <optgroup label="Financier">
+                                @if(isset($financier))
                                 @foreach($financier as $key=>$finance)
                                 <option value="{{$key}}-{{'financier'}}">{{$finance}}</option>
                                 @endforeach
                                 @endif  
                                 </optgroup>
-                                @if(isset($quantity))
                                 <optgroup label="Quantity">
+                                @if(isset($quantity))
                                 @foreach($quantity as $key=>$qty)
                                 <option value="{{$key}}-{{'quantity'}}">{{$qty}}</option>
                                 @endforeach
                                 @endif  
                                 </optgroup>
-                                @if(isset($mechanicalEngineer))
                                 <optgroup label="Mechanical Engineer">
+                                @if(isset($mechanicalEngineer))
                                 @foreach($mechanicalEngineer as $key=>$mech)
                                 <option value="{{$key}}-{{'engineer'}}">{{$mech}}</option>
                                 @endforeach
                                 @endif  
                                 </optgroup>
-                                @if(isset($architect))
                                 <optgroup label="Architect">
+                                @if(isset($architect))
                                 @foreach($architect as $key=>$archi)
                                 <option value="{{$key}}-{{'architect'}}">{{$archi}}</option>
                                 @endforeach
                                 @endif  
                                 </optgroup>
-                                @if(isset($interior))
                                 <optgroup label="Interior">
+                                @if(isset($interior))
                                 @foreach($interior as $key=>$inter)
                                 <option value="{{$key}}-{{'interior'}}">{{$inter}}</option>
                                 @endforeach
                                 @endif  
                                 </optgroup>
-                                @if(isset($contractor))
                                 <optgroup label="Main Contractor">
+                                @if(isset($contractor))
                                 @foreach($contractor as $key=>$cont)
                                 <option value="{{$key}}-{{'contractor'}}">{{$cont}}</option>
                                 @endforeach
@@ -505,8 +505,11 @@
                 </div>
             </div>
             <!-- small form end -->
+
         </div>
+
         <!-- card body end  -->
+
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
             <a href="{{route('admin.project.index')}}"  class="btn btn-secondary">Cancel</a>
@@ -548,7 +551,7 @@
 
         var presentlyaddButton = $('.add_button'); //Add button selector
         var presentlywrapper = $('.presently_field_wrapper'); //Input field wrapper
-        presentlyfieldHTML='<div class="row after-add-more  cls_field_wrapper "><div class="col-md-12"><a href="javascript:void(0)" class="remove_button crcl_btn"><i class="fa fa-minus"></i></a></div><div class="col-md-4 form-group"><label for="sku">Enq for (product category)</label>{!! Form::select('product_category[]', $productcategory, old('product_category', isset($project->project_type_id)?$project->project_type_id:''), ['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}</p></div><div class="col-md-4 form-group {{$errors->has('people_list') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="sku">Enq Source (list of people from this project)</label><select name="enq_source[]" id="enq_source" class="form-control"><option value="">-Select-</option><optgroup label="Client/Developer">@foreach($clientdeveloper as $key=>$client)<option value="{{$key}}-{{'client'}}">{{$client}}</option>@endforeach</optgroup><optgroup label="Financier">@foreach($financier as $key=>$finance)<option value="{{$key}}-{{'financier'}}">{{$finance}}</option>@endforeach</optgroup><optgroup label="Quantity">@foreach($quantity as $key=>$qty)<option value="{{$key}}-{{'quantity'}}">{{$qty}}</option>@endforeach</optgroup><optgroup label="Mechanical Engineer">@foreach($mechanicalEngineer as $key=>$mech)<option value="{{$key}}-{{'engineer'}}">{{$mech}}</option>@endforeach</optgroup><optgroup label="Architect">@foreach($architect as $key=>$archi)<option value="{{$key}}-{{'architect'}}">{{$archi}}</option>@endforeach</optgroup><optgroup label="Interior">@foreach($interior as $key=>$inter)<option value="{{$key}}-{{'interior'}}">{{$inter}}</option>@endforeach</optgroup><optgroup label="Main Contractor">@foreach($contractor as $key=>$cont)<option value="{{$key}}-{{'contractor'}}">{{$cont}}</option>@endforeach</optgroup></select>@if($errors->has('people_list'))<p class="help-block"><strong>{{ $errors->first('people_list') }}</strong></p>@endif</div><div class="col-md-4 form-group"><label for="sku">Expected Date</label>{!! Form::text('expected_date[]', old('expected_date',isset($project->project_name)?$project->project_name:''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}</div></div>';     
+        presentlyfieldHTML='<div class="row after-add-more  cls_field_wrapper "><div class="col-md-12"><a href="javascript:void(0)" class="remove_button crcl_btn"><i class="fa fa-minus"></i></a></div><div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="sku">Enquiry for (product category)</label>{!! Form::select('product_category[]', $productcategory, old('product_category', isset($project->project_type_id)?$project->project_type_id:''), ['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}@if($errors->has('product_category'))<p class="help-block"><strong>{{ $errors->first('product_category') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('people_list') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="sku">Enquiry Source (list of people from this project)</label><select name="enq_source[]" id="enq_source" class="form-control"><option value="">-Select-</option><optgroup label="Client/Developer">@foreach($clientdeveloper as $key=>$client)<option value="{{$key}}-{{'client'}}">{{$client}}</option>@endforeach</optgroup><optgroup label="Financier">@foreach($financier as $key=>$finance)<option value="{{$key}}-{{'financier'}}">{{$finance}}</option>@endforeach</optgroup><optgroup label="Quantity">@foreach($quantity as $key=>$qty)<option value="{{$key}}-{{'quantity'}}">{{$qty}}</option>@endforeach</optgroup><optgroup label="Mechanical Engineer">@foreach($mechanicalEngineer as $key=>$mech)<option value="{{$key}}-{{'engineer'}}">{{$mech}}</option>@endforeach</optgroup><optgroup label="Architect">@foreach($architect as $key=>$archi)<option value="{{$key}}-{{'architect'}}">{{$archi}}</option>@endforeach</optgroup><optgroup label="Interior">@foreach($interior as $key=>$inter)<option value="{{$key}}-{{'interior'}}">{{$inter}}</option>@endforeach</optgroup><optgroup label="Main Contractor">@foreach($contractor as $key=>$cont)<option value="{{$key}}-{{'contractor'}}">{{$cont}}</option>@endforeach</optgroup></select>@if($errors->has('people_list'))<p class="help-block"><strong>{{ $errors->first('people_list') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><label for="sku">Expected Date</label>{!! Form::text('expected_date[]', old('expected_date',isset($project->project_name)?$project->project_name:''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}@if($errors->has('expected_date'))<p class="help-block"><strong>{{ $errors->first('expected_date') }}</strong></p>@endif</div></div>';     
                         // will work only in edit mode end 
         //Once add button is clicked
         $(presentlyaddButton).click(function(){
@@ -566,8 +569,11 @@
             $(this).parents(".after-add-more").remove();
              //Remove field html
          });
+
+
     $('#developer').select2({
-        placeholder: '-Select-'  
+        placeholder: '-Select-'
+        
     });
     /// code fop add new client
     jQuery("#developer").change(function(){
@@ -576,7 +582,7 @@
             $("#add_developer").removeAttr("readonly");
             $("#add_develoepr").addClass("required"); 
         }else{
-            $("#add_develoepr").removeClass("required");
+            $("#add_develoepr").removeClass("required"); 
             $("#add_develoepr").parents("div").removeClass('has-error border-left-danger'); 
             $("#add_developer").val(""); 
             $("#add_developer").attr("readonly", true); 
@@ -673,12 +679,12 @@
             $("#add_interior").attr("readonly", true); 
         }
     });
-    $('#contractor_id').select2({
+    $('#main_contractor').select2({
         placeholder: '-Select-'
         
     });
     /// code fop add new client
-    jQuery("#contractor_id").change(function(){
+    jQuery("#main_contractor").change(function(){
         var contractor_id = jQuery(this).val();
         if(contractor_id=='add_new_contractor'){
             $("#add_main_contractor").removeAttr("readonly");
@@ -705,13 +711,10 @@
                 project_name: {
                     required: true
                 },
-                project_date:{
-                  required: true  
-                },
-                commencement_date: {
+                project_commencement_date: {
                     required: true
                 },
-                completion_date: {
+                expected_date_completion: {
                     required: true
                 },
                 project_budget: {
@@ -721,6 +724,16 @@
                     required: true
                 },
                 architect_id: {
+                    required: true
+                },
+                main_contractor: {
+                    required: true
+                },
+                project_date: {
+                    required: true
+                },commencement_date: {
+                    required: true
+                },completion_date: {
                     required: true
                 }
             }

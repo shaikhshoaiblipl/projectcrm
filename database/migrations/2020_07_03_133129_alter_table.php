@@ -13,49 +13,36 @@ class AlterTable extends Migration
      */
     public function up()
     {
-        Schema::table('clientdeveloper', function (Blueprint $table) {
-            $table->dropColumn('project_id');  
-        });
-
+       
         Schema::table('financier', function (Blueprint $table) {
             $table->dropColumn('project_id');
          
         });
-
         Schema::table('quantity', function (Blueprint $table) {
             $table->dropColumn('project_id');
          
         });
-
         Schema::table('mechanical_engg', function (Blueprint $table) {
             $table->dropColumn('project_id');
          
         });
-
-
         Schema::table('architact', function (Blueprint $table) {
             $table->dropColumn('project_id');
         });
-
         Schema::table('interior', function (Blueprint $table) {
             $table->dropColumn('project_id');
           
         });
-
         Schema::table('contractor', function (Blueprint $table) {
             $table->dropColumn('project_id');
             
         });
-
         Schema::table('contractor', function (Blueprint $table) {
             $table->dropColumn('project_id');
             
         });
-
         Schema::table('project', function (Blueprint $table) {
-            $table->renameColumn('sub_contractor_id', 'contractor_id');
-            $table->renameColumn('main_contractor', 'main_contractor_id');
-            
+            $table->renameColumn('sub_contractor_id', 'contractor_id');   
         });
         
     }

@@ -8,9 +8,6 @@
           </div>
       </div>
   </div>
-{{Carbon\Carbon::parse($project->project_date)->format('m/d/Y')}}
-
-
     <div class="row row-sm">
     <div class="col-xl-12">
         <!-- Content Row -->
@@ -32,7 +29,7 @@
                 <!-- row 1 -->
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="col-md-12 form-group {{$errors->has('project_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+                        <div class="col-md-12 form-group {{$errors->has('commencement_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Date<span style="color:red">*</span></label> 
                             {!! Form::text('project_date', old('project_date', isset($project->project_date)? Carbon\Carbon::parse($project->project_date)->format('m/d/Y') :''), [ 'id'=>'project_date','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                             @if($errors->has('project_date'))
@@ -337,13 +334,13 @@
 <!-- row 8 -->
 <div class="row">
     <div class="col-md-4">
-        <div class="col-md-12 form-group {{$errors->has('contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+        <div class="col-md-12 form-group {{$errors->has('main_contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
             <label for="title">Main Contractor<span style="color:red">*</span></label>
-            <select name='contractor_id' id='contractor_id', class = 'form-control '>
+            <select name='main_contractor' id='main_contractor', class = 'form-control '>
                 <option value="">-Select-</option>
                 <?php if(isset($contractor) && (!empty($contractor))){
                     foreach ($contractor as $key => $name) { ?>
-                      <option value="{{ $key }}" {{($key == $project->main_contractor_id) ? 'selected' : ''}}>{{ $name }}</option>
+                      <option value="{{ $key }}" {{($key == $project->main_contractor) ? 'selected' : ''}}>{{ $name }}</option>
                       
                   <?php  } 
               } 
@@ -352,9 +349,9 @@
           </select>
 
           
-          @if($errors->has('contractor_id'))
+          @if($errors->has('main_contractor'))
           <p class="help-block">
-            <strong>{{ $errors->first('contractor_id') }}</strong>
+            <strong>{{ $errors->first('main_contractor') }}</strong>
         </p>
         @endif                       
     </div>
@@ -376,10 +373,10 @@
     <div class="col-md-4">
         <div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
             <label for="project_type">Category</label>
-            {!! Form::select('contractor_id', $subcontractor, old('contractor_id', isset($project->contractor_id)?$project->contractor_id:''), ['id'=>'sub_contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
-            @if($errors->has('sub_contractor_id'))
+            {!! Form::select('contractor_id', $subcontractor, old('contractor_id', isset($project->contractor_id)?$project->contractor_id:''), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
+            @if($errors->has('contractor_id'))
             <p class="help-block">
-                <strong>{{ $errors->first('sub_contractor_id') }}</strong>
+                <strong>{{ $errors->first('contractor_id') }}</strong>
             </p>
             @endif                       
         </div>
@@ -402,6 +399,7 @@
         <div class="col-md-12 form-group {{$errors->has('commentery') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
             <label for="title">Commentery </label>
             {!! Form::textarea('commentery', old('commentery', isset($project->commentery)?$project->commentery:''),['placeholder' => 'Commentery', 'id'=>'commentery', 'class'=>'form-control', 'rows' => 4, 'cols' => 40]) !!}
+
             @if($errors->has('commentery'))
             <p class="help-block">
                 <strong>{{ $errors->first('commentery') }}</strong>
@@ -426,7 +424,7 @@
             </div>
             <!-- row 1 -->
             <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                <label for="sku">Enq for (product category)</label>
+                <label for="sku">Enquiry for (product category)</label>
                 {!! Form::select('product_category[]', $productcategory, old('product_category', isset($projecttype->product_category_id)?$projecttype->product_category_id:''), ['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
                 @if($errors->has('product_category'))
                 <p class="help-block">
@@ -436,70 +434,57 @@
             </div>
             <!-- row 2 -->
             <div class="col-md-4 form-group {{$errors->has('enq_source') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                            <label for="sku">Enq Source (list of people from this project)</label>
+                            <label for="sku">Enquiry Source (list of people from this project)</label>
+                            
                             <select name="enq_source[]" id="enq_source" class="form-control">
                             <option value="">-Select-</option>
                                 <optgroup label="Client/Developer">
-                                @if(isset($project->getdeveloper))
-                                @if(isset($people_list))
-                                @foreach($people_list as $people)
-                                <option value="{{$project->getdeveloper->id}}-{{'client'}}" {{($project->getdeveloper->id == $people->id) ? 'selected' : ''}} >{{$project->getdeveloper->name}}</option>
+                                @if(isset($clientdeveloper))
+                                @foreach($clientdeveloper as $key=>$client)
+                                <option value="{{$key}}-{{'client'}}"{{($key.'-'.'client' == $people_list) ? 'selected' : ''}}>{{$client}}</option>
                                 @endforeach
-                                @endif
                                 @endif                               
                                 </optgroup>
                                 <optgroup label="Financier">
-                                @if(isset($project->getfinancier))
-                                @if($people_list)
-                                @foreach($people_list as $people)
-                                <option value="{{$project->getfinancier->id}}-{{'financier'}}" {{($project->getfinancier->id == $people->id) ? 'selected' : ''}}>{{$project->getfinancier->name}}</option>
+                                @if(isset($financier))
+                                @foreach($financier as $key=>$finance)
+                                <option value="{{$key}}-{{'financier'}}"{{($key.'-'.'financier' == $people_list) ? 'selected' : ''}}>{{$finance}}</option>
                                 @endforeach
-                                @endif
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Quantity">
-                                @if(isset($project->getquantity))
-                                @if($people_list)
-                                @foreach($people_list as $people)
-                                <option value="{{$project->getquantity->id}}-{{'quantity'}}" {{($project->getquantity->id == $people->id) ? 'selected' : ''}}>{{$project->getquantity->name}}</option>
+                                @if(isset($quantity))
+                                @foreach($quantity as $key=>$qty)
+                                <option value="{{$key}}-{{'quantity'}}"{{($key.'-'.'quantity' == $people_list) ? 'selected' : ''}}>{{$qty}}</option>
                                 @endforeach
-                                @endif
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Mechanical Engineer">
-                                @if(isset($project->getmengineer))
-                                @if($people_list)
-                                @foreach($people_list as $people)
-                                <option value="{{$project->getmengineer->id}}-{{'engineer'}}" {{($project->getmengineer->id == $people->id) ? 'selected' : ''}}>{{$project->getmengineer->name}}</option>
+                                @if(isset($mechanicalEngineer))
+                                @foreach($mechanicalEngineer as $key=>$mech)
+                                <option value="{{$key}}-{{'engineer'}}"{{($key.'-'.'engineer' == $people_list) ? 'selected' : ''}}>{{$mech}}</option>
                                 @endforeach
-                                @endif
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Architect">
-                                @if(isset($project->getarchitect))
-                                @if($people_list)
-                                @foreach($people_list as $people)
-                                <option value="{{$project->getarchitect->id}}-{{'architect'}}" {{($project->getarchitect->id == $people->id) ? 'selected' : ''}}>{{$project->getarchitect->name}}</option>
+                                @if(isset($architect))
+                                @foreach($architect as $key=>$archi)
+                                <option value="{{$key}}-{{'architect'}}"{{($key.'-'.'architect' == $people_list) ? 'selected' : ''}}>{{$archi}}</option>
                                 @endforeach
-                                @endif
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Interior">
-                                @if(isset($project->getinterior))
-                                @if($people_list)
-                                @foreach($people_list as $people)
-                                <option value="{{$project->getinterior->id}}-{{'interior'}}" {{($project->getinterior->id == $people->id) ? 'selected' : ''}}>{{$project->getinterior->name}}</option>
+                                @if(isset($interior))
+                                @foreach($interior as $key=>$inter)
+                                <option value="{{$key}}-{{'interior'}}"{{($key.'-'.'interior' == $people_list) ? 'selected' : ''}}>{{$inter}}</option>
                                 @endforeach
-                                @endif
                                 @endif  
                                 </optgroup>
                                 <optgroup label="Main Contractor">
-                                @if(isset($project->getmcontractor))
-                                @if($people_list)
-                                @foreach($people_list as $people)
-                                <option value="{{$project->getmcontractor->id}}-{{'contractor'}}" {{($project->getmcontractor->id == $people->id) ? 'selected' : ''}}>{{$project->getmcontractor->name}}</option>
+                                @if(isset($contractor))
+                                @foreach($contractor as $key=>$cont)
+                                <option value="{{$key}}-{{'contractor'}}"{{($key.'-'.'contractor' == $people_list) ? 'selected' : ''}}>{{$cont}}</option>
                                 @endforeach
-                                @endif
                                 @endif  
                                 </optgroup>
                             </select>
@@ -524,7 +509,7 @@
             <!-- edit mode start -->
             <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Received Date</label>
-                {!! Form::text('received_date[]', old('received_date',isset($projecttype->received_date)?Carbon\Carbon::parse($projecttype->received_date)->format('m/d/Y'):''), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+{!! Form::text('received_date[]', old('received_date',isset($projecttype->received_date)?Carbon\Carbon::parse($projecttype->received_date)->format('m/d/Y'):''), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                 @if($errors->has('received_date'))
                 <p class="help-block">
                     <strong>{{ $errors->first('received_date') }}</strong>
@@ -542,7 +527,7 @@
             </div> 
             <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Remarks</label>
-                <textarea name="remarks[]" id="remark"  cols="20" rows="2" class="form-control">{{old('remarks',isset($projecttype->remarks)?$projecttype->remarks:'')}}</textarea>
+                <textarea name="remarks[]" id="remark"  placeholder="Remarks" cols="20" rows="2" class="form-control">{{old('remarks',isset($projecttype->remarks)?$projecttype->remarks:'')}}</textarea>
                 @if($errors->has('remark'))
                 <p class="help-block">
                     <strong>{{ $errors->first('remark') }}</strong>
@@ -624,11 +609,16 @@
         // hide inputs
         // hide inputs end
 
-        var i=i+1;
-          i++;
+        counter =100;
+        counter++;
+
+$('.add_button ').click( function() {
+  // alert(counter);
+    counter++;
+});
         var presentlyaddButton = $('.add_button'); //Add button selector
         var presentlywrapper = $('.presently_field_wrapper'); //Input field wrapper
-        presentlyfieldHTML='<div  class="row after-add-more  cls_field_wrapper "><div class="col-md-12"><a href="javascript:void(0)" class="remove_button crcl_btn"><i class="fa fa-minus"></i></a></div><div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="sku">Enq for (product category)</label>{!! Form::select('product_category[]', $productcategory, old('product_category'),['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}@if($errors->has('product_category'))<p class="help-block"><strong>{{ $errors->first('product_category') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('people_list') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="sku">Enq Source (list of people from this project)</label><select name="enq_source[]" id="enq_source" class="form-control"><option value="">-Select-</option><select></select></div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><label for="sku">Expected Date</label>{!! Form::text('expected_date[]', old('expected_date'),['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}@if($errors->has('expected_date'))<p class="help-block"><strong>{{ $errors->first('expected_date') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><label for="sku">Received Date</label>{!! Form::text('received_date[]', old('received_date'), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}@if($errors->has('received_date'))<p class="help-block"><strong>{{ $errors->first('received_date') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><label for="sku">Quote Date</label>{!! Form::text('quotation_date[]', old('quotation_date'), ['id'=>'quotation_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}@if($errors->has('quotation_date'))<p class="help-block"><strong>{{ $errors->first('quotation_date') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><label for="sku">Remarks</label><textarea name="remarks[]" id="remark"  cols="20" rows="2" class="form-control">{{old('remarks',isset($projecttype->remarks)?$projecttype->remarks:'')}}</textarea>@if($errors->has('remark'))<p class="help-block"><strong>{{ $errors->first('remark') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><input type="radio" id="Win" name="won_loss[]'+i+'"  value="Win"> &nbsp;Win &nbsp; &nbsp;<input type="radio" id="Loss" name="won_loss[]'+i+'"  value="Loss">&nbsp;Loss</div> </div>';  
+        presentlyfieldHTML='<div  class="row after-add-more  cls_field_wrapper"><div class="col-md-12"><a href="javascript:void(0)" class="remove_button crcl_btn"><i class="fa fa-minus"></i></a></div><div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="sku">Enquiry for (product category)</label>{!! Form::select('product_category[]', $productcategory, old('product_category'), ['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}@if($errors->has('product_category'))<p class="help-block"><strong>{{ $errors->first('product_category') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('people_list') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="sku">Enquiry Source (list of people from this project)<span style="color:red">*</span></label><select name="enq_source[]" id="enq_source" class="form-control"><option value="">-Select-</option><optgroup label="Client/Developer">@foreach($clientdeveloper as $key=>$client)<option value="{{$key}}-{{'client'}}">{{$client}}</option>@endforeach</optgroup><optgroup label="Financier">@foreach($financier as $key=>$finance)<option value="{{$key}}-{{'financier'}}">{{$finance}}</option>@endforeach</optgroup><optgroup label="Quantity">@foreach($quantity as $key=>$qty)<option value="{{$key}}-{{'quantity'}}">{{$qty}}</option>@endforeach</optgroup><optgroup label="Mechanical Engineer">@foreach($mechanicalEngineer as $key=>$mech)<option value="{{$key}}-{{'engineer'}}">{{$mech}}</option>@endforeach</optgroup><optgroup label="Architect">@foreach($architect as $key=>$archi)<option value="{{$key}}-{{'architect'}}">{{$archi}}</option>@endforeach</optgroup><optgroup label="Interior">@foreach($interior as $key=>$inter)<option value="{{$key}}-{{'interior'}}">{{$inter}}</option>@endforeach</optgroup><optgroup label="Main Contractor">@foreach($contractor as $key=>$cont)<option value="{{$key}}-{{'contractor'}}">{{$cont}}</option>@endforeach</optgroup></select>@if($errors->has('people_list'))<p class="help-block"><strong>{{ $errors->first('people_list') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><label for="sku">Expected Date</label>{!! Form::text('expected_date[]', old('expected_date'), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}@if($errors->has('expected_date'))<p class="help-block"><strong>{{ $errors->first('expected_date') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><label for="sku">Received Date<span style="color:red">*</span></label>{!! Form::text('received_date[]', old('received_date'), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}@if($errors->has('received_date'))<p class="help-block"><strong>{{ $errors->first('received_date') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><label for="sku">Quote Date</label>{!! Form::text('quotation_date[]', old('quotation_date'), ['id'=>'quotation_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}@if($errors->has('quotation_date'))<p class="help-block"><strong>{{ $errors->first('quotation_date') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><label for="sku">Remarks</label><textarea name="remarks[]" placeholder="Remarks" id="remark"  cols="20" rows="2" class="form-control">{{old('remarks')}}</textarea>@if($errors->has('remark'))<p class="help-block"><strong>{{ $errors->first('remark') }}</strong></p>@endif</div><div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "><input type="radio" id="Win" name="won_loss[]'+counter+'"  value="Win'+counter+'"> &nbsp;Win &nbsp; &nbsp;<input type="radio" id="Loss'+counter+'" name="won_loss[]'+counter+'"  value="Loss">&nbsp;Loss</div> </div>';  
 
 
 
@@ -640,7 +630,7 @@
             format: 'mm/dd/yyyy',
             orientation: 'bottom',
             autoclose: true
-        });
+        }).datepicker('setDate', 'today');
       });
 
         //Once remove button is clicked
@@ -752,11 +742,11 @@
             $("#add_interior").attr("readonly", true); 
         }
     });
-    $('#contractor_id').select2({
+    $('#main_contractor').select2({
         placeholder: '-Select-'  
     });
     /// code fop add new client
-    jQuery("#contractor_id").change(function(){
+    jQuery("#main_contractor").change(function(){
         var contractor_id = jQuery(this).val();
         if(contractor_id=='add_new_contractor'){
             $("#add_main_contractor").removeAttr("readonly");
@@ -774,22 +764,19 @@
     jQuery(document).ready(function(){
         jQuery('#frmproject').validate({
             rules: {
-                // commencement_date_id: {
-                //     required: true
-                // },
+                commencement_date_id: {
+                    required: true
+                },
                 project_type_id: {
                     required: true
                 },
                 project_name: {
                     required: true
                 },
-                project_date:{
-                  required: true  
-                },
-                commencement_date: {
+                project_commencement_date: {
                     required: true
                 },
-                completion_date: {
+                expected_date_completion: {
                     required: true
                 },
                 project_budget: {
@@ -800,8 +787,15 @@
                 },
                 architect_id: {
                     required: true
-                }
-                commentery: {
+                },
+                main_contractor: {
+                    required: true
+                },
+                project_date: {
+                    required: true
+                },commencement_date: {
+                    required: true
+                },completion_date: {
                     required: true
                 }
             }
