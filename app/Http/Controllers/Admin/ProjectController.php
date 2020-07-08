@@ -102,8 +102,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-// dd($request->all());
-        // dd($request->all());
+
         //     $rules = [
         //     'project_name'=>'required',
         //     'project_type_id'=>'required',
@@ -125,7 +124,6 @@ class ProjectController extends Controller
        
         // $request->validate($rules);
 
-        // dd($request->all());
         $data= $request->except(['sub_product_id','expected_date','enq_source_list']);
         $project_date=isset($request->project_date)?$request->project_date:date('Y-m-d');
         $commencement_date=isset($request->commencement_date)?$request->commencement_date:date('Y-m-d');
@@ -339,14 +337,13 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
 
-    //  dd($request->all());
+  
         $project = Project::findOrFail($id);
         $rules = [
             'project_name'=>'required',
         ];
         $request->validate($rules);
         $data= $request->except(['expected_date','enq_source_list']);
-        // $project->update($data);
         $project_date=isset($request->project_date)?$request->project_date:date('Y-m-d');
         $commencement_date=isset($request->commencement_date)?$request->commencement_date:date('Y-m-d');
         $completion_date=isset($request->completion_date)?$request->completion_date:date('Y-m-d');
@@ -357,7 +354,6 @@ class ProjectController extends Controller
         $add_architect=isset($data['add_architect'])?$data['add_architect']:'';
         $add_interior=isset($data['add_interior'])?$data['add_interior']:'';
         $add_main_contractor=isset($data['add_main_contractor'])?$data['add_main_contractor']:'';
-        // $sub_contractor=isset($data['sub_contractor'])?$data['sub_contractor']:'';
         $data['mech_engg'] =  isset($data['mech_engg_id'])?$data['mech_engg_id']:'';
 
 
