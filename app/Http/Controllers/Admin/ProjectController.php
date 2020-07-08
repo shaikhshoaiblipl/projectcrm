@@ -449,30 +449,30 @@ class ProjectController extends Controller
 
     }
 
-    if(!empty(ProjectEnquiry::where('project_id',$id)->get())){
-        ProjectEnquiry::where('project_id',$id)->delete();
-        if(isset($request->product_category)){
-            foreach($request->enq_source as $key=>$enq){
-                $source=explode('-',$enq);
-                $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
-                $received_date = date('Y-m-d', strtotime($request->received_date[$key]));
-                $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$key]));
-                $data=[
-                    'project_id'=>$project->id,
-                    'product_category_id' => $request->product_category[$key],
-                    'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
-                    'enq_source' => isset($source[0])?$source[0]:0,
-                    'enq_source_type'=>isset($source[1])?$source[1]:'',
-                    "received_date" => isset($received_date)?$received_date:date('Y-m-d'),
-                    "quotation_date" => isset($quotation_date)?$quotation_date:date('Y-m-d'),
-                    "remarks" => isset($request->remarks[$key])?$request->remarks[$key]:'',
-                    "won_loss" => isset($request->won_loss[$key])?$request->won_loss[$key]:'Loss'
-                ];
-                ProjectEnquiry::insert($data);
+    // if(!empty(ProjectEnquiry::where('project_id',$id)->get())){
+    //     ProjectEnquiry::where('project_id',$id)->delete();
+    //     if(isset($request->product_category)){
+    //         foreach($request->enq_source as $key=>$enq){
+    //             $source=explode('-',$enq);
+    //             $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
+    //             $received_date = date('Y-m-d', strtotime($request->received_date[$key]));
+    //             $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$key]));
+    //             $data=[
+    //                 'project_id'=>$project->id,
+    //                 'product_category_id' => $request->product_category[$key],
+    //                 'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
+    //                 'enq_source' => isset($source[0])?$source[0]:0,
+    //                 'enq_source_type'=>isset($source[1])?$source[1]:'',
+    //                 "received_date" => isset($received_date)?$received_date:date('Y-m-d'),
+    //                 "quotation_date" => isset($quotation_date)?$quotation_date:date('Y-m-d'),
+    //                 "remarks" => isset($request->remarks[$key])?$request->remarks[$key]:'',
+    //                 "won_loss" => isset($request->won_loss[$key])?$request->won_loss[$key]:'Loss'
+    //             ];
+    //             ProjectEnquiry::insert($data);
                 
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 
     
     $request->session()->flash('success',__('global.messages.update'));

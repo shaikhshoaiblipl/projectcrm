@@ -411,7 +411,7 @@
 <br>
 <!-- small form start-->
 
-<div class="col-md-12">
+<!-- <div class="col-md-12">
     <label>Project Review :-</label>
     
     <div class="field_wrapper presently_field_wrapper">
@@ -422,18 +422,18 @@
             <div class="col-md-12">
                 <a href="javascript:void(0)" class="add_button crcl_btn"><i class="fa fa-plus"></i></a>   
             </div>
-            <!-- row 1 -->
-            <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+                     <!-- row 1  -->
+            <!-- <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                 <label for="sku">Enquiry for (product category)</label>
                 {!! Form::select('product_category[]', $productcategory, old('product_category', isset($projecttype->product_category_id)?$projecttype->product_category_id:''), ['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
                 @if($errors->has('product_category'))
                 <p class="help-block">
                     <strong>{{ $errors->first('product_category') }}</strong>
-                </p>
-                @endif 
-            </div>
+                </p> -->
+                <!-- @endif 
+            </div> -->
             <!-- row 2 -->
-            <div class="col-md-4 form-group {{$errors->has('enq_source') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+            <!-- <div class="col-md-4 form-group {{$errors->has('enq_source') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                             <label for="sku">Enquiry Source (list of people from this project)</label>
                             
                             <select name="enq_source[]" id="enq_source" class="form-control">
@@ -493,9 +493,9 @@
                                 <strong>{{ $errors->first('people_list') }}</strong>
                             </p>
                             @endif 
-                        </div>
+                        </div> -->
             <!-- row 3 -->
-            <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
+            <!-- <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Expected Date</label>
                 
                 {!! Form::text('expected_date[]', old('expected_date',isset($projecttype->expected_date)? Carbon\Carbon::parse($projecttype->expected_date)->format('m/d/Y'):''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
@@ -504,10 +504,10 @@
                     <strong>{{ $errors->first('expected_date') }}</strong>
                 </p>
                 @endif
-            </div> 
+            </div>  -->
 
             <!-- edit mode start -->
-            <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
+            <!-- <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Received Date</label>
 {!! Form::text('received_date[]', old('received_date',isset($projecttype->received_date)?Carbon\Carbon::parse($projecttype->received_date)->format('m/d/Y'):''), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                 @if($errors->has('received_date'))
@@ -533,18 +533,18 @@
                     <strong>{{ $errors->first('remark') }}</strong>
                 </p>
                 @endif
-            </div> 
+            </div>  -->
             <!-- radio button -->
-            <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
+            <!-- <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "> -->
                 <!-- <label for="sku">Won/loss<span style="color:red">*</span></label> -->
-                <input type="radio" id="Win" name="won_loss[]{{$loop->iteration}}"  value="Win" {{($projecttype->won_loss=="Win")?"checked" :"" }}> &nbsp;Win &nbsp; &nbsp;
+                <!-- <input type="radio" id="Win" name="won_loss[]{{$loop->iteration}}"  value="Win" {{($projecttype->won_loss=="Win")?"checked" :"" }}> &nbsp;Win &nbsp; &nbsp;
                 <input type="radio" id="Loss" name="won_loss[]{{$loop->iteration}}"  value="Loss" {{($projecttype->won_loss=="Loss")? "checked" : "" }}>&nbsp;Loss
                 @if($errors->has('expected_date'))
                 <p class="help-block">
                     <strong>{{ $errors->first('expected_date') }}</strong>
                 </p>
                 @endif
-            </div> 
+            </div>  -->
 
 
 
@@ -553,12 +553,12 @@
             <!-- edit mode end -->
 
 
-        </div>
+        <!-- </div>
         @endforeach
         @endif
     </div>
     
-</div>
+</div>  -->
 <!-- small form end -->
 
 </div>
