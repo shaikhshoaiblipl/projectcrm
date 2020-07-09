@@ -98,9 +98,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('project_budget') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                        <label for="title">Budget(Shilling)<span style="color:red">*</span></label> 
+                        <label for="title">Budget in million(Shilling)<span style="color:red">*</span></label> 
                         {!! Form::number('project_budget', old('project_budget', isset($project->project_budget)?$project->project_budget:''), ['id'=>'project_budget', 'class' => 'form-control', 'placeholder' => 'Project Budget']) !!}
-
                         @if($errors->has('project_budget'))
                         <p class="help-block">
                             <strong>{{ $errors->first('project_budget') }}</strong>
