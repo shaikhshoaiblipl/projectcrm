@@ -48,9 +48,16 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::post('project/getproject', 'ProjectController@getProject')->name('project.getProject');
 		Route::get('project/status/{id}', 'ProjectController@status')->name('project.status');
 
-		// project preview
-		Route::get('projects/projectpreview', 'ProjectController@projectpreview')->name('projects.prereview');
+		// project preview 
+		Route::get('projects/projectpreview/{id}', 'ProjectController@projectpreview')->name('projects.prereview');
 		Route::get('projects/getpreview', 'ProjectController@getpreview')->name('projects.getpreview');
+		Route::get('projects/addEnquiry/{id}', 'ProjectController@addEnquiry')->name('projects.addEnquiry');
+		Route::get('projects/editenquiry/{id}', 'ProjectController@editenquiry')->name('projects.editenquiry');
+		Route::post('projects/insertinquiry', 'ProjectController@insertinquiry')->name('projects.insertinquiry');
+		Route::post('projects/updateEnquiry/{id}', 'ProjectController@updateEnquiry')->name('projects.updateEnquiry');
+		Route::get('projects/addremarks/{id}', 'ProjectController@addremarks')->name('projects.addremarks');
+		Route::post('projects/saveremark', 'ProjectController@saveremark')->name('projects.saveremark');
+
 
 		// Route::get('project/destroy/{id}', 'ProjectController@destroy')->name('project.destroy');
 

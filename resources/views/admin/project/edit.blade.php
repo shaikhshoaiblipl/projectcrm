@@ -19,9 +19,7 @@
             @endif
             <div class="card-header py-3 cstm_hdr">
                 <h6 class="m-0 font-weight-bold text-primary">{{ isset($project->id)?'Edit':'Add' }} Project</h6>
-                @if(isset($project->id))
-                <a href="{{route('admin.projects.prereview')}}" class="btn btn-sm btn-icon-split float-right btn-outline-warning">Reviews</a>
-                @endif
+            
             </div> 
             <!-- card body start-->
             <div class="card-body">
@@ -96,7 +94,7 @@
             </div>
             <div class="col-md-4">
                 <div class="col-md-12 form-group {{$errors->has('project_budget') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                    <label for="title">Budget(Shilling)<span style="color:red">*</span></label> 
+                    <label for="title">Budget in million(Shilling)<span style="color:red">*</span></label> 
                     {!! Form::number('project_budget', old('project_budget', isset($project->project_budget)?$project->project_budget:''), ['id'=>'project_budget', 'class' => 'form-control', 'placeholder' => 'Project Budget']) !!}
 
                     @if($errors->has('project_budget'))

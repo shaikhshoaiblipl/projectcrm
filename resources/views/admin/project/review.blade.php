@@ -12,16 +12,17 @@
   <div class="breadcrumb-header justify-content-between">
       <div class="left-content">
           <div>
-            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Projects Preview</h2>
+            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Project Enquiry </h2>
           </div>
       </div>
   </div>
+ <input type="hidden" value="{{$id}}" id="hidden_id">
   <div class="row row-sm">
     <div class="col-xl-12">
       <div class="card">
         <div class="card-header py-3 cstm_hdr">
-             <h6 class="m-0 font-weight-bold text-primary">Project Previews List</h6> 
-             
+             <h6 class="m-0 font-weight-bold text-primary">Project Enquiry List</h6> 
+                <a href="{{route('admin.projects.addEnquiry',$id)}}" class="btn btn-sm btn-icon-split float-right btn-outline-warning">Add New Enquery</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -33,8 +34,9 @@
                             <th>Expected</th>
                             <th>Received</th>
                             <th>Quotation</th>
-                            <th>Remarks</th>
-                            <th>Status(Lost/Won)</th>                  
+                            <th>Status(Lost/Won)</th>
+                            <th>Remarks</th> 
+                            <th>Action</th>                 
                         </tr>
                     </thead>
                     <tfoot>
@@ -44,8 +46,9 @@
                             <th>Expected Date</th>
                             <th>Received</th>
                             <th>Quotation</th>
-                            <th>Remarks</th>
-                            <th>Status(Lost/Won)</th>                        
+                            <th>Status(Lost/Won)</th>
+                            <th>Remarks</th>  
+                            <th>Action</th>                      
                         </tr>
                     </tfoot>
                 </table>
@@ -76,6 +79,7 @@
     });
     
     function getProjects(){
+        var id=$('#hidden_id').val();
         jQuery('#projectpreview').dataTable().fnDestroy();
         jQuery('#projectpreview tbody').empty();
         jQuery('#projectpreview').DataTable({
@@ -85,8 +89,7 @@
             ajax: {
                 url: "{{ route('admin.projects.getpreview')}}",
                 method: 'GET',
-                data: {
-                }
+                data: {id:id}
             },
             lengthMenu: [
                 [10, 25, 50, 100, -1],
@@ -98,8 +101,10 @@
                 {data: 'expected_date', name: 'expected_date'},
                 {data: 'received_date', name: 'received_date'},
                 {data: 'quotation_date', name: 'quotation_date'},
-                {data: 'remarks', name: 'remarks'},
                 {data: 'won_loss', name: 'won_loss'},
+                {data: 'remarks', name: 'remarks'},
+                {data: 'action', name: 'action', orderable: false, searchable: false, "width": "15%"},
+
                 
             ],
             language: {
@@ -109,5 +114,18 @@
             },
         });
     }
+
+    function addremark(){
+
+alert('hello');
+    
+}
+
+
 </script>
+
+
+
+
+
 @endsection
