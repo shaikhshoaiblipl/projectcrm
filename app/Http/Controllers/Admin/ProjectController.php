@@ -61,7 +61,8 @@ class ProjectController extends Controller
             // edit
             '<a href="'.route('admin.project.edit',[$project->id]).'" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></a> '.
             //update
-            '<a href="'.route('admin.projects.prereview',[$project->id]).'" class="btn btn-success btn-circle btn-sm">Update</i></a> '.
+'<a href="'.route('admin.projects.prereview',[$project->id]).'" class="btn btn-warning btn-circle btn-sm"><i class="fas fa-user-edit"></i>
+            </a> '.
    
             
             // Delete
@@ -249,13 +250,10 @@ class ProjectController extends Controller
                 'enq_source_type'=>isset($source[1])?$source[1]:''
             ];
             ProjectEnquiry::insert($data);
-
-        }
-        
+        }   
     }
     $request->session()->flash('success',__('global.messages.add'));
-    return redirect()->route('admin.project.index');
-    
+    return redirect()->route('admin.project.index'); 
 }
 
     /**
@@ -541,14 +539,22 @@ public function getpreview(Request $request){
             return  date('d M Y', strtotime($received_date));  
         })->editColumn('quotation_date', function ($project){
             $quotation_date=$project->quotation_date?$project->quotation_date:date('Y-m-d');
-            return  date('d M Y', strtotime($quotation_date));  
-        })->addColumn('action', function ($projectenquiry) {
+            return  date('d M Y', strtotime($quotation_date)); 
+        })->editColumn('remarks', function ($project){
+            $dd='';
+          $remarks=EnquiryRemarks::where('enquiry_id',$project->id)->pluck('date','remarks');
+          foreach($remarks as $key=>$value){
+            $dd=$key.''.'('.$value.')';
+          }
+           return $dd;
+
+         })->addColumn('action', function ($projectenquiry) {
             return 
             // edit
             '<a href="'.route('admin.projects.editenquiry',[$projectenquiry->id]).'" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></a> '.
             // add remarks
-            '<a href="'.route('admin.projects.addremarks',[$projectenquiry->id]).'" class="btn btn-success btn-circle btn-sm"><i class="fa fa-plus" aria-hidden="true"></i>
-             Add Remarks</a> ';
+            '<a href="'.route('admin.projects.addremarks',[$projectenquiry->id]).'" class="btn btn-info btn-circle btn-sm"><i class="fa fa-plus" aria-hidden="true"></i>
+              Remarks</a> ';
         })->rawColumns(['action'])->make(true);
     } catch (Exception $e) {
      
@@ -676,12 +682,10 @@ public function insertinquiry(Request $request){
                 'enq_source_type'=>isset($source[1])?$source[1]:''
             ];
             ProjectEnquiry::insert($data);
-
         }  
     }
     $request->session()->flash('success',__('global.messages.add'));
-    return redirect()->route('admin.projects.prereview',$request->project_id);
-    
+    return redirect()->route('admin.projects.prereview',$request->project_id); 
 }
 public function updateEnquiry(Request $request , $id){
     $enq=explode('-',$request->enq_source);
@@ -696,29 +700,25 @@ public function updateEnquiry(Request $request , $id){
         'enq_source_type'=>$enq[1],
     ];
     ProjectEnquiry::where('id',$id)->update($data);
+    $project_id=ProjectEnquiry::where('id',$id)->select('project_id')->first();
     $request->session()->flash('success',__('global.messages.add'));
-    return redirect()->back();
-
+    return redirect()->route('admin.projects.prereview',$project_id->project_id);
+    
 }
-
-
 public function addremarks($id){
-  
-
-return view('admin.project.addremarks',compact('id'));
-
+    return view('admin.project.addremarks',compact('id'));
 }
 public function saveremark(Request $request){
-   $date= date('Y-m-d', strtotime("now"));
+    $date= date('Y-m-d', strtotime("now"));
     $remark=[
         'enquiry_id'=>$request->enquiry_id,
         'remarks'=>$request->remarks,
         'date'=>$date
     ];
     EnquiryRemarks::insert($remark);
-
+    $project_id=ProjectEnquiry::where('id',$request->enquiry_id)->select('project_id')->first();
     $request->session()->flash('success',__('global.messages.add'));
-    return redirect()->back();
+    return redirect()->route('admin.projects.prereview',$project_id->project_id);
 }
 
 }

@@ -12,7 +12,7 @@
     <div class="col-xl-12">
         <!-- Content Row -->
         <div class="card">
-            {!! Form::open(['method' => 'POST', 'url' => route('admin.projects.saveremark'),'class' => 'form-horizontal','id' => 'frmproject']) !!}
+            {!! Form::open(['method' => 'POST', 'url' => route('admin.projects.saveremark'),'class' => 'form-horizontal','id' => 'frmremarks']) !!}
             @csrf
             <div class="card-header py-3 cstm_hdr">
              
@@ -33,37 +33,19 @@
             </div>
                      <!-- row 1  -->
                     <input type="hidden" name="enquiry_id" value="{{$id}}">
-             <div class="col-md-12 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+             <div class="col-md-12 form-group {{$errors->has('remarks') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                 <label for="sku">Add Remark(For Enquiry)<span style="color:red">*</span></label>
-             <textarea name="remarks" required id="remarks" cols="30" rows="10" class="form-control"></textarea>
-             @if($errors->has('product_category'))
+             <textarea name="remarks"  id="remarks" cols="30" rows="10" class="form-control"></textarea>
+             @if($errors->has('remarks'))
                 <p class="help-block">
-                    <strong>{{ $errors->first('product_category') }}</strong>
+                    <strong>{{ $errors->first('remarks') }}</strong>
                 </p> 
                  @endif 
             </div> 
-            <!-- row 2 -->
-             
-            <!-- row 3 -->
-           
-
-            <!-- edit mode start -->
-      
-           
-            
-         
-            <!-- edit mode end -->
         </div>
-     
     </div>
-    
 </div>  
-<!-- small form end -->
-
 </div>
-
-<!-- card body end  -->
-
 <div class="card-footer">
     <button type="submit" class="btn btn-primary">Submit</button>
     <a href="{{route('admin.project.index')}}"  class="btn btn-secondary">Cancel</a>
@@ -89,7 +71,19 @@
 <script src="{{asset('template/valex-theme/plugins/select2/js/select2.min.js')}}"></script>
 
 
-    
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        jQuery('#frmremarks').validate({
+            rules: {
+                remarks: {
+                    required: true
+                }
+            }
+        });
+    });
+
+
+</script> 
 
    
 @endsection

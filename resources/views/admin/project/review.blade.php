@@ -114,14 +114,6 @@
             },
         });
     }
-
-    function addremark(){
-
-alert('hello');
-    
-}
-
-
 </script>
 
 
