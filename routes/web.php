@@ -43,11 +43,9 @@ Route::group(['middleware' => ['auth']], function(){
 		]);
         Route::post('users/getUsers', 'UsersController@getUsers')->name('users.getUsers');
 		Route::get('users/status/{user_id}', 'UsersController@status')->name('users.status');	
-
 		//For Project
 		Route::post('project/getproject', 'ProjectController@getProject')->name('project.getProject');
 		Route::get('project/status/{id}', 'ProjectController@status')->name('project.status');
-
 		// project preview 
 		Route::get('projects/projectpreview/{id}', 'ProjectController@projectpreview')->name('projects.prereview');
 		Route::get('projects/getpreview', 'ProjectController@getpreview')->name('projects.getpreview');
@@ -57,10 +55,8 @@ Route::group(['middleware' => ['auth']], function(){
 		Route::post('projects/updateEnquiry/{id}', 'ProjectController@updateEnquiry')->name('projects.updateEnquiry');
 		Route::get('projects/addremarks/{id}', 'ProjectController@addremarks')->name('projects.addremarks');
 		Route::post('projects/saveremark', 'ProjectController@saveremark')->name('projects.saveremark');
-
-
+		Route::get('projects/viewremark/{id}', 'ProjectController@viewremark')->name('projects.viewremark');
 		// Route::get('project/destroy/{id}', 'ProjectController@destroy')->name('project.destroy');
-
 		// For product_categories sub_contractor
 		Route::post('product_categories/getProductCategories', 'ProductCategories@getProductCategories')->name('product_categories.getProductCategories');
         Route::get('product_categories/status/{id}', 'ProductCategories@status')->name('product_categories.status');

@@ -15,5 +15,10 @@ class ProjectEnquiry extends Model
     public function getproductcategory() 
     {
         return $this->belongsTO('App\ProductCategory','product_category_id','id');
-    }  
+    }
+
+    public function getremarks() 
+    {
+        return $this->hasMany('App\EnquiryRemarks','enquiry_id','id');
+    } 
 }

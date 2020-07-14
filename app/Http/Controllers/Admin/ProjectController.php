@@ -61,9 +61,9 @@ class ProjectController extends Controller
             // edit
             '<a href="'.route('admin.project.edit',[$project->id]).'" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></a> '.
             //update
-'<a href="'.route('admin.projects.prereview',[$project->id]).'" class="btn btn-warning btn-circle btn-sm"><i class="fas fa-user-edit"></i>
+            '<a href="'.route('admin.projects.prereview',[$project->id]).'" class="btn btn-warning btn-circle btn-sm"><i class="fas fa-user-edit"></i>
             </a> '.
-   
+
             
             // Delete
             Form::open(array(
@@ -126,7 +126,7 @@ class ProjectController extends Controller
         //     'project_category_id'=>'required',
         //     'sub_contractor_id'=>'required', 
         //      ];
-       
+
         // $request->validate($rules);
 
         $data= $request->except(['sub_product_id','expected_date','enq_source_list']);
@@ -144,9 +144,9 @@ class ProjectController extends Controller
         
 
         if($project_date!=''){
-         $project_date=date('Y-m-d',strtotime($project_date));
-     }
-     if($commencement_date!=''){
+           $project_date=date('Y-m-d',strtotime($project_date));
+       }
+       if($commencement_date!=''){
         $commencement_date=date('Y-m-d',strtotime($commencement_date));
     }
     if($completion_date!=''){
@@ -232,7 +232,7 @@ class ProjectController extends Controller
         $project->update(array('surveyor_qty'=>$quantity_id));
 
 
-    
+
 
 
                 // backend end
@@ -288,46 +288,46 @@ class ProjectController extends Controller
         $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
         $people_list='';
         if(isset($project->Projectenquiry)){
-        foreach($project->Projectenquiry as $people){
-        if($people->enq_source_type == 'client'){
-        $people_list=Client::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-        $people_list=$people_list->id.'-'.'client';
-      
-        }
-        elseif($people->enq_source_type == 'financier'){
-        $people_list=Financier::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-        $people_list=$people_list->id.'-'.'financier';
-        }
-        elseif($people->enq_source_type == 'quantity'){
-         $people_list=Quantity::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-         $people_list=$people_list->id.'-'.'quantity';
-        }
-        elseif($people->enq_source_type == 'engineer'){
-         $people_list=MechanicalEngineer::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-         $people_list=$people_list->id.'-'.'engineer';
-        }
-        elseif($people->enq_source_type == 'architect'){
-         $people_list=Architect::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-         $people_list=$people_list->id.'-'.'architect';
-        }
-        elseif($people->enq_source_type == 'interior'){
-         $people_list=Interior::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-         $people_list=$people_list->id.'-'.'interior';
-        }
-        elseif($people->enq_source_type == 'contractor'){
-        $people_list=Contractor::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-        $people_list=$people_list->id.'-'.'contractor';
-        }
-        else{
+            foreach($project->Projectenquiry as $people){
+                if($people->enq_source_type == 'client'){
+                    $people_list=Client::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                    $people_list=$people_list->id.'-'.'client';
 
-        }
-          }
+                }
+                elseif($people->enq_source_type == 'financier'){
+                    $people_list=Financier::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                    $people_list=$people_list->id.'-'.'financier';
+                }
+                elseif($people->enq_source_type == 'quantity'){
+                   $people_list=Quantity::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                   $people_list=$people_list->id.'-'.'quantity';
+               }
+               elseif($people->enq_source_type == 'engineer'){
+                   $people_list=MechanicalEngineer::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                   $people_list=$people_list->id.'-'.'engineer';
+               }
+               elseif($people->enq_source_type == 'architect'){
+                   $people_list=Architect::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                   $people_list=$people_list->id.'-'.'architect';
+               }
+               elseif($people->enq_source_type == 'interior'){
+                   $people_list=Interior::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                   $people_list=$people_list->id.'-'.'interior';
+               }
+               elseif($people->enq_source_type == 'contractor'){
+                $people_list=Contractor::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                $people_list=$people_list->id.'-'.'contractor';
+            }
+            else{
 
+            }
         }
-         
-        return view('admin.project.edit',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
-        
+
     }
+
+    return view('admin.project.edit',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
+
+}
 
     /**
      * Update the specified resource in storage.
@@ -339,7 +339,7 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
 
-  
+
         $project = Project::findOrFail($id);
         $rules = [
             'project_name'=>'required',
@@ -360,9 +360,9 @@ class ProjectController extends Controller
 
 
         if($project_date!=''){
-         $project_date=date('Y-m-d',strtotime($project_date));
-     }
-     if($commencement_date!=''){
+           $project_date=date('Y-m-d',strtotime($project_date));
+       }
+       if($commencement_date!=''){
         $commencement_date=date('Y-m-d',strtotime($commencement_date));
     }
     if($completion_date!=''){
@@ -471,7 +471,7 @@ class ProjectController extends Controller
     //                 "won_loss" => isset($request->won_loss[$key])?$request->won_loss[$key]:'Loss'
     //             ];
     //             ProjectEnquiry::insert($data);
-                
+
     //         }
     //     }
     // }
@@ -495,14 +495,14 @@ class ProjectController extends Controller
             $request->session()->flash('danger',__('global.messages.default_message_category'));
             return redirect()->route('admin.project.index'); 
         }else{
-         $project->delete();
-         ProjectEnquiry::where('project_id',$id)->delete();
-         $request->session()->flash('danger',__('global.messages.delete'));
-         return redirect()->route('admin.project.index'); 
-     }
- }
+           $project->delete();
+           ProjectEnquiry::where('project_id',$id)->delete();
+           $request->session()->flash('danger',__('global.messages.delete'));
+           return redirect()->route('admin.project.index'); 
+       }
+   }
 
- public function status(Request $request, $id=null){
+   public function status(Request $request, $id=null){
     $project = Project::findOrFail($id);
     if (isset($project->is_active) && $project->is_active==FALSE) {
         $project->update(['is_active'=>TRUE]);
@@ -514,21 +514,20 @@ class ProjectController extends Controller
     return redirect()->route('admin.project.index'); 
 }
 
+// newly added functions
 public function projectpreview(Request $request){
     try {
-
-        
         $id=$request->id;
         return view('admin.project.review',compact('id'));
         
     } catch (Exception $e) {
-     
+
     }  
 }
 
 public function getpreview(Request $request){
     try {
-        $projectenquiry = ProjectEnquiry::query()->with('getproductcategory')->where('project_id',$request->id)->get();
+        $projectenquiry = ProjectEnquiry::query()->with('getproductcategory','getremarks')->where('project_id',$request->id)->get();
         return  DataTables::of($projectenquiry)
         ->editColumn('expected_date', function ($project){
             $expected_date=$project->expected_date?$project->expected_date:date('Y-m-d');
@@ -541,25 +540,18 @@ public function getpreview(Request $request){
             $quotation_date=$project->quotation_date?$project->quotation_date:date('Y-m-d');
             return  date('d M Y', strtotime($quotation_date)); 
         })->editColumn('remarks', function ($project){
-            $dd='';
-          $remarks=EnquiryRemarks::where('enquiry_id',$project->id)->pluck('date','remarks');
-          foreach($remarks as $key=>$value){
-            $dd=$key.''.'('.$value.')';
-          }
-           return $dd;
-
-         })->addColumn('action', function ($projectenquiry) {
+            return $project->remarks;
+        })->addColumn('action', function ($projectenquiry) {
             return 
-            // edit
+            // edit enquiry
             '<a href="'.route('admin.projects.editenquiry',[$projectenquiry->id]).'" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></a> '.
             // add remarks
-            '<a href="'.route('admin.projects.addremarks',[$projectenquiry->id]).'" class="btn btn-info btn-circle btn-sm"><i class="fa fa-plus" aria-hidden="true"></i>
-              Remarks</a> ';
+            '<a href="'.route('admin.projects.addremarks',[$projectenquiry->id]).'" class="btn btn-info btn-circle btn-sm"><i class="fa fa-plus" aria-hidden="true"></i></a> '.
+            // view remarks
+            '<a href="'.route('admin.projects.viewremark',[$projectenquiry->id]).'" class="btn btn-secondary btn-circle btn-sm"><i class="fas fa-eye" aria-hidden="true"></i></a> ';
         })->rawColumns(['action'])->make(true);
     } catch (Exception $e) {
-     
-    } 
-    
+    }  
 }
 public function editenquiry($id){
     $project= ProjectEnquiry::findOrFail($id);
@@ -574,47 +566,44 @@ public function editenquiry($id){
     $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
     $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
     $people_list='';
-
     if(isset($project)){
-    if($project->enq_source_type == 'client'){
-    $people_list=Client::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
-    $people_list=$people_list->id.'-'.'client';
-  
-    }
-    elseif($project->enq_source_type == 'financier'){
-    $people_list=Financier::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
-    $people_list=$people_list->id.'-'.'financier';
-    }
-    elseif($project->enq_source_type == 'quantity'){
-     $people_list=Quantity::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
-     $people_list=$people_list->id.'-'.'quantity';
-    }
-    elseif($project->enq_source_type == 'engineer'){
-     $people_list=MechanicalEngineer::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
-     $people_list=$people_list->id.'-'.'engineer';
-    }
-    elseif($project->enq_source_type == 'architect'){
-     $people_list=Architect::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
-     $people_list=$people_list->id.'-'.'architect';
-    }
-    elseif($project->enq_source_type == 'interior'){
-     $people_list=Interior::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
-     $people_list=$people_list->id.'-'.'interior';
-    }
-    elseif($project->enq_source_type == 'contractor'){
-    $people_list=Contractor::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
-    $people_list=$people_list->id.'-'.'contractor';
+        if($project->enq_source_type == 'client'){
+            $people_list=Client::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
+            $people_list=$people_list->id.'-'.'client';
+        }
+        elseif($project->enq_source_type == 'financier'){
+            $people_list=Financier::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
+            $people_list=$people_list->id.'-'.'financier';
+        }
+        elseif($project->enq_source_type == 'quantity'){
+           $people_list=Quantity::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
+           $people_list=$people_list->id.'-'.'quantity';
+       }
+       elseif($project->enq_source_type == 'engineer'){
+           $people_list=MechanicalEngineer::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
+           $people_list=$people_list->id.'-'.'engineer';
+       }
+       elseif($project->enq_source_type == 'architect'){
+           $people_list=Architect::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
+           $people_list=$people_list->id.'-'.'architect';
+       }
+       elseif($project->enq_source_type == 'interior'){
+           $people_list=Interior::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
+           $people_list=$people_list->id.'-'.'interior';
+       }
+       elseif($project->enq_source_type == 'contractor'){
+        $people_list=Contractor::where('id',$project->enq_source)->where('is_active',1)->select('id','name')->first();
+        $people_list=$people_list->id.'-'.'contractor';
     }
     else{
-
+        $people_list='';
     } 
-    }
-    return view('admin.project.editenquiry',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
+}
+return view('admin.project.editenquiry',compact('project','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
 
 }
 
 public function addEnquiry($id){
-
     $project_id=$id;
     $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
     $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
@@ -628,48 +617,44 @@ public function addEnquiry($id){
     $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
     $people_list='';
     if(isset($project->Projectenquiry)){
-    foreach($project->Projectenquiry as $people){
-    if($people->enq_source_type == 'client'){
-    $people_list=Client::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-    $people_list=$people_list->id.'-'.'client';
-  
-    }
-    elseif($people->enq_source_type == 'financier'){
-    $people_list=Financier::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-    $people_list=$people_list->id.'-'.'financier';
-    }
-    elseif($people->enq_source_type == 'quantity'){
-     $people_list=Quantity::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-     $people_list=$people_list->id.'-'.'quantity';
-    }
-    elseif($people->enq_source_type == 'engineer'){
-     $people_list=MechanicalEngineer::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-     $people_list=$people_list->id.'-'.'engineer';
-    }
-    elseif($people->enq_source_type == 'architect'){
-     $people_list=Architect::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-     $people_list=$people_list->id.'-'.'architect';
-    }
-    elseif($people->enq_source_type == 'interior'){
-     $people_list=Interior::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-     $people_list=$people_list->id.'-'.'interior';
-    }
-    elseif($people->enq_source_type == 'contractor'){
-    $people_list=Contractor::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-    $people_list=$people_list->id.'-'.'contractor';
-    }
-    else{
+        foreach($project->Projectenquiry as $people){
+            if($people->enq_source_type == 'client'){
+                $people_list=Client::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                $people_list=$people_list->id.'-'.'client';
 
+            }
+            elseif($people->enq_source_type == 'financier'){
+                $people_list=Financier::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                $people_list=$people_list->id.'-'.'financier';
+            }
+            elseif($people->enq_source_type == 'quantity'){
+               $people_list=Quantity::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+               $people_list=$people_list->id.'-'.'quantity';
+           }
+           elseif($people->enq_source_type == 'engineer'){
+               $people_list=MechanicalEngineer::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+               $people_list=$people_list->id.'-'.'engineer';
+           }
+           elseif($people->enq_source_type == 'architect'){
+               $people_list=Architect::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+               $people_list=$people_list->id.'-'.'architect';
+           }
+           elseif($people->enq_source_type == 'interior'){
+               $people_list=Interior::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+               $people_list=$people_list->id.'-'.'interior';
+           }
+           elseif($people->enq_source_type == 'contractor'){
+            $people_list=Contractor::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+            $people_list=$people_list->id.'-'.'contractor';
+        }
+        else{
+            $people_list='';
+        }
     }
-      }
-
-    }
-    return view('admin.project.enquiry',compact('project_id','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
 }
-
+return view('admin.project.enquiry',compact('project_id','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
+}
 public function insertinquiry(Request $request){
-
-    
     if(isset($request->product_category)){
         foreach($request->enq_source as $key=>$enq){
             $source=explode('-',$enq);
@@ -702,8 +687,7 @@ public function updateEnquiry(Request $request , $id){
     ProjectEnquiry::where('id',$id)->update($data);
     $project_id=ProjectEnquiry::where('id',$id)->select('project_id')->first();
     $request->session()->flash('success',__('global.messages.add'));
-    return redirect()->route('admin.projects.prereview',$project_id->project_id);
-    
+    return redirect()->route('admin.projects.prereview',$project_id->project_id); 
 }
 public function addremarks($id){
     return view('admin.project.addremarks',compact('id'));
@@ -720,5 +704,9 @@ public function saveremark(Request $request){
     $request->session()->flash('success',__('global.messages.add'));
     return redirect()->route('admin.projects.prereview',$project_id->project_id);
 }
-
+public function viewremark($id){
+    // $remarks= EnquiryRemarks::where('enquiry_id',$id)->select('remarks','date')->get();
+    $remarks = ProjectEnquiry::with('getremarks')->where('id',$id)->first();
+    return view('admin.project.viewremarks',compact('remarks'));
+}
 }
