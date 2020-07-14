@@ -413,7 +413,7 @@
             <!-- small form start-->
 
             <div class="col-md-12">
-                <label>Project Review :-</label>
+                <label>Project Enquiry :-</label>
                 <div class="field_wrapper presently_field_wrapper">
                     <div class="row cls_field_wrapper ">
                         <div class="col-md-12">

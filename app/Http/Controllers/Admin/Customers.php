@@ -323,4 +323,12 @@ class Customers extends Controller
             $request->session()->flash('danger',__('global.messages.delete'));
             return redirect()->route('admin.countries.index');
      }
+
+
+
+     public function getProductSubCategories(Request $request){
+        // $product_cat_id = intval($request->input('product_cat_id'));
+        //     $productsubcategory = ProductCategory::where(['is_active'=>TRUE,'parent_id'=>$product_cat_id])->pluck('title', 'id'); 
+        return response()->json('working');
+    }
 }
