@@ -9,7 +9,7 @@ class ProjectEnquiry extends Model
     protected $table = "project_enquiry";
 
     protected $fillable = [
-        'project_id','product_category_id','expected_date','enq_source'
+        'project_id','product_category_id','expected_date','enq_source','expected_budget'
     ];
 
     public function getproductcategory() 
@@ -19,6 +19,6 @@ class ProjectEnquiry extends Model
 
     public function getremarks() 
     {
-        return $this->hasMany('App\EnquiryRemarks','enquiry_id','id');
+        return $this->hasMany('App\EnquiryRemarks','enquiry_id','id')->orderBy('id','desc');
     } 
 }

@@ -31,17 +31,17 @@
       </tr>
     </thead>
     <tbody>
-    @if(!empty($remarks))
+  <!--   @if(!empty($remarks))
      <tr>
         <td>1</td>
         <td>{{ucfirst($remarks['remarks'])}}</td>
         <td>{{($remarks['quotation_date'])?date('d M Y', strtotime($remarks['quotation_date'])):''}}</td>
      </tr>
-     @endif
+     @endif -->
     @if(count($remarks->getremarks) > 0)
     @foreach($remarks->getremarks as $remark)
       <tr>
-        <td>{{$loop->iteration +1}}</td>
+        <td>{{$loop->iteration}}</td>
         <td>{{ucfirst($remark['remarks'])}}</td>
         <td>{{date('d M Y', strtotime($remark['date']))}}</td>
       </tr>

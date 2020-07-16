@@ -12,7 +12,7 @@
   <div class="breadcrumb-header justify-content-between">
       <div class="left-content">
           <div>
-            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Project Enquiry </h2>
+            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Project Enquiry  </h2>
           </div>
       </div>
   </div>
@@ -22,7 +22,7 @@
       <div class="card">
         <div class="card-header py-3 cstm_hdr">
              <h6 class="m-0 font-weight-bold text-primary">Project Enquiry List</h6> 
-                <a href="{{route('admin.projects.addEnquiry',$id)}}" class="btn btn-sm btn-icon-split float-right btn-outline-warning">Add New Enquery</a>
+                <a href="{{route('admin.projects.addEnquiry',$id)}}" class="btn btn-sm btn-icon-split float-right btn-outline-warning">Add New Enquiry</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -102,10 +102,8 @@
                 {data: 'received_date', name: 'received_date'},
                 {data: 'quotation_date', name: 'quotation_date'},
                 {data: 'won_loss', name: 'won_loss'},
-                {data: 'remarks', name: 'remarks'},
+                {data: 'remarks', name: 'remarks',visible:false},
                 {data: 'action', name: 'action', orderable: false, searchable: false, "width": "15%"},
-
-                
             ],
             language: {
                 searchPlaceholder: 'Search...',
