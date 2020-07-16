@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\ProductCategory;
+use App\ProjectHasProductCategory;
 use DataTables;
 use Form;
 use App\ProjectType;
@@ -108,24 +109,19 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
 
-        //     $rules = [
+        // $rules = [
         //     'project_name'=>'required',
         //     'project_type_id'=>'required',
         //     'project_date'=>'required',
+        //     'project_type_id'=>'required',
         //     'commencement_date'=>'required',
-        //     'completion_date'=>'required',
-        //     'project_budget'=>'required',
         //     'developer'=>'required',
-        //     'project_financier'=>'required',
-        //     'surveyor_qty'=>'required',
-        //     'commentery'=>'required',
-        //     'mech_engg'=>'required',
-        //     'architect'=>'required',
-        //     'interior'=>'required',
+        //     'project_budget'=>'required',
+        //     'completion_date'=>'required',
+        //     'architect_id'=>'required',
         //     'main_contractor'=>'required',
-        //     'project_category_id'=>'required',
-        //     'sub_contractor_id'=>'required', 
-        //      ];
+        //     'project_product_category[]'=>'required', 
+        // ];
 
         // $request->validate($rules);
 
@@ -141,113 +137,124 @@ class ProjectController extends Controller
         $add_architect=isset($data['add_architect'])?$data['add_architect']:'';
         $add_interior=isset($data['add_interior'])?$data['add_interior']:'';
         $add_main_contractor=isset($data['add_main_contractor'])?$data['add_main_contractor']:'';
+
+        $project_product_category=isset($data['project_product_category'])?$data['project_product_category']:array();
         
-
         if($project_date!=''){
-           $project_date=date('Y-m-d',strtotime($project_date));
-       }
-       if($commencement_date!=''){
-        $commencement_date=date('Y-m-d',strtotime($commencement_date));
-    }
-    if($completion_date!=''){
-        $completion_date=date('Y-m-d',strtotime($completion_date));
-    }
-    $data['project_date'] =  $project_date;
-    $data['commencement_date'] =  $commencement_date;
-    $data['completion_date'] =  $completion_date;
-    $data['contractor'] =  isset($data['contractor'])?$data['contractor']:'';
-    $data['contractor_id'] =  isset($data['contractor_id'])?$data['contractor_id']:'';
-    $data['created_by']=Auth::user()->id;  
-    $data['main_contractor'] =  isset($data['main_contractor'])?$data['main_contractor']:'';
-    $data['mech_engg'] =  isset($data['mech_engg_id'])?$data['mech_engg_id']:'';
-    $data['project_financier'] =  isset($data['financier_id'])?$data['financier_id']:'';
-    $data['surveyor_qty'] =  isset($data['quantity_id'])?$data['quantity_id']:'';
-    $data['architect'] =  isset($data['architect_id'])?$data['architect_id']:'';
-    $data['interior'] =  isset($data['interior_id'])?$data['interior_id']:'';
+            $project_date=date('Y-m-d',strtotime($project_date));
+        }
+        if($commencement_date!=''){
+            $commencement_date=date('Y-m-d',strtotime($commencement_date));
+        }
+        if($completion_date!=''){
+            $completion_date=date('Y-m-d',strtotime($completion_date));
+        }
+        $data['project_date'] =  $project_date;
+        $data['commencement_date'] =  $commencement_date;
+        $data['completion_date'] =  $completion_date;
+        $data['contractor'] =  isset($data['contractor'])?$data['contractor']:'';
+        $data['contractor_id'] =  isset($data['contractor_id'])?$data['contractor_id']:'';
+        $data['created_by']=Auth::user()->id;  
+        $data['main_contractor'] =  isset($data['main_contractor'])?$data['main_contractor']:'';
+        $data['mech_engg'] =  isset($data['mech_engg_id'])?$data['mech_engg_id']:'';
+        $data['project_financier'] =  isset($data['financier_id'])?$data['financier_id']:'';
+        $data['surveyor_qty'] =  isset($data['quantity_id'])?$data['quantity_id']:'';
+        $data['architect'] =  isset($data['architect_id'])?$data['architect_id']:'';
+        $data['interior'] =  isset($data['interior_id'])?$data['interior_id']:'';
 
-    $project=Project::create($data);
+        $project=Project::create($data);
                 // backend start
     
-    if($project->id > 0){
-        if($data['developer']=='add_new_client'){
-            $developer=Client::create(['name'=>$add_developer]);
-            $developer_id=$developer->id;
-        }else{
-            $developer_id = isset($data['developer'])?$data['developer']:0;
-            
+        if($project->id > 0){
+            if($data['developer']=='add_new_client'){
+                $developer=Client::create(['name'=>$add_developer]);
+                $developer_id=$developer->id;
+            }else{
+                $developer_id = isset($data['developer'])?$data['developer']:0;
+                
+            }
+            $project->update(array('developer'=>$developer_id));
+
+
+            if($data['architect_id']=='add_new_architect'){
+                $architect=Architect::create(['name'=>$add_architect]);
+                $architect_id=$architect->id;
+            }else{
+                $architect_id = isset($data['architect_id'])?$data['architect_id']:0;
+            }
+            $project->update(array('architect'=>$architect_id));
+
+
+            if($data['financier_id']=='add_new_financier'){
+                $financier=Financier::create(['name'=>$add_project_financier]);
+                $financier_id=$financier->id;
+            }else{
+                $financier_id = isset($data['financier_id'])?$data['financier_id']:0;
+            }
+            $project->update(array('project_financier'=>$financier_id));
+
+
+            if($data['mech_engg_id']=='add_new_mech_engineer'){
+                $mechanical=MechanicalEngineer::create(['name'=>$add_mech_engg]);
+                $mechanical_id=$mechanical->id;
+            }else{
+                $mechanical_id = isset($data['mech_engg_id'])?$data['mech_engg_id']:0;
+            }
+            $project->update(array('mech_engg'=>$mechanical_id));
+
+
+            if($data['interior_id']=='add_new_interior'){
+                $interior=Interior::create(['name'=>$add_interior]);
+                $interior_id=$interior->id;
+            }else{
+                $interior_id = isset($data['interior_id'])?$data['interior_id']:0;
+            }
+            $project->update(array('interior'=>$interior_id));
+
+            if($data['main_contractor']=='add_new_contractor'){
+                $contractor=Contractor::create(['name'=>$add_main_contractor]);
+                $contractor_id=$contractor->id;
+            }else{
+                $contractor_id = isset($data['main_contractor'])?$data['main_contractor']:0;
+            }
+            $project->update(array('main_contractor'=>$contractor_id));
+
+
+            if($data['quantity_id']=='add_new_quantity'){
+                $quantity=Quantity::create(['name'=>$add_surveyor_qty]);
+                $quantity_id=$quantity->id;
+            }else{
+                $quantity_id = isset($data['quantity_id'])?$data['quantity_id']:0;
+            }
+            $project->update(array('surveyor_qty'=>$quantity_id));
+
+        // backend end
+
+            if(isset($request->product_category)){
+                foreach($request->enq_source as $key=>$enq){
+                    $source=explode('-',$enq);
+                    $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
+                    $data=[
+                        'project_id'=>$project->id,
+                        'product_category_id' => isset($request->product_category[$key])?$request->product_category[$key]:'',
+                        'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
+                        'enq_source' => isset($source[0])?$source[0]:0,
+                        'enq_source_type'=>isset($source[1])?$source[1]:''
+                    ];
+                    ProjectEnquiry::insert($data);
+                }   
+            }
+
+            if(!empty($project_product_category)){
+                foreach($project_product_category as $key=>$category){
+                    $prodject_data=[
+                        'project_id'=>$project->id,
+                        'product_category_id' => $category,
+                    ];
+                    ProjectHasProductCategory::create($prodject_data);
+                }   
+            }
         }
-        $project->update(array('developer'=>$developer_id));
-
-
-        if($data['architect_id']=='add_new_architect'){
-            $architect=Architect::create(['name'=>$add_architect]);
-            $architect_id=$architect->id;
-        }else{
-            $architect_id = isset($data['architect_id'])?$data['architect_id']:0;
-        }
-        $project->update(array('architect'=>$architect_id));
-
-
-        if($data['financier_id']=='add_new_financier'){
-            $financier=Financier::create(['name'=>$add_project_financier]);
-            $financier_id=$financier->id;
-        }else{
-            $financier_id = isset($data['financier_id'])?$data['financier_id']:0;
-        }
-        $project->update(array('project_financier'=>$financier_id));
-
-
-        if($data['mech_engg_id']=='add_new_mech_engineer'){
-            $mechanical=MechanicalEngineer::create(['name'=>$add_mech_engg]);
-            $mechanical_id=$mechanical->id;
-        }else{
-            $mechanical_id = isset($data['mech_engg_id'])?$data['mech_engg_id']:0;
-        }
-        $project->update(array('mech_engg'=>$mechanical_id));
-
-
-        if($data['interior_id']=='add_new_interior'){
-            $interior=Interior::create(['name'=>$add_interior]);
-            $interior_id=$interior->id;
-        }else{
-            $interior_id = isset($data['interior_id'])?$data['interior_id']:0;
-        }
-        $project->update(array('interior'=>$interior_id));
-
-        if($data['main_contractor']=='add_new_contractor'){
-            $contractor=Contractor::create(['name'=>$add_main_contractor]);
-            $contractor_id=$contractor->id;
-        }else{
-            $contractor_id = isset($data['main_contractor'])?$data['main_contractor']:0;
-        }
-        $project->update(array('main_contractor'=>$contractor_id));
-
-
-        if($data['quantity_id']=='add_new_quantity'){
-            $quantity=Quantity::create(['name'=>$add_surveyor_qty]);
-            $quantity_id=$quantity->id;
-        }else{
-            $quantity_id = isset($data['quantity_id'])?$data['quantity_id']:0;
-        }
-        $project->update(array('surveyor_qty'=>$quantity_id));
-
-    // backend end
-
-    }
-    if(isset($request->product_category)){
-        foreach($request->enq_source as $key=>$enq){
-            $source=explode('-',$enq);
-            $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
-            $data=[
-                'project_id'=>$project->id,
-                'product_category_id' => $request->product_category[$key],
-                'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
-                'enq_source' => isset($source[0])?$source[0]:0,
-                'enq_source_type'=>isset($source[1])?$source[1]:''
-            ];
-            ProjectEnquiry::insert($data);
-        }   
-    }
     $request->session()->flash('success',__('global.messages.add'));
     return redirect()->route('admin.project.index'); 
 }
@@ -600,111 +607,124 @@ return view('admin.project.editenquiry',compact('project','productcategory','pro
 }
 
 public function addEnquiry($id){
-    $project_id=$id;
-    $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
-    $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
-    $architect=Architect::where(['is_active'=>TRUE])->pluck('name', 'id');
-    $clientdeveloper=Client::where(['is_active'=>TRUE])->pluck('name', 'id');
-    $financier=Financier::where(['is_active'=>TRUE])->pluck('name', 'id');
-    $interior=Interior::where(['is_active'=>TRUE])->pluck('name', 'id');
-    $mechanicalEngineer=MechanicalEngineer::where(['is_active'=>TRUE])->pluck('name', 'id');
-    $quantity=Quantity::where(['is_active'=>TRUE])->pluck('name', 'id');
-    $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
-    $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
-    $people_list='';
-    if(isset($project->Projectenquiry)){
-        foreach($project->Projectenquiry as $people){
-            if($people->enq_source_type == 'client'){
-                $people_list=Client::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-                $people_list=$people_list->id.'-'.'client';
+        $project_id=$id;
+        $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
+        $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
+        $architect=Architect::where(['is_active'=>TRUE])->pluck('name', 'id');
+        $clientdeveloper=Client::where(['is_active'=>TRUE])->pluck('name', 'id');
+        $financier=Financier::where(['is_active'=>TRUE])->pluck('name', 'id');
+        $interior=Interior::where(['is_active'=>TRUE])->pluck('name', 'id');
+        $mechanicalEngineer=MechanicalEngineer::where(['is_active'=>TRUE])->pluck('name', 'id');
+        $quantity=Quantity::where(['is_active'=>TRUE])->pluck('name', 'id');
+        $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
+        $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
+        $people_list='';
+        if(isset($project->Projectenquiry)){
+            foreach($project->Projectenquiry as $people){
+                if($people->enq_source_type == 'client'){
+                    $people_list=Client::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                    $people_list=$people_list->id.'-'.'client';
 
+                }
+                elseif($people->enq_source_type == 'financier'){
+                    $people_list=Financier::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                    $people_list=$people_list->id.'-'.'financier';
+                }
+                elseif($people->enq_source_type == 'quantity'){
+                   $people_list=Quantity::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                   $people_list=$people_list->id.'-'.'quantity';
+               }
+               elseif($people->enq_source_type == 'engineer'){
+                   $people_list=MechanicalEngineer::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                   $people_list=$people_list->id.'-'.'engineer';
+               }
+               elseif($people->enq_source_type == 'architect'){
+                   $people_list=Architect::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                   $people_list=$people_list->id.'-'.'architect';
+               }
+               elseif($people->enq_source_type == 'interior'){
+                   $people_list=Interior::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                   $people_list=$people_list->id.'-'.'interior';
+               }
+               elseif($people->enq_source_type == 'contractor'){
+                $people_list=Contractor::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
+                $people_list=$people_list->id.'-'.'contractor';
             }
-            elseif($people->enq_source_type == 'financier'){
-                $people_list=Financier::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-                $people_list=$people_list->id.'-'.'financier';
+            else{
+                $people_list='';
             }
-            elseif($people->enq_source_type == 'quantity'){
-               $people_list=Quantity::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-               $people_list=$people_list->id.'-'.'quantity';
-           }
-           elseif($people->enq_source_type == 'engineer'){
-               $people_list=MechanicalEngineer::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-               $people_list=$people_list->id.'-'.'engineer';
-           }
-           elseif($people->enq_source_type == 'architect'){
-               $people_list=Architect::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-               $people_list=$people_list->id.'-'.'architect';
-           }
-           elseif($people->enq_source_type == 'interior'){
-               $people_list=Interior::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-               $people_list=$people_list->id.'-'.'interior';
-           }
-           elseif($people->enq_source_type == 'contractor'){
-            $people_list=Contractor::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
-            $people_list=$people_list->id.'-'.'contractor';
-        }
-        else{
-            $people_list='';
         }
     }
-}
-return view('admin.project.enquiry',compact('project_id','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
-}
-public function insertinquiry(Request $request){
-    if(isset($request->product_category)){
-        foreach($request->enq_source as $key=>$enq){
-            $source=explode('-',$enq);
-            $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
-            $data=[
-                'project_id'=>$request->project_id,
-                'product_category_id' => $request->product_category[$key],
-                'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
-                'enq_source' => isset($source[0])?$source[0]:0,
-                'expected_budget' => isset($request->expected_budget[$key])?$request->expected_budget[$key]:'',
-                'enq_source_type'=>isset($source[1])?$source[1]:''
-            ];
-            ProjectEnquiry::insert($data);
-        }  
+    return view('admin.project.enquiry',compact('project_id','productcategory','projecttype','architect','clientdeveloper','financier','interior','mechanicalEngineer','quantity','contractor','subcontractor','people_list'));
     }
-    $request->session()->flash('success',__('global.messages.add'));
-    return redirect()->route('admin.projects.prereview',$request->project_id); 
-}
-public function updateEnquiry(Request $request , $id){
-    $enq=explode('-',$request->enq_source);
-    $data=[
-        'product_category_id'=>$request->product_category,
-        'expected_date'=>date('Y-m-d', strtotime($request->expected_date)),
-        'received_date'=>date('Y-m-d', strtotime($request->received_date)),
-        'remarks'=>$request->remarks,
-        'won_loss'=>$request->won_loss,
-        'quotation_date'=>date('Y-m-d', strtotime($request->quotation_date)),
-        'expected_budget' => isset($request->expected_budget)?$request->expected_budget:'',
-        'enq_source'=>$enq[0],
-        'enq_source_type'=>$enq[1],
-    ];
-    ProjectEnquiry::where('id',$id)->update($data);
-    $project_id=ProjectEnquiry::where('id',$id)->select('project_id')->first();
-    $request->session()->flash('success',__('global.messages.add'));
-    return redirect()->route('admin.projects.prereview',$project_id->project_id); 
-}
-public function addremarks($id){
-    return view('admin.project.addremarks',compact('id'));
-}
-public function saveremark(Request $request){
-    $date= date('Y-m-d', strtotime("now"));
-    $remark=[
-        'enquiry_id'=>$request->enquiry_id,
-        'remarks'=>$request->remarks,
-        'date'=>$date
-    ];
-    EnquiryRemarks::insert($remark);
-    $project_id=ProjectEnquiry::where('id',$request->enquiry_id)->select('project_id')->first();
-    $request->session()->flash('success',__('global.messages.add'));
-    return redirect()->route('admin.projects.prereview',$project_id->project_id);
-}
-public function viewremark($id){
-    // $remarks= EnquiryRemarks::where('enquiry_id',$id)->select('remarks','date')->get();
-    $remarks = ProjectEnquiry::with('getremarks')->where('id',$id)->first();
-    return view('admin.project.viewremarks',compact('remarks'));
-}
+    
+    public function insertinquiry(Request $request){
+        if(isset($request->product_category)){
+            foreach($request->enq_source as $key=>$enq){
+                $source=explode('-',$enq);
+                $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
+                $data=[
+                    'project_id'=>$request->project_id,
+                    'product_category_id' => $request->product_category[$key],
+                    'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
+                    'enq_source' => isset($source[0])?$source[0]:0,
+                    'expected_budget' => isset($request->expected_budget[$key])?$request->expected_budget[$key]:'',
+                    'enq_source_type'=>isset($source[1])?$source[1]:''
+                ];
+                ProjectEnquiry::insert($data);
+            }  
+        }
+        $request->session()->flash('success',__('global.messages.add'));
+        return redirect()->route('admin.projects.prereview',$request->project_id); 
+    }
+
+    public function updateEnquiry(Request $request , $id){
+        $enq=explode('-',$request->enq_source);
+        $data=[
+            'product_category_id'=>$request->product_category,
+            'expected_date'=>date('Y-m-d', strtotime($request->expected_date)),
+            'received_date'=>date('Y-m-d', strtotime($request->received_date)),
+            'won_loss'=>$request->won_loss,
+            'quotation_date'=>date('Y-m-d', strtotime($request->quotation_date)),
+            'expected_budget' => isset($request->expected_budget)?$request->expected_budget:'',
+            'enq_source'=>$enq[0],
+            'enq_source_type'=>$enq[1],
+        ];
+        ProjectEnquiry::where('id',$id)->update($data);
+        if(isset($request->remarks) && $request->remarks!=''){
+            $date= date('Y-m-d', strtotime("now"));
+            $remark=[
+                'enquiry_id'=>$id,
+                'remarks'=>$request->remarks,
+                'date'=>$date
+                ];
+            EnquiryRemarks::insert($remark);
+        }
+        
+        $project_id=ProjectEnquiry::where('id',$id)->select('project_id')->first();
+        $request->session()->flash('success',__('global.messages.add'));
+        return redirect()->route('admin.projects.prereview',$project_id->project_id); 
+    }
+
+    public function addremarks($id){
+        return view('admin.project.addremarks',compact('id'));
+    }
+
+    public function saveremark(Request $request){
+        $date= date('Y-m-d', strtotime("now"));
+        $remark=[
+            'enquiry_id'=>$request->enquiry_id,
+            'remarks'=>$request->remarks,
+            'date'=>$date
+        ];
+        EnquiryRemarks::insert($remark);
+        $project_id=ProjectEnquiry::where('id',$request->enquiry_id)->select('project_id')->first();
+        $request->session()->flash('success',__('global.messages.add'));
+        return redirect()->route('admin.projects.prereview',$project_id->project_id);
+    }
+    public function viewremark($id){
+        // $remarks= EnquiryRemarks::where('enquiry_id',$id)->select('remarks','date')->get();
+        $remarks = ProjectEnquiry::with('getremarks')->where('id',$id)->first();
+        return view('admin.project.viewremarks',compact('remarks'));
+    }
 }

@@ -58,32 +58,14 @@
 </div>  
 </div>
 <div class="card-footer">
-    
-    <a href="{{route('admin.project.index')}}"  class="btn btn-secondary">Cancel</a>
+  <a href="<?php echo url('admin/projects/projectpreview/'.$remarks->project_id); ?>" class="btn btn-secondary">Cancel</a>
 </div>
 
 </div>
 </div>
 </div>
 </div>
-
-
-
 
 @endsection
-@section('styles')
-<link href="{{ asset('css/bootstrap-datepicker3.standalone.min.css') }}" rel="stylesheet">
-<link href="{{asset('template/valex-theme/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
-@endsection
 
-@section('scripts')
-<script src="{{ asset('js/datepicker/bootstrap-datepicker.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/jquery-validation/dist/jquery.validate.min.js') }}"></script>
-<script src="{{asset('template/valex-theme/plugins/select2/js/select2.min.js')}}"></script>
-
-
-
-
-   
-@endsection
 

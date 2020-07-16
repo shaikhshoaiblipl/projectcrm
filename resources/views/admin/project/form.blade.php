@@ -113,8 +113,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('developer') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                        <label for="developer">Client/Developer<span style="color:red">*</span></label>
-                        <select name='developer' id='developer' class='form-control'>
+                        <label for="developer">Client/Developer <span style="color:red">*</span></label>
+                        <select name='developer' id='developer' data-error-container='#developer_error', class='form-control'>
                         <option value="">-Select-</option>
                         
                             <?php if(isset($clientdeveloper) && (!empty($clientdeveloper))){
@@ -126,7 +126,7 @@
                             ?>
                             <option value="add_new_client">Add New Client</option>
                         </select>
-                      
+                      <span id="developer_error"></span>
                         @if($errors->has('developer'))
                         <p class="help-block">
                             <strong>{{ $errors->first('developer') }}</strong>
@@ -263,7 +263,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('architect') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Architect<span style="color:red">*</span></label>
-                           <select name='architect_id' id='architect_id', class = 'form-control '>
+                           <select name='architect_id' id='architect_id',  data-error-container='#architect_id_error',  class = 'form-control '>
                            <option value="">-Select-</option>
                             <?php if(isset($architect) && (!empty($architect))){
                                 foreach ($architect as $key => $name) { ?>
@@ -274,7 +274,7 @@
                             ?>
                             <option value="add_new_architect">Add New Architect</option>
                         </select>
-
+                         <span id="architect_id_error"></span>
                         @if($errors->has('architect_id'))
                         <p class="help-block">
                             <strong>{{ $errors->first('architect_id') }}</strong>
@@ -336,8 +336,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('main_contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                        <label for="title">Main Contractor<span style="color:red">*</span></label>
-                    <select name='main_contractor' id='main_contractor'  class = 'form-control'>
+                        <label for="title">Main Contractor <span style="color:red">*</span></label>
+                    <select name='main_contractor' id='main_contractor'  data-error-container='#main_contractor_error', class = 'form-control'>
                     <option value="">-Select-</option>
                             <?php if(isset($contractor) && (!empty($contractor))){
                                 foreach ($contractor as $key => $name) { ?>
@@ -349,7 +349,7 @@
                             <option value="add_new_contractor">Add New Contractor</option>
                         </select>
 
-                      
+                      <span id="main_contractor_error"></span>
                         @if($errors->has('main_contractor'))
                         <p class="help-block">
                             <strong>{{ $errors->first('main_contractor') }}</strong>
@@ -393,6 +393,16 @@
                         @endif
                     </div>  
                 </div>
+                <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+                    <label for="sku">Product Category <span style="color:red">*</span></label>
+                    {!! Form::select('project_product_category[]', $productcategory, old('project_product_category', isset($project->project_product_category)?$project->project_product_category:''), ['multiple'=>'multiple', 'id'=>'project_product_category', 'class' => 'form-control',  'data-error-container'=>'#project_product_category_error']) !!}
+                    <span id="project_product_category_error"></span>
+                    @if($errors->has('project_product_category'))
+                    <p class="help-block">
+                        <strong>{{ $errors->first('project_product_category') }}</strong>
+                    </p>
+                    @endif 
+                </div>
             </div>
             <!-- row 10 -->
             <div class="row">
@@ -400,7 +410,6 @@
                     <div class="col-md-12 form-group {{$errors->has('commentery') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Commentery </label>
                         {!! Form::textarea('commentery', old('commentery', isset($project->commentery)?$project->commentery:''),['placeholder' => 'Commentery', 'id'=>'commentery', 'class'=>'form-control', 'rows' => 4, 'cols' => 40]) !!}
-
                         @if($errors->has('commentery'))
                         <p class="help-block">
                             <strong>{{ $errors->first('commentery') }}</strong>
@@ -411,7 +420,6 @@
             </div>
             <br>
             <!-- small form start-->
-
             <div class="col-md-12">
                 <label>Project Enquiry :-</label>
                 <div class="field_wrapper presently_field_wrapper">
@@ -682,6 +690,11 @@
         placeholder: '-Select-'
         
     });
+
+    $('#project_product_category').select2({
+        placeholder: '-Select-'
+        
+    });
     /// code fop add new client
     jQuery("#main_contractor").change(function(){
         var contractor_id = jQuery(this).val();
@@ -708,6 +721,9 @@
                     required: true
                 },
                 project_name: {
+                    required: true
+                },
+                'project_product_category[]': {
                     required: true
                 },
                 project_commencement_date: {
