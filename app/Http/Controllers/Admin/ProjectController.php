@@ -231,11 +231,7 @@ class ProjectController extends Controller
         }
         $project->update(array('surveyor_qty'=>$quantity_id));
 
-
-
-
-
-                // backend end
+    // backend end
 
     }
     if(isset($request->product_category)){
@@ -664,6 +660,7 @@ public function insertinquiry(Request $request){
                 'product_category_id' => $request->product_category[$key],
                 'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
                 'enq_source' => isset($source[0])?$source[0]:0,
+                'expected_budget' => isset($request->expected_budget[$key])?$request->expected_budget[$key]:'',
                 'enq_source_type'=>isset($source[1])?$source[1]:''
             ];
             ProjectEnquiry::insert($data);
@@ -681,6 +678,7 @@ public function updateEnquiry(Request $request , $id){
         'remarks'=>$request->remarks,
         'won_loss'=>$request->won_loss,
         'quotation_date'=>date('Y-m-d', strtotime($request->quotation_date)),
+        'expected_budget' => isset($request->expected_budget)?$request->expected_budget:'',
         'enq_source'=>$enq[0],
         'enq_source_type'=>$enq[1],
     ];
