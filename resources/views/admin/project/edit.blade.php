@@ -390,6 +390,16 @@
             @endif
         </div>  
     </div>
+     <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
+                    <label for="sku">Product Category <span style="color:red">*</span></label>
+                    {!! Form::select('project_product_category[]', $productcategory, old('project_product_category', isset($productCategories)?$productCategories:''), ['multiple'=>'multiple', 'id'=>'project_product_category', 'class' => 'form-control',  'data-error-container'=>'#project_product_category_error']) !!}
+                    <span id="project_product_category_error"></span>
+                    @if($errors->has('project_product_category'))
+                    <p class="help-block">
+                        <strong>{{ $errors->first('project_product_category') }}</strong>
+                    </p>
+                    @endif 
+                </div>
 </div>
 <!-- row 10 -->
 <div class="row">
@@ -543,12 +553,7 @@
                 </p>
                 @endif
             </div>  -->
-
-
-
-
-
-            <!-- edit mode end -->
+       <!-- edit mode end -->
 
 
         <!-- </div>
@@ -597,12 +602,7 @@
             
         });
     // select 2
-    
-
-
-    
-
-    // select 2 end
+     // select 2 end
 
         // hide inputs
         // hide inputs end
@@ -620,15 +620,15 @@ $('.add_button ').click( function() {
 
 
 
-                        // will work only in edit mode end 
+        // will work only in edit mode end 
         //Once add button is clicked
         $(presentlyaddButton).click(function(){
           $(presentlywrapper).append(presentlyfieldHTML); //Add field html
-          $('.datepicker').datepicker({
-            format: 'mm/dd/yyyy',
-            orientation: 'bottom',
-            autoclose: true
-        }).datepicker('setDate', 'today');
+            $('.datepicker').datepicker({
+              format: 'mm/dd/yyyy',
+              orientation: 'bottom',
+              autoclose: true
+          }).datepicker('setDate', 'today');
       });
 
         //Once remove button is clicked
@@ -643,6 +643,11 @@ $('.add_button ').click( function() {
             placeholder: '-Select-'
             
         });
+        
+        $('#project_product_category').select2({
+             placeholder: '-Select-'
+        });
+
     /// code fop add new client
     jQuery("#developer").change(function(){
         var developer = jQuery(this).val();
@@ -769,6 +774,9 @@ $('.add_button ').click( function() {
                     required: true
                 },
                 project_name: {
+                    required: true
+                },
+                'project_product_category[]': {
                     required: true
                 },
                 project_commencement_date: {
