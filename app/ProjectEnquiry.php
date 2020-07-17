@@ -21,4 +21,10 @@ class ProjectEnquiry extends Model
     {
         return $this->hasMany('App\EnquiryRemarks','enquiry_id','id')->orderBy('id','desc');
     } 
+
+    public function getProject() 
+    {
+        return $this->belongsTo(Project::class,'project_id','id');
+    } 
+
 }
