@@ -48,7 +48,7 @@
 </div>
 <div class="card-footer">
     <button type="submit" class="btn btn-primary">Submit</button>
-    <a href="{{route('admin.project.index')}}"  class="btn btn-secondary">Cancel</a>
+     <a href="<?php echo url('admin/projects/projectpreview/'.$project_id); ?>" class="btn btn-secondary">Cancel</a>
 </div>
 {!! Form::close() !!}
 </div>

@@ -420,14 +420,14 @@
             </div>
             <br>
             <!-- small form start-->
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
                 <label>Project Enquiry :-</label>
                 <div class="field_wrapper presently_field_wrapper">
                     <div class="row cls_field_wrapper ">
                         <div class="col-md-12">
                             <a href="javascript:void(0)" class="add_button crcl_btn"><i class="fa fa-plus"></i></a>   
                         </div>
-                        <!-- row 1 -->
+                        
                         <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                             <label for="sku">Enquiry for (product category)</label>
                             {!! Form::select('product_category[]', $productcategory, old('product_category', isset($project->project_type_id)?$project->project_type_id:''), ['id'=>'project_category_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
@@ -437,7 +437,7 @@
                             </p>
                             @endif 
                         </div>
-                        <!-- row 2 -->
+                       
                         <div class="col-md-4 form-group {{$errors->has('people_list') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                             <label for="sku">Enquiry Source (list of people from this project)</label>
                             <select name="enq_source[]" id="enq_source" class="form-control">
@@ -498,7 +498,7 @@
                             </p>
                             @endif 
                         </div>
-                        <!-- row 3 -->
+                       
                         <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                             <label for="sku">Expected Date</label>
                             {!! Form::text('expected_date[]', old('expected_date',isset($project->project_name)?$project->project_name:''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
@@ -510,7 +510,7 @@
                         </div> 
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- small form end -->
 
         </div>
