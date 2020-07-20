@@ -13,7 +13,7 @@
   <div class="breadcrumb-header justify-content-between">
       <div class="left-content">
           <div>
-            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Projects</h2>
+            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Salesman</h2>
           </div>
       </div>
   </div>
@@ -21,15 +21,7 @@
     <div class="col-xl-12">
       <div class="card">
         <div class="card-header py-3 cstm_hdr">
-             <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
-             <?php if(Auth::user()->roles->first()->id != config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
-            <a href="{{route('admin.project.create')}}" class="btn btn-sm btn-icon-split float-right btn-outline-warning">
-                <span class="icon text-white-50">
-                  <i class="fas fa-plus"></i>
-                </span>
-                <span class="text">Add Project</span>
-            </a>
-           <?php } ?>
+             <h6 class="m-0 font-weight-bold text-primary">Salesman Reports</h6>
         </div>
         <div class="card-body">
              <div class="well mb-3">
@@ -41,30 +33,6 @@
                             <?php } ?>   
                             <div class="form-group mr-sm-2 mb-2">
                                     {!! Form::select('type_id', $projecttype, old('type_id'), ['id'=>'type_id', 'class' => 'form-control', 'placeholder' => '-Select Type-']) !!}                   
-                            </div> 
-                            <div class="form-group mr-sm-2 mb-2">
-                                    {!! Form::select('client_id', $clientdeveloper, old('client_id'), ['id'=>'client_id', 'class' => 'form-control', 'placeholder' => '-Select Client-']) !!}                   
-                            </div> 
-                             <div class="form-group mr-sm-2 mb-2">
-                                    {!! Form::select('financier_id', $financier, old('financier_id'), ['id'=>'financier_id', 'class' => 'form-control', 'placeholder' => '-Select Financier-']) !!}                   
-                            </div> 
-                             <div class="form-group mr-sm-2 mb-2">
-                                    {!! Form::select('quantity_id', $quantity, old('quantity_id'), ['id'=>'quantity_id', 'class' => 'form-control', 'placeholder' => '-Select Qty Surveyor-']) !!}                   
-                            </div> 
-                            <div class="form-group mr-sm-2 mb-2">
-                                    {!! Form::select('mech_engg_id', $mechanicalEngineer, old('mech_engg_id'), ['id'=>'mech_engg_id', 'class' => 'form-control', 'placeholder' => '-Select Mechanical Eng-']) !!}                   
-                            </div> 
-                            <div class="form-group mr-sm-2 mb-2">
-                                    {!! Form::select('architect_id', $architect, old('architect_id'), ['id'=>'architect_id', 'class' => 'form-control', 'placeholder' => '-Select Architect-']) !!}                   
-                            </div> 
-                            <div class="form-group mr-sm-2 mb-2">
-                                    {!! Form::select('interior_id', $interior, old('interior_id'), ['id'=>'interior_id', 'class' => 'form-control', 'placeholder' => '-Select Interior-']) !!}                   
-                            </div> 
-                            <div class="form-group mr-sm-2 mb-2">
-                                    {!! Form::select('contractor_id', $contractor, old('contractor_id'), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select Main Contractor-']) !!}                   
-                            </div> 
-                            <div class="form-group mr-sm-2 mb-2">
-                                    {!! Form::select('product_category_id', $productcategory, old('product_category_id'), ['id'=>'product_category_id', 'class' => 'form-control', 'placeholder' => '-Select Product Category-']) !!}                   
                             </div> 
                             <div class="form-group mr-sm-2 mb-2">
                                   {!! Form::number('project_budget', old('project_budget', isset($project->project_budget)?$project->project_budget:''), ['id'=>'project_budget', 'class' => 'form-control', 'placeholder' => 'Project Budget']) !!}                  
@@ -89,8 +57,6 @@
                             <th>Project Budget</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Status</th>
-                            <th>Action</th>                      
                         </tr>
                     </thead>
                     <tfoot>
@@ -101,8 +67,6 @@
                             <th>Project Budget</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Status</th>
-                            <th>Action</th>                       
                         </tr>
                     </tfoot>
                 </table>
@@ -207,8 +171,6 @@
                 {data: 'project_budget', name: 'project_budget'},
                 {data: 'commencement_date', name: 'commencement_date'},
                 {data: 'completion_date', name: 'completion_date'},
-                {data: 'is_active', name: 'is_active', class: 'text-center', "width": "10%"},
-                {data: 'action', name: 'action', orderable: false, searchable: false, "width": "15%"},
             ],
             language: {
                 searchPlaceholder: 'Search...',

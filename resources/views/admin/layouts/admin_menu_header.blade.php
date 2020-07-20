@@ -40,21 +40,27 @@
 
 						    </li>
 						    @endcan
-						    @canany(['admin.customers.index','admin.project.index'])
+						    @canany(['admin.project.index','admin.projects.prereview'])
 
     						<li aria-haspopup="true"><span class="horizontalMenu-click"><i class="horizontalMenu-arrow fe fe-chevron-down"></i></span><a href="javascript:void(0)" class="sub-icon">
 
     							<svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.26 9L12 13.47 17.74 9 12 4.53z" opacity=".3"/><path d="M19.37 12.8l-7.38 5.74-7.37-5.73L3 14.07l9 7 9-7zM12 2L3 9l1.63 1.27L12 16l7.36-5.73L21 9l-9-7zm0 11.47L6.26 9 12 4.53 17.74 9 12 13.47z"/></svg> 
 
-    						 	Sales <i class="fe fe-chevron-down horizontal-icon"></i></a>
-
-								<ul class="sub-menu">
+    						 	Reports <i class="fe fe-chevron-down horizontal-icon"></i></a>
+                                
+                                <ul class="sub-menu">
 									@can('admin.project.index')
-
-										<li aria-haspopup="true"><a href="{{ route('admin.project.index') }}" class="slide-item">Project</a></li>
-
+                                        <li aria-haspopup="true"><a href="{{ route('admin.project.index') }}" class="slide-item">Projects</a></li>
 									@endcan
+									@can('admin.projects.prereview')
+                                        <li aria-haspopup="true"><a href="{{ route('admin.projects.prereview') }}" class="slide-item">Enquiries</a></li>
+                                    @endcan
+
+                                    @can('admin.projects.salesmanreports')
+                                        <li aria-haspopup="true"><a href="{{ route('admin.projects.salesmanreports') }}" class="slide-item">Salesman</a></li>
+                                    @endcan
 								</ul>
+								
 							</li>
 							@endcanany	
     						@canany(['admin.countries.index','admin.cities.index'])
