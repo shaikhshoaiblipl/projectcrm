@@ -16,11 +16,9 @@ class Project extends Model
     protected $fillable = [
         'created_by','project_name','project_type_id','project_date','commencement_date','completion_date','project_budget','developer','project_financier','surveyor_qty','commentery','mech_engg','architect','interior','main_contractor','project_category_id','contractor_id','is_active','contractor'
     ];
-    public function Projectenquiry()  
-    {
+    public function Projectenquiry(){
         return $this->hasMany('App\ProjectEnquiry','project_id','id');
     }
-
     public function getdeveloper(){         
         return $this->belongsTo('App\Client','developer','id');
     }
@@ -51,11 +49,7 @@ class Project extends Model
     public function getprojecttype(){         
         return $this->belongsTo('App\ProjectType','project_type_id','id');
     }
-
     public function getProjectProductCategories(){
         return $this->hasMany(ProjectHasProductCategory::class,'project_id','id');
     }
-
-    
-
 }

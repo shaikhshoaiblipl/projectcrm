@@ -157,7 +157,7 @@
             <!-- radio button -->
              <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "> 
                 <label for="sku">Won/loss </label> 
-                <input type="radio" id="Win" name="won_loss"  value="Win" {{($project->won_loss=="Win")? "checked" : "" }}> &nbsp;Win &nbsp; &nbsp;
+                <input type="radio" id="Win" name="won_loss"  value="Won" {{($project->won_loss=="Won")? "checked" : "" }}> &nbsp;Won &nbsp; &nbsp;
                 <input type="radio" id="Loss" name="won_loss"  value="Loss"{{($project->won_loss=="Loss")? "checked" : "" }}>&nbsp;Loss
                 @if($errors->has('expected_date'))
                 <p class="help-block">

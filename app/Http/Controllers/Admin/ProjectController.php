@@ -230,7 +230,7 @@ class ProjectController extends Controller
 
         // backend end
 
-            if(isset($request->product_category)){
+            /*if(isset($request->product_category)){
                 foreach($request->enq_source as $key=>$enq){
                     $source=explode('-',$enq);
                     $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
@@ -243,7 +243,7 @@ class ProjectController extends Controller
                     ];
                     ProjectEnquiry::insert($data);
                 }   
-            }
+            }*/
 
             if(!empty($project_product_category)){
                 foreach($project_product_category as $key=>$category){
@@ -491,9 +491,8 @@ class ProjectController extends Controller
 
     
     $request->session()->flash('success',__('global.messages.update'));
-    return redirect()->route('admin.project.index');
-    
-}
+        return redirect()->route('admin.project.index');
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -629,12 +628,12 @@ class ProjectController extends Controller
         $contractor=Contractor::where(['is_active'=>TRUE])->pluck('name', 'id');
         $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
         $people_list='';
+        $project=Project::with('Projectenquiry')->where('id',$project_id)->first();
         if(isset($project->Projectenquiry)){
             foreach($project->Projectenquiry as $people){
                 if($people->enq_source_type == 'client'){
                     $people_list=Client::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
                     $people_list=$people_list->id.'-'.'client';
-
                 }
                 elseif($people->enq_source_type == 'financier'){
                     $people_list=Financier::where('id',$people->enq_source)->where('is_active',1)->select('id','name')->first();
@@ -710,14 +709,15 @@ class ProjectController extends Controller
                 ];
             EnquiryRemarks::insert($remark);
         }
-        
         $project_id=ProjectEnquiry::where('id',$id)->select('project_id')->first();
         $request->session()->flash('success',__('global.messages.add'));
         return redirect()->route('admin.projects.prereview',$project_id->project_id); 
     }
 
     public function addremarks($id){
-        return view('admin.project.addremarks',compact('id'));
+        $project=ProjectEnquiry::where('id',$id)->pluck('project_id');
+        $project_id=$project[0];
+        return view('admin.project.addremarks',compact('id','project_id'));
     }
 
     public function saveremark(Request $request){
