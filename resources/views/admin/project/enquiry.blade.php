@@ -81,7 +81,7 @@
                                 <optgroup label="Client/Developer">
                                 @if(isset($clientdeveloper))
                                 @foreach($clientdeveloper as $key=>$client)
-                                <option value="{{$key}}-{{'client'}}">{{$client}}</option>
+                                    <option value="{{$key}}-{{'client'}}">{{$client}}</option>
                                 @endforeach
                                 @endif                               
                                 </optgroup>
@@ -146,7 +146,7 @@
                         </div> 
                         <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                             <label for="sku">Expected Date <span style="color:red">*</span></label>
-                            {!! Form::text('expected_date[]', old('expected_date',isset($project->project_name)?$project->project_name:''), ['id'=>'expected_date','required' => 'required','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+                            {!! Form::text('expected_date[]', old('expected_date',isset($project->project_name)?$project->project_name:''), ['id'=>'expected_date','required' => 'required','readOnly' => 'readOnly','class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                             @if($errors->has('expected_date'))
                             <p class="help-block">
                                 <strong>{{ $errors->first('expected_date') }}</strong>

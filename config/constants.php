@@ -2,10 +2,8 @@
 	return [
 		//User Role Ids
 		'ROLE_TYPE_SUPERADMIN_ID' => 1,
-		'ROLE_TYPE_CUSTOMERSERVICE_ID' => 2,	
-		'ROLE_TYPE_SALES_ID' => 3,	
-		'ROLE_TYPE_PURCHASER' => 4,
-
+		'ROLE_TYPE_SALES_ID' => 2,	
+	
 		//trucks	
 		'SURVEY_TRUCKS' => 'trucks',	
 
