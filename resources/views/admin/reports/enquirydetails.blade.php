@@ -1,3 +1,4 @@
+
 @extends('admin.layouts.valex_app')
 @section('content')
 <div class="container">

@@ -43,15 +43,22 @@ Route::group(['middleware' => ['auth']], function(){
 		]);
         Route::post('users/getUsers', 'UsersController@getUsers')->name('users.getUsers');
 		Route::get('users/status/{user_id}', 'UsersController@status')->name('users.status');	
+
 		//For Project
 		Route::post('project/getproject', 'ProjectController@getProject')->name('project.getProject');
 		Route::get('project/status/{id}', 'ProjectController@status')->name('project.status');
 
-		Route::get('projects/salesmanreports', 'ProjectController@salesManReports')->name('projects.salesmanreports');
-		Route::get('projects/salesmanreportslist', 'ProjectController@getSalesManReports')->name('projects.salesmanreportslist');
+		Route::get('reports/enquries', 'Reports@enquiryReports')->name('reports.enquries');
+		Route::get('reports/enquirylist', 'Reports@getEnquiryReports')->name('reports.enquirylist');
+
+		Route::get('reports/salesman', 'Reports@salesManReports')->name('reports.salesman');
+		Route::get('reports/salesmanlist', 'Reports@getSalesManReports')->name('reports.salesmanlist');
+		Route::get('reports/enquirydetails/{id}', 'Reports@enquiryDetails')->name('reports.enquirydetails');
+
 		
-		// project preview 
-		Route::get('projects/projectpreview/{id?}', 'ProjectController@projectpreview')->name('projects.prereview');
+
+        //Project Preview 
+		Route::get('projects/projectpreview/{id}', 'ProjectController@projectpreview')->name('projects.prereview');
 		Route::get('projects/getpreview', 'ProjectController@getpreview')->name('projects.getpreview');
 		Route::get('projects/addEnquiry/{id}', 'ProjectController@addEnquiry')->name('projects.addEnquiry');
 		Route::get('projects/editenquiry/{id}', 'ProjectController@editenquiry')->name('projects.editenquiry');

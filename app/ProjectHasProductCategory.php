@@ -11,5 +11,10 @@ class ProjectHasProductCategory extends Model
         'project_id','product_category_id',
     ]; 
 
+    public function category() 
+    {
+        return $this->belongsTo(ProductCategory::class,'product_category_id','id');
+    } 
+
    
 }

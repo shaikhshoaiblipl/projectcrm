@@ -49,6 +49,7 @@ class Project extends Model
     public function getprojecttype(){         
         return $this->belongsTo('App\ProjectType','project_type_id','id');
     }
+    
     public function getProjectProductCategories(){
         return $this->hasMany(ProjectHasProductCategory::class,'project_id','id');
     }

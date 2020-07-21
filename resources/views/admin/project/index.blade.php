@@ -39,9 +39,11 @@
                                     {!! Form::select('sales_id', $sales, old('sales_id'), ['id'=>'sales_id', 'class' => 'form-control', 'placeholder' => '-Select Sales-']) !!}                   
                                 </div> 
                             <?php } ?>   
+
                             <div class="form-group mr-sm-2 mb-2">
                                     {!! Form::select('type_id', $projecttype, old('type_id'), ['id'=>'type_id', 'class' => 'form-control', 'placeholder' => '-Select Type-']) !!}                   
                             </div> 
+                            <?php if(Auth::user()->roles->first()->id == config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
                             <div class="form-group mr-sm-2 mb-2">
                                     {!! Form::select('client_id', $clientdeveloper, old('client_id'), ['id'=>'client_id', 'class' => 'form-control', 'placeholder' => '-Select Client-']) !!}                   
                             </div> 
@@ -75,6 +77,7 @@
                             <div class="form-group mr-sm-2 mb-2">
                                   {!! Form::text('end_date', old('end_date', isset($project->end_date)?$project->end_date:''), ['id'=>'end_date', 'class' => 'form-control datepicker', 'placeholder' => 'End Date','readOnly'=>'readOnly' ]) !!}                  
                             </div>  
+                            <?php } ?>   
                             <button type="submit" class="btn btn-responsive btn-primary mr-sm-2 mb-2">{{ __('Filter') }}</button>
                             <a href="javascript:;" onclick="resetFilter();" class="btn btn-responsive btn-danger mb-2">{{ __('Reset') }}</a>
                             {!! Form::close() !!}
@@ -157,6 +160,7 @@
     }
     
     function getProjects(){
+        
         var sales_id = jQuery('#frmFilter [name=sales_id]').val(); 
         var type_id = jQuery('#frmFilter [name=type_id]').val(); 
         var client_id = jQuery('#frmFilter [name=client_id]').val();  
@@ -170,7 +174,7 @@
         var end_date = jQuery('#frmFilter [name=end_date]').val(); 
         var product_category_id = jQuery('#frmFilter [name=product_category_id]').val(); 
         var project_budget = jQuery('#frmFilter [name=project_budget]').val(); 
-      
+        
         jQuery('#categories').dataTable().fnDestroy();
         jQuery('#categories tbody').empty();
         jQuery('#categories').DataTable({

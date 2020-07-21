@@ -147,7 +147,7 @@
             </div> 
             <div class="col-md-8 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Remarks <span style="color:red">*</span></label>
-                <textarea name="remarks" id="remark"  placeholder="Remarks" cols="20" rows="4" class="form-control">{{old('remarks',isset($project->remarks)?$project->remarks:'')}}</textarea>
+                <textarea name="remarks" id="remark"  placeholder="Remarks" cols="20" rows="4" class="form-control">{{old('remarks')}}</textarea>
                 @if($errors->has('remark'))
                 <p class="help-block">
                     <strong>{{ $errors->first('remark') }}</strong>
