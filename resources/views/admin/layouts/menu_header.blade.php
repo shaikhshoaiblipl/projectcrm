@@ -63,16 +63,15 @@
 							</li>
 
 							@endcan
-
-						    @can('admin.customers.index')
+							@can('admin.reports.salesman')
 
 							    <li aria-haspopup="true">
 
-							        <a class="nav-link" href="{{ route('admin.customers.index') }}">
+							        <a class="nav-link" href="{{ route('admin.reports.salesman') }}">
 
 							           <svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M12 4c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5 0-.16-.08-.28-.14-.35-.41-.46-.63-1.05-.63-1.65 0-1.38 1.12-2.5 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 10 6.5 10s1.5.67 1.5 1.5S7.33 13 6.5 13zm3-4C8.67 9 8 8.33 8 7.5S8.67 6 9.5 6s1.5.67 1.5 1.5S10.33 9 9.5 9zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 6 14.5 6s1.5.67 1.5 1.5S15.33 9 14.5 9zm4.5 2.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5z" opacity=".3"></path><path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10c1.38 0 2.5-1.12 2.5-2.5 0-.61-.23-1.21-.64-1.67-.08-.09-.13-.21-.13-.33 0-.28.22-.5.5-.5H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9zm4 13h-1.77c-1.38 0-2.5 1.12-2.5 2.5 0 .61.22 1.19.63 1.65.06.07.14.19.14.35 0 .28-.22.5-.5.5-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.14 8 7c0 2.21-1.79 4-4 4z"></path><circle cx="6.5" cy="11.5" r="1.5"></circle><circle cx="9.5" cy="7.5" r="1.5"></circle><circle cx="14.5" cy="7.5" r="1.5"></circle><circle cx="17.5" cy="11.5" r="1.5"></circle></svg>
 
-							            Customers
+							            Salesman Reports
 
 							        </a>
 
@@ -80,109 +79,7 @@
 
     						@endcan	
 
-    						@can('admin.weeklybeats.index')
-
-    							<li aria-haspopup="true">
-
-							        <a class="nav-link" href="{{ route('admin.weeklybeats.index') }}">
-
-    								<svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M6.26 9L12 13.47 17.74 9 12 4.53z" opacity=".3"></path><path d="M19.37 12.8l-7.38 5.74-7.37-5.73L3 14.07l9 7 9-7zM12 2L3 9l1.63 1.27L12 16l7.36-5.73L21 9l-9-7zm0 11.47L6.26 9 12 4.53 17.74 9 12 13.47z"></path></svg>
-
-    								Weekly Beats
-
-    								</a>
-
-    							</li>	
-
-    						@endcan
-
-    						@can('admin.dailysales.index')
-
-    							<li aria-haspopup="true">
-
-							        <a class="nav-link" href="{{ route('admin.dailysales.index') }}">
-
-							        	<svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M3.31 11l2.2 8.01L18.5 19l2.2-8H3.31zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" opacity=".3"></path><path d="M22 9h-4.79l-4.38-6.56c-.19-.28-.51-.42-.83-.42s-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1zM12 4.8L14.8 9H9.2L12 4.8zM18.5 19l-12.99.01L3.31 11H20.7l-2.2 8zM12 13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
-
-							        	Daily Sales
-
-							    	</a> 
-
-							    </li>	   	
-
-    						@endcan
-    						@can('admin.dailymarketprices.index')
-
-    							<li aria-haspopup="true">
-
-							        <a class="nav-link" href="{{ route('admin.dailymarketprices.index') }}">
-
-							        	<svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M3.31 11l2.2 8.01L18.5 19l2.2-8H3.31zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" opacity=".3"></path><path d="M22 9h-4.79l-4.38-6.56c-.19-.28-.51-.42-.83-.42s-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1zM12 4.8L14.8 9H9.2L12 4.8zM18.5 19l-12.99.01L3.31 11H20.7l-2.2 8zM12 13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
-
-							        	Daily Market Price
-
-							    	</a> 
-
-							    </li>	   	
-
-    						@endcan
-
-    						<!-- @can('admin.weeklyupdates.index')
-
-    							<li aria-haspopup="true">
-
-							        <a class="nav-link" href="{{ route('admin.weeklyupdates.index') }}">
-
-							        	<svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M6.26 9L12 13.47 17.74 9 12 4.53z" opacity=".3"></path><path d="M19.37 12.8l-7.38 5.74-7.37-5.73L3 14.07l9 7 9-7zM12 2L3 9l1.63 1.27L12 16l7.36-5.73L21 9l-9-7zm0 11.47L6.26 9 12 4.53 17.74 9 12 13.47z"></path></svg>
-
-							        	Weekly Updates
-
-							    	</a> 
-
-							    </li>	   	
-
-    						@endcan -->
-
-    						@canany(['admin.countries.index','admin.cities.index'])
-
-    						<li aria-haspopup="true"><span class="horizontalMenu-click"><i class="horizontalMenu-arrow fe fe-chevron-down"></i></span><a href="javascript:void(0)" class="sub-icon">
-
-    							<svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M3.31 11l2.2 8.01L18.5 19l2.2-8H3.31zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" opacity=".3"></path><path d="M22 9h-4.79l-4.38-6.56c-.19-.28-.51-.42-.83-.42s-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1zM12 4.8L14.8 9H9.2L12 4.8zM18.5 19l-12.99.01L3.31 11H20.7l-2.2 8zM12 13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
-
-    						 	Master <i class="fe fe-chevron-down horizontal-icon"></i></a>
-
-								<ul class="sub-menu">
-
-									@can('admin.product_categories.index')
-
-										<li aria-haspopup="true"><a href="{{ route('admin.product_categories.index') }}" class="slide-item">Products Categories</a></li>
-
-									@endcan
-
-									@can('admin.products.index')
-
-										<li aria-haspopup="true"><a href="{{ route('admin.products.index') }}" class="slide-item">Products</a></li>
-
-									@endcan
-
-									@can('admin.countries.index')
-
-										<li aria-haspopup="true"><a href="{{ route('admin.countries.index') }}" class="slide-item">Countries</a></li>
-
-									@endcan
-
-									@can('admin.cities.index')
-
-										<li aria-haspopup="true"><a href="{{ route('admin.cities.index') }}" class="slide-item">Cities</a></li>
-
-									@endcan
-
-								</ul>
-
-							</li>
-
-							@endcanany	
-
+    					
 						</ul>
 
 					</nav>
