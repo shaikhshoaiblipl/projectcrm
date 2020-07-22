@@ -137,7 +137,7 @@
                 @endif
             </div> 
             <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
-                <label for="sku">Quote Date <span style="color:red">*</span></label>
+                <label for="sku">Quotation Date <span style="color:red">*</span></label>
                 {!! Form::text('quotation_date', old('quotation_date',isset($project->quotation_date)?Carbon\Carbon::parse($project->quotation_date)->format('m/d/Y')	:''), ['id'=>'quotation_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                 @if($errors->has('quotation_date'))
                 <p class="help-block">
