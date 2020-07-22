@@ -31,8 +31,9 @@
         </div>
         <div class="card-body">
                 <div class="well mb-3">
-                            {!! Form::open(['method' => 'POST', 'class' => 'form-inline', 'id' => 'frmFilter']) !!}
-                            <?php if(Auth::user()->roles->first()->id == config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
+                     {!! Form::open(['method' => 'POST', 'class' => 'form-inline', 'id' => 'frmFilter']) !!}
+                    <div class="row col-md-12">
+                          <?php if(Auth::user()->roles->first()->id == config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
                                 @if(!isset($id))
                                 <div class="form-group mr-sm-2 mb-2">
                                     {!! Form::select('sales_id', $sales, old('sales_id'), ['id'=>'sales_id', 'class' => 'form-control', 'placeholder' => '-Select Sales-']) !!}                   
@@ -67,6 +68,9 @@
                                      <option value="live">Live</option>
                                 </select>         
                             </div> 
+                    </div>
+                    <div class="row col-md-12">
+                         
                             <div class="form-group mr-sm-2 mb-2">
                                   {!! Form::text('expected_date', old('expected_date', isset($project->expected_date)?$project->expected_date:''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'Expected Date','readOnly'=>'readOnly' ]) !!}                  
                             </div>   
@@ -77,7 +81,10 @@
                             <?php } ?>   
                             <button type="submit" class="btn btn-responsive btn-primary mr-sm-2 mb-2">{{ __('Filter') }}</button>
                             <a href="javascript:;" onclick="resetFilter();" class="btn btn-responsive btn-danger mb-2">{{ __('Reset') }}</a>
-                            {!! Form::close() !!}
+                    </div>
+                              {!! Form::close() !!}
+                         
+                         
                     </div>
             <div class="table-responsive">
                 <table class="table table-bordered" width="100%" cellspacing="0" id="projectpreview">

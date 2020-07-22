@@ -47,11 +47,19 @@
                                 <strong>Project Budget : </strong> {{isset($remarks->getProject->project_budget)?$remarks->getProject->project_budget:''}}
                             </div>
                             <div class="p-1">
-                                <strong>Sub Contractor Category: </strong> {{isset($remarks->getProject->getsubcontractor->title)?$remarks->getProject->getsubcontractor->title:''}}
-                            </div>
-                            <div class="p-1">
-                                <strong>Sub Contractor: </strong> {{isset($remarks->getProject->contractor)?$remarks->getProject->contractor:''}}
-                            </div>
+                                  <strong>Product Categories : </strong> 
+                                  <ul>
+                                  <?php 
+                                  $productCategories =isset($productcategories)?$productcategories:array();
+                                      if(isset($productCategories) && !empty($productCategories)){
+                                        foreach ($productCategories as $key => $categories) { ?>
+                                          <li><?php echo $categories->category->title; ?></li>
+                                    <?php }
+
+                                      }  ?>
+                                      </ul>
+                          </div>
+                          
                         </div>
                         <div class="col-md-6">
                             <div class="p-1">
@@ -67,7 +75,7 @@
                                 <strong>Mechanical Engineer : </strong> {{isset($remarks->getProject->getmengineer->name)?$remarks->getProject->getmengineer->name:''}}
                             </div> 
                             <div class="p-1">
-                                <strong>Architect : </strong> {{isset($remarks->getProject->getquantity->name)?$remarks->getProject->getquantity->name:''}}
+                                <strong>Architect : </strong> {{isset($remarks->getProject->getarchitect->name)?$remarks->getProject->getarchitect->name:''}}
                             </div> 
                             <div class="p-1">
                                 <strong>Interior : </strong> {{isset($remarks->getProject->getinterior->name)?$remarks->getProject->getinterior->name:''}}
@@ -75,24 +83,19 @@
                             <div class="p-1">
                                 <strong>Main Contractor : </strong> {{isset($remarks->getProject->getmcontractor->name)?$remarks->getProject->getmcontractor->name:''}}
                             </div> 
+                            <div class="p-1">
+                                <strong>Sub Contractor Category: </strong> {{isset($remarks->getProject->getsubcontractor->title)?$remarks->getProject->getsubcontractor->title:''}}
+                            </div>
+                            <div class="p-1">
+                                <strong>Sub Contractor: </strong> {{isset($remarks->getProject->contractor)?$remarks->getProject->contractor:''}}
+                            </div>
 
                           
                         
                         </div>
 
                         <div class="col-md-12">
-                          <div class="p-1">
-                                  <strong>Product Categories : </strong> 
-                                  <?php 
-                                  $productCategories =isset($productcategories)?$productcategories:array();
-                                      if(isset($productCategories) && !empty($productCategories)){
-                                        foreach ($productCategories as $key => $categories) { ?>
-                                          <li><?php echo $categories->category->title; ?></li>
-                                    <?php }
-
-                                      }  ?>
-                          </div>
-                          <div class="p-1">
+                           <div class="p-1">
                                   <strong>Commentery : </strong> {{isset($remarks->getProject->commentery)?$remarks->getProject->commentery:''}}
                           </div>
                         </div>
@@ -112,15 +115,16 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="p-1">
-                                <strong>Won Loss : </strong> {{isset($remarks->won_loss)?$remarks->won_loss:''}}
-                            </div>
+                           <div class="p-1">
+                                <strong>Expected Budget : </strong>{{isset($remarks->expected_budget)?$remarks->expected_budget:''}}
+                            </div> 
                             <div class="p-1">
                                 <strong>Quotation Date : </strong> {{isset($remarks->quotation_date)?date('d M Y', strtotime($remarks->quotation_date)):''}}
                             </div>
                             <div class="p-1">
-                                <strong>Expected Budget : </strong>{{isset($remarks->expected_budget)?$remarks->expected_budget:''}}
-                            </div> 
+                                <strong>Won Loss : </strong> {{isset($remarks->won_loss)?$remarks->won_loss:''}}
+                            </div>
+                           
                         </div>
                 </div>
                 <br>

@@ -23,12 +23,12 @@
       <div class="card">
         <div class="card-header py-3 cstm_hdr">
              <h6 class="m-0 font-weight-bold text-primary">Salesman Reports</h6> 
-           
         </div>
         <div class="card-body">
                 <div class="well mb-3">
-                            {!! Form::open(['method' => 'POST', 'class' => 'form-inline', 'id' => 'frmFilter']) !!}
-                            <?php if(Auth::user()->roles->first()->id == config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
+                    {!! Form::open(['method' => 'POST', 'class' => 'form-inline', 'id' => 'frmFilter']) !!}
+                    <div class="row col-md-12">
+                        <?php if(Auth::user()->roles->first()->id == config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
                                 <div class="form-group mr-sm-2 mb-2">
                                     {!! Form::select('sales_id', $sales, old('sales_id'), ['id'=>'sales_id', 'class' => 'form-control', 'placeholder' => '-Select Sales-']) !!}                   
                                 </div> 
@@ -55,9 +55,12 @@
                             <div class="form-group mr-sm-2 mb-2">
                                   {!! Form::text('received_date', old('received_date', isset($project->received_date)?$project->received_date:''), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'Received Date','readOnly'=>'readOnly' ]) !!}                  
                             </div> 
-                           <button type="submit" class="btn btn-responsive btn-primary mr-sm-2 mb-2">{{ __('Filter') }}</button>
+                        </div>
+                    <div class="row col-md-12">
+                          <button type="submit" class="btn btn-responsive btn-primary mr-sm-2 mb-2">{{ __('Filter') }}</button>
                             <a href="javascript:;" onclick="resetFilter();" class="btn btn-responsive btn-danger mb-2">{{ __('Reset') }}</a>
-                            {!! Form::close() !!}
+                    </div>
+                    {!! Form::close() !!}
                     </div>
             <div class="table-responsive">
                 <table class="table table-bordered" width="100%" cellspacing="0" id="projectpreview">
