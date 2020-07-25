@@ -16,6 +16,11 @@
             <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Salesman</h2>
           </div>
       </div>
+      <div class="right-content">
+          <div>
+            <a style="color:#001f51;" href="{{ url()->previous() }}"><i class="fa fa-arrow-circle-left" aria-hidden="true"> Back</i></a>
+          </div>
+      </div>
   </div>
  <input type="hidden" value="{{$id}}" id="hidden_id">
   <div class="row row-sm">
@@ -116,10 +121,25 @@
     } ?> 
 
     jQuery(document).ready(function(){
-         $('.datepicker').datepicker({
+         // set default dates
+        var start = new Date();
+        // set end date to max one year period:
+        var end = new Date(new Date().setYear(start.getFullYear()+1));
+        $('#expected_date').datepicker({
             format: 'mm/dd/yyyy',
-            orientation: 'bottom',
             autoclose: true
+        // update "received_date" defaults whenever "expected_date" changes
+        }).on('changeDate', function(){
+            // set the "received_date" start to not be later than "expected_date" ends:
+            $('#received_date').datepicker('setStartDate', new Date($(this).val()));
+        }); 
+        $('#received_date').datepicker({
+            format: 'mm/dd/yyyy',
+            autoclose: true
+        // update "expected_date" defaults whenever "received_date" changes
+        }).on('changeDate', function(){
+            // set the "expected_date" end to not be later than "received_date" starts:
+            $('#expected_date').datepicker('setEndDate', new Date($(this).val()));
         });
 
         getSalesReports();

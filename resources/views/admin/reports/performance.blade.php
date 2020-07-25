@@ -13,7 +13,7 @@
   <div class="breadcrumb-header justify-content-between">
       <div class="left-content">
           <div>
-            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Reports</h2>
+            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Performance</h2>
           </div>
       </div>
       <div class="right-content">
@@ -27,12 +27,7 @@
     <div class="col-xl-12">
       <div class="card">
         <div class="card-header py-3 cstm_hdr">
-             <h6 class="m-0 font-weight-bold text-primary">Enquiry Reports</h6> 
-            <?php if(Auth::user()->roles->first()->id != config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
-                @if(isset($id))
-                    <a href="{{route('admin.projects.addEnquiry',$id)}}" class="btn btn-sm btn-icon-split float-right btn-outline-warning">Add New Enquiry</a>
-                @endif
-             <?php } ?>   
+             <h6 class="m-0 font-weight-bold text-primary">Performance Reports</h6> 
         </div>
         <div class="card-body">
                 <div class="well mb-3">
@@ -43,38 +38,11 @@
                                 <div class="form-group mr-sm-2 mb-2">
                                     {!! Form::select('sales_id', $sales, old('sales_id'), ['id'=>'sales_id', 'class' => 'form-control', 'placeholder' => '-Select Sales-']) !!}                   
                                 </div> 
-                                <div class="form-group mr-sm-2 mb-2">
-                                        {!! Form::select('type_id', $projecttype, old('type_id'), ['id'=>'type_id', 'class' => 'form-control', 'placeholder' => '-Select Type-']) !!}                   
-                                </div> 
                                 @endif
                             <?php } ?>   
-                           <div class="form-group mr-sm-2 mb-2">
-                                    {!! Form::select('product_category_id', $productcategory, old('product_category_id'), ['id'=>'product_category_id', 'class' => 'form-control', 'placeholder' => '-Select Product Category-']) !!}                   
-                            </div> 
                             <?php if(Auth::user()->roles->first()->id == config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
                             @if(!isset($id))
-                            <div class="form-group mr-sm-2 mb-2">
-                                <select class="form-control" id="source" name="source">
-                                    <option value="">-Select Source-</option>
-                                    <option value="client">Client</option>
-                                    <option value="financier">Financier</option>
-                                    <option value="quantity">Quantity Surveyor</option>
-                                    <option value="engineer">Mechanical Engineer</option>
-                                    <option value="architect">Architect</option>
-                                    <option value="interior">Interior</option>
-                                    <option value="contractor">Contractor</option>
-                                </select>
-                            </div> 
-                            <div class="form-group mr-sm-2 mb-2">
-                                <select name="status" id="status" class="form-control">
-                                     <option value="">-Select Status</option>
-                                     <option value="won">Won</option>
-                                     <option value="Loss">Loss</option>
-                                     <option value="live">Live</option>
-                                </select>         
-                            </div> 
-                    </div>
-                    <div class="row col-md-12">
+                   
                          
                             <div class="form-group mr-sm-2 mb-2">
                                   {!! Form::text('expected_date', old('expected_date', isset($project->expected_date)?$project->expected_date:''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'Expected Date','readOnly'=>'readOnly' ]) !!}                  
@@ -95,30 +63,34 @@
                 <table class="table table-bordered" width="100%" cellspacing="0" id="projectpreview">
                     <thead>
                         <tr>
-                             <th>Sales Name</th>
+                            <th>Sales Name</th>
                             <th>Project Name</th>
-                            <th>Project Type</th>
-                            <th>Product Category</th>
-                            <th>Source</th>
-                            <th>Source Name</th>
-                            <th>Expected</th>
-                            <th>Received</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>No of Enquiries</th>
+                            <th>Won</th>
+                            <th>Lost</th>
+                            <th>Live</th>
+                            <!-- during -->
+                            <th>New</th>
+                            <th>Won</th>
+                            <th>Lost</th>
+                            <th>Status Updated</th>
+                            <th>Live</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Sales Name</th>
                             <th>Project Name</th>
-                            <th>Project Type</th>
-                            <th>Product Category</th>
-                            <th>Source</th>
-                            <th>Source Name</th>
-                            <th>Expected Date</th>
-                            <th>Received</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>No of Enquiries</th>
+                            <th>Won</th>
+                            <th>Lost</th>
+                            <th>Live</th>
+                            <!-- during -->
+                            <th>New</th>
+                            <th>Won</th>
+                            <th>Lost</th>
+                            <th>Status Updated</th>
+                            <th>Live</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -167,8 +139,7 @@
             $('#expected_date').datepicker('setEndDate', new Date($(this).val()));
         });
 
-        getSalesReports();
-
+        jQuery('#projectpreview').dataTable();
         jQuery('#frmFilter').submit(function(){
             getSalesReports();
             return false;
@@ -197,7 +168,7 @@
             serverSide: true,
             iDisplayLength:50,
             ajax: {
-                url: "{{ route('admin.reports.enquirylist')}}",
+                url: "{{ route('admin.reports.performancelist')}}",
                 method: 'GET',
                 data: {
                         id:id,
@@ -215,16 +186,17 @@
                 [10, 25, 50,100,"All"]
             ],
             columns: [
-                {data: 'getProject.created_by', name:'getProject.created_by'},
-                {data: 'getProject.project_name', name:'getProject.project_name'},
-                {data: 'getProject.project_type_id', name:'getProject.project_type_id'},
-                {data: 'getproductcategory.title', name:'getproductcategory.title'},
-                {data: 'enq_source_type', name: 'enq_source_type'},
-                {data: 'enq_source', name: 'enq_source'},
-                {data: 'expected_date', name: 'expected_date'},
-                {data: 'received_date', name: 'received_date'},
-                {data: 'won_loss', name: 'won_loss'},
-                {data: 'action', name: 'action', orderable: false, searchable: false, "width": "2%"},
+                {data: 'sales_name', name:'sales_name', orderable: false, searchable: false},
+                {data: 'project_name', name:'project_name', orderable: false, searchable: false},
+                {data: 'number_of_enqueries', name:'number_of_enqueries', orderable: false, searchable: false},
+                {data: 'won', name:'won', orderable: false, searchable: false},
+                {data: 'lost', name: 'lost', orderable: false, searchable: false},
+                {data: 'live', name: 'live', orderable: false, searchable: false},
+                {data: 'new', name: 'new', orderable: false, searchable: false},
+                {data: 'during_won', name: 'during_won', orderable: false, searchable: false},
+                {data: 'during_lost', name: 'during_lost', orderable: false, searchable: false},
+                {data: 'status_updated', name: 'status_updated', orderable: false, searchable: false},
+                {data: 'during_live', name: 'during_live', orderable: false, searchable: false},
             ],
             language: {
                 searchPlaceholder: 'Search...',

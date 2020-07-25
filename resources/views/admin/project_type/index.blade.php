@@ -15,6 +15,11 @@
             <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Project Types</h2>
           </div>
       </div>
+      <div class="right-content">
+          <div>
+            <a style="color:#001f51;" href="{{ url()->previous() }}"><i class="fa fa-arrow-circle-left" aria-hidden="true"> Back</i></a>
+          </div>
+     </div>
   </div>
   <div class="row row-sm">
     <div class="col-xl-12">

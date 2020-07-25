@@ -186,6 +186,114 @@ class Reports extends Controller
 
         }  
     }
+    /**
+     * this function for salesman reports
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function performanceReports(Request $request){
+
+        try {
+            $id=$request->id;
+            $sales=User::with('roles')->whereHas('roles', function($query){
+                $query->where('id',config('constants.ROLE_TYPE_SALES_ID'));
+            })->where(['is_active'=>TRUE])->pluck('name', 'id');
+            $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
+            $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
+            return view('admin.reports.performance',compact('id','sales','projecttype','productcategory'));
+        } catch (Exception $e) {
+
+        }  
+    }
+
+     /**
+     * this function for performance reports
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getPerformanceReports(Request $request){
+         try {
+          
+            $projectperformances = Project::with('Projectenquiry','users');
+
+
+            $sales_id = intval($request->input('sales_id'));
+            if(intval($sales_id) > 0){
+                $projectperformances=$projectperformances->where('created_by',$sales_id);
+            }
+
+            $expected_date = $request->input('expected_date');
+            if($expected_date!=''){
+               $expected_date = date('Y-m-d', strtotime($expected_date));
+               $projectperformances=$projectperformances->whereHas('Projectenquiry',function($q) use($expected_date){
+                     $q->whereDate('expected_date', '>=', $expected_date);
+               });
+            } 
+            
+            $received_date = $request->input('received_date');
+            if($received_date!=''){
+               $received_date = date('Y-m-d', strtotime($received_date));
+               $projectperformances=$projectperformances->whereHas('Projectenquiry',function($q) use($received_date){
+                     $q->whereDate('received_date', '<=', $received_date);
+               });
+            }
+            
+            $projectperformances = $projectperformances->groupBy('id');
+            return  DataTables::of($projectperformances)
+            ->editColumn('sales_name', function ($project){
+                 return  isset($project->users->name)?ucwords($project->users->name):'';
+            })
+            ->editColumn('project_name', function ($project){
+                return  isset($project->project_name)?ucwords($project->project_name):'';
+            })
+            ->editColumn('number_of_enqueries', function ($project){
+               $number_of_enqueries=$project->Projectenquiry->count();
+                return $number_of_enqueries;
+            })
+            ->editColumn('won', function ($project){
+              $won=ProjectEnquiry::where(['won_loss'=>'Win','project_id'=>$project->id])->count();
+              return $won;
+            })
+            ->editColumn('lost', function ($project){
+             $lost=ProjectEnquiry::where(['won_loss'=>'Lost','project_id'=>$project->id])->count();
+              return $lost;
+            })
+            ->editColumn('live', function ($project){
+              $live=ProjectEnquiry::where(['won_loss'=>null,'project_id'=>$project->id])->count();
+              return $live;
+            })
+            ->editColumn('new', function ($project){
+                return $project->Projectenquiry->count();
+            })
+            ->editColumn('during_won', function ($project){
+              $won=$project->whereHas('Projectenquiry',function($q) use ($project){
+                   $q->where(['won_loss'=>'Win','project_id'=>$project->id]);
+              });
+              $won=$won->count();
+              return $won;
+            })->editColumn('during_lost', function ($project){
+              $lost=$project->whereHas('Projectenquiry',function($q) use ($project){
+                   $q->where(['won_loss'=>'Loss','project_id'=>$project->id]);
+              });
+              $lost=$lost->count();
+              return $lost;
+            })->editColumn('status_updated', function ($project){
+              return $project->Projectenquiry->count();
+            })->editColumn('during_live', function ($project){
+              $live=$project->whereHas('Projectenquiry',function($q) use ($project){
+                   $q->where(['won_loss'=>null,'project_id'=>$project->id]);
+              });
+              $live=$live->count();
+              return $live;
+            })->make(true);
+        } catch (Exception $e) {
+
+        }  
+    }
 
     /**
      * this function for salesman reports

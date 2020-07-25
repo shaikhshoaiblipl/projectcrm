@@ -10,6 +10,11 @@
             <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Users</h2>
           </div>
         </div>
+        <div class="right-content">
+          <div>
+            <a style="color:#001f51;" href="{{ url()->previous() }}"><i class="fa fa-arrow-circle-left" aria-hidden="true"> Back</i></a>
+          </div>
+      </div>
     </div>
     <div class="row row-sm">
         <div class="col-xl-12">
@@ -59,7 +64,7 @@
                 </div>
             </div>
             <div class="form-group {{$errors->has('employee_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                <label class="col-md-3 control-label" for="employee_id">Employee Id <span style="color:red">*</span></label>
+                <label class="col-md-3 control-label" for="employee_id">Employee Id</label>
                  <div class="col-md-6">
                     {!! Form::text('employee_id', old('employee_id',$user->employee_id), ['class' => 'form-control', 'placeholder' => 'Employee Id']) !!}
                     @if($errors->has('employee_id'))

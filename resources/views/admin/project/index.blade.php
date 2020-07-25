@@ -16,6 +16,11 @@
             <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Projects</h2>
           </div>
       </div>
+      <div class="right-content">
+          <div>
+            <a style="color:#001f51;" href="{{ url()->previous() }}"><i class="fa fa-arrow-circle-left" aria-hidden="true"> Back</i></a>
+          </div>
+      </div>
   </div>
   <div class="row row-sm">
     <div class="col-xl-12">
@@ -138,22 +143,33 @@
     } ?> 
     
     jQuery(document).ready(function(){
-        $('.datepicker').datepicker({
+        // set default dates
+        var start = new Date();
+        // set end date to max one year period:
+        var end = new Date(new Date().setYear(start.getFullYear()+1));
+        $('#start_date').datepicker({
             format: 'mm/dd/yyyy',
-            orientation: 'bottom',
             autoclose: true
+        // update "end_date" defaults whenever "start_date" changes
+        }).on('changeDate', function(){
+            // set the "end_date" start to not be later than "start_date" ends:
+            $('#end_date').datepicker('setStartDate', new Date($(this).val()));
+        }); 
+        $('#end_date').datepicker({
+            format: 'mm/dd/yyyy',
+            autoclose: true
+        // update "start_date" defaults whenever "end_date" changes
+        }).on('changeDate', function(){
+            // set the "start_date" end to not be later than "end_date" starts:
+            $('#start_date').datepicker('setEndDate', new Date($(this).val()));
         });
-
         getProjects();
-
         jQuery('#frmFilter').submit(function(){
             getProjects();
             return false;
         });
     });
-
     
-
     function resetFilter(){
         jQuery('#frmFilter :input:not(:button, [type="hidden"])').val('');
         getProjects();

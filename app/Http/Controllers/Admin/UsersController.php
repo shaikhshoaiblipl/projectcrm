@@ -119,7 +119,6 @@ class UsersController extends Controller
     public function store(Request $request){
         $rules = [
             'role_id'           => 'required', 
-            'employee_id'       => 'required', 
             'name'              => 'required', 
             'email'             => 'required|unique:'.with(new User)->getTable().',email',
             'mobile_number'     => 'required',
@@ -188,7 +187,6 @@ class UsersController extends Controller
         $rules = [
             'role_id'           => 'required', 
             'name'              => 'required', 
-            'employee_id'       => 'required',  
             'email'             => 'required|unique:'.with(new User)->getTable().',email,'.$user->getKey(),
             'mobile_number'     => 'required',
             'profile_picture'   => 'image'

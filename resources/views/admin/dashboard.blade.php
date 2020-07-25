@@ -15,17 +15,18 @@
 				</div>
 				<!-- /breadcrumb -->
 								<!-- row -->
-				<div class="row row-sm" style="display: none;">
+				<div class="row row-sm">
 					<div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
 						<div class="card overflow-hidden sales-card bg-primary-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">
-									<h6 class="mb-3 tx-12 text-white">Total Users</h6>
+									<!-- <h6 class="mb-3 tx-12 text-white">Manage Users</h6> -->
 								</div>
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											<h4 class="tx-20 font-weight-bold mb-1 text-white">2</h4>
+											<a href="{{route('admin.users.index')}}">
+											<h4 class="tx-20 font-weight-bold mb-1 text-white">Manage Users</h4></a>
 											<p class="mb-0 tx-12 text-white op-7"></p>
 										</div>
 										<span class="float-right my-auto ml-auto">
@@ -42,17 +43,18 @@
 						<div class="card overflow-hidden sales-card bg-danger-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">
-									<h6 class="mb-3 tx-12 text-white">Total Customers</h6>
+									<!-- <h6 class="mb-3 tx-12 text-white">Reports</h6> -->
 								</div>
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											<h4 class="tx-20 font-weight-bold mb-1 text-white">2</h4>
+											<a href="{{route('admin.project.index')}}">
+											<h4 class="tx-20 font-weight-bold mb-1 text-white">Reports</h4></a>
 											<p class="mb-0 tx-12 text-white op-7"></p>
 										</div>
 										<span class="float-right my-auto ml-auto">
 											<!-- <i class="fas fa-arrow-circle-down text-white"></i> -->
-											<span class="text-white op-7"> customer</span>
+											<!-- <span class="text-white op-7"> customer</span> -->
 										</span>
 									</div>
 								</div>
@@ -64,12 +66,13 @@
 						<div class="card overflow-hidden sales-card bg-success-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">
-									<h6 class="mb-3 tx-12 text-white">Total Suppliers</h6>
+									<!-- <h6 class="mb-3 tx-12 text-white">Masters</h6> -->
 								</div>
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											<h4 class="tx-20 font-weight-bold mb-1 text-white">supplier</h4>
+											<a href="{{route('admin.product_categories.index')}}">
+											<h4 class="tx-20 font-weight-bold mb-1 text-white">Masters</h4></a>
 											<p class="mb-0 tx-12 text-white op-7"></p>
 										</div>
 										<span class="float-right my-auto ml-auto">
@@ -82,7 +85,7 @@
 							<span id="compositeline3" class="pt-1">5,10,5,20,22,12,15,18,20,15,8,12,22,5,10,12,22,15,16,10</span>
 						</div>
 					</div>
-					<div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
+					<div class="col-xl-3 col-lg-6 col-md-6 col-xm-12"style="display: none;">
 						<div class="card overflow-hidden sales-card bg-warning-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">

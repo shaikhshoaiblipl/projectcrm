@@ -50,6 +50,9 @@ Route::group(['middleware' => ['auth']], function(){
 
 		Route::get('reports/enquries', 'Reports@enquiryReports')->name('reports.enquries');
 		Route::get('reports/enquirylist', 'Reports@getEnquiryReports')->name('reports.enquirylist');
+		
+		Route::get('reports/performances', 'Reports@performanceReports')->name('reports.performances');
+		Route::get('reports/performancelist', 'Reports@getPerformanceReports')->name('reports.performancelist');
 
 		Route::get('reports/salesman', 'Reports@salesManReports')->name('reports.salesman');
 		Route::get('reports/salesmanlist', 'Reports@getSalesManReports')->name('reports.salesmanlist');

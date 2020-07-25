@@ -40,7 +40,7 @@
 
 						    </li>
 						    @endcan
-						    @canany(['admin.project.index','admin.reports.enquries','admin.reports.salesman'])
+						    @canany(['admin.project.index','admin.reports.enquries','admin.reports.salesman','admin.reports.performances'])
 
     						<li aria-haspopup="true"><span class="horizontalMenu-click"><i class="horizontalMenu-arrow fe fe-chevron-down"></i></span><a href="javascript:void(0)" class="sub-icon">
 
@@ -55,9 +55,11 @@
 									@can('admin.reports.enquries')
                                         <li aria-haspopup="true"><a href="{{ route('admin.reports.enquries') }}" class="slide-item">Enquiries</a></li>
                                     @endcan
-
                                     @can('admin.reports.salesman')
                                         <li aria-haspopup="true"><a href="{{ route('admin.reports.salesman') }}" class="slide-item">Salesman</a></li>
+                                    @endcan
+                                    @can('admin.reports.performances')
+                                        <li aria-haspopup="true"><a href="{{ route('admin.reports.performances') }}" class="slide-item">Performance</a></li>
                                     @endcan
 								</ul>
 								
