@@ -146,19 +146,20 @@
                 @endif
             </div> 
             <div class="col-md-8 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
-                <label for="sku">Remarks <span style="color:red">*</span></label>
+                <label for="sku">Remarks</label>
                 <textarea name="remarks" id="remark"  placeholder="Remarks" cols="20" rows="4" class="form-control">{{old('remarks')}}</textarea>
                 @if($errors->has('remark'))
                 <p class="help-block">
                     <strong>{{ $errors->first('remark') }}</strong>
                 </p>
                 @endif
+                <span style="color: red;">( If order lost, please mention name of competition to whom it was lost and reason for the same)</span>
             </div>  
             <!-- radio button -->
              <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "> 
                 <label for="sku">Won/loss </label> 
-                <input type="radio" id="Win" name="won_loss"  value="Won" {{($project->won_loss=="Won")? "checked" : "" }}> &nbsp;Won &nbsp; &nbsp;
-                <input type="radio" id="Loss" name="won_loss"  value="Loss"{{($project->won_loss=="Loss")? "checked" : "" }}>&nbsp;Loss
+                <input type="radio" id="Win" class="status" name="won_loss"  value="Won" {{($project->won_loss=="Won")? "checked" : "" }}> &nbsp;Won &nbsp; &nbsp;
+                <input type="radio" id="Loss" class="status" name="won_loss"  value="Loss"{{($project->won_loss=="Loss")? "checked" : "" }}>&nbsp;Loss
                 @if($errors->has('expected_date'))
                 <p class="help-block">
                     <strong>{{ $errors->first('expected_date') }}</strong>
@@ -204,6 +205,16 @@
             autoclose: true,
             
         });
+        $( ".status" ).change(function() {
+            var status = $(this).val();
+            if(status=='Loss'){
+                $("#remark").addClass("required"); 
+            }else{
+                $("#remark").parents("div").removeClass('has-error border-left-danger'); 
+                $("#remark").removeClass("required"); 
+            }
+          
+        });
  });
 </script>
 <script type="text/javascript">
@@ -217,9 +228,6 @@
                     required: true
                 },
                 quotation_date: {
-                    required: true
-                },
-                remarks: {
                     required: true
                 },
                 product_category: {
