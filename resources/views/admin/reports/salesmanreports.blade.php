@@ -127,6 +127,7 @@
         var end = new Date(new Date().setYear(start.getFullYear()+1));
         $('#expected_date').datepicker({
             format: 'mm/dd/yyyy',
+            orientation: 'bottom',
             autoclose: true
         // update "received_date" defaults whenever "expected_date" changes
         }).on('changeDate', function(){
@@ -135,6 +136,7 @@
         }); 
         $('#received_date').datepicker({
             format: 'mm/dd/yyyy',
+            orientation: 'bottom',
             autoclose: true
         // update "expected_date" defaults whenever "received_date" changes
         }).on('changeDate', function(){

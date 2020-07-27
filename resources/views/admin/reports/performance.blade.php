@@ -13,7 +13,7 @@
   <div class="breadcrumb-header justify-content-between">
       <div class="left-content">
           <div>
-            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Performance</h2>
+            <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Period Performance</h2>
           </div>
       </div>
       <div class="right-content">
@@ -27,7 +27,7 @@
     <div class="col-xl-12">
       <div class="card">
         <div class="card-header py-3 cstm_hdr">
-             <h6 class="m-0 font-weight-bold text-primary">Performance Reports</h6> 
+             <h6 class="m-0 font-weight-bold text-primary">Period Performance Reports</h6> 
         </div>
         <div class="card-body">
                 <div class="well mb-3">
@@ -45,10 +45,10 @@
                    
                          
                             <div class="form-group mr-sm-2 mb-2">
-                                  {!! Form::text('expected_date', old('expected_date', isset($project->expected_date)?$project->expected_date:''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'Expected Date','readOnly'=>'readOnly' ]) !!}                  
+                                  {!! Form::text('expected_date', old('expected_date', isset($project->expected_date)?$project->expected_date:''), ['id'=>'expected_date', 'class' => 'form-control datepicker', 'placeholder' => 'Start Date','readOnly'=>'readOnly' ]) !!}                  
                             </div>   
                             <div class="form-group mr-sm-2 mb-2">
-                                  {!! Form::text('received_date', old('received_date', isset($project->received_date)?$project->received_date:''), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'Received Date','readOnly'=>'readOnly' ]) !!}                  
+                                  {!! Form::text('received_date', old('received_date', isset($project->received_date)?$project->received_date:''), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'End Date','readOnly'=>'readOnly' ]) !!}                  
                             </div> 
                             @endif
                             <?php } ?>   
@@ -62,6 +62,10 @@
             <div class="table-responsive">
                 <table class="table table-bordered" width="100%" cellspacing="0" id="projectpreview">
                     <thead>
+                        <tr>
+                            <th colspan="6">At Start Date</th>
+                            <th colspan="5">During The Selected Period</th>
+                        </tr>
                         <tr>
                             <th>Sales Name</th>
                             <th>Project Name</th>
@@ -124,6 +128,7 @@
         var end = new Date(new Date().setYear(start.getFullYear()+1));
         $('#expected_date').datepicker({
             format: 'mm/dd/yyyy',
+            orientation: 'bottom',
             autoclose: true
         // update "received_date" defaults whenever "expected_date" changes
         }).on('changeDate', function(){
@@ -132,6 +137,7 @@
         }); 
         $('#received_date').datepicker({
             format: 'mm/dd/yyyy',
+            orientation: 'bottom',
             autoclose: true
         // update "expected_date" defaults whenever "received_date" changes
         }).on('changeDate', function(){

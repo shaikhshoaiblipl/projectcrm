@@ -57,7 +57,7 @@
                     <div class="form-group {{$errors->has('mobile_number') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label class="col-md-3 control-label" for="mobile_number">Mobile Number <span style="color:red">*</span></label>
                         <div class="col-md-6">
-                            {!! Form::text('mobile_number',old('mobile_number'), ['class' => 'form-control autoFillOff', 'placeholder' => 'Mobile Number']) !!}
+                            {!! Form::text('mobile_number',old('mobile_number'), ['class' => 'form-control autoFillOff', 'placeholder' => 'Mobile Number','max'=>10]) !!}
                             @if($errors->has('mobile_number'))
                             <strong for="mobile_number" class="help-block">{{ $errors->first('mobile_number') }}</strong>
                             @endif

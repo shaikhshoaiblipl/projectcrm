@@ -59,7 +59,7 @@
                                         <li aria-haspopup="true"><a href="{{ route('admin.reports.salesman') }}" class="slide-item">Salesman</a></li>
                                     @endcan
                                     @can('admin.reports.performances')
-                                        <li aria-haspopup="true"><a href="{{ route('admin.reports.performances') }}" class="slide-item">Performance</a></li>
+                                        <li aria-haspopup="true"><a href="{{ route('admin.reports.performances') }}" class="slide-item">Period Performance</a></li>
                                     @endcan
 								</ul>
 								

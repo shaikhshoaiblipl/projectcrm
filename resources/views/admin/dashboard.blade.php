@@ -41,7 +41,32 @@
 						</div>
 					</div>
 				<?php } ?>
+				 <?php if(Auth::user()->roles->first()->id != config('constants.ROLE_TYPE_SUPERADMIN_ID')){ ?>
 
+					<div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
+						<div class="card overflow-hidden sales-card bg-success-gradient">
+							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
+								<div class="">
+									<!-- <h6 class="mb-3 tx-12 text-white">Reports</h6> -->
+								</div>
+								<div class="pb-0 mt-0">
+									<div class="d-flex">
+										<div class="">
+										       <a href="{{ route('admin.project.index') }}">
+											<h4 class="tx-20 font-weight-bold mb-1 text-white">Projects</h4></a>
+											<p class="mb-0 tx-12 text-white op-7"></p>
+										</div>
+										<span class="float-right my-auto ml-auto">
+											<!-- <i class="fas fa-arrow-circle-down text-white"></i> -->
+											<!-- <span class="text-white op-7"> customer</span> -->
+										</span>
+									</div>
+								</div>
+							</div>
+							<span id="compositeline2" class="pt-1">3,2,4,6,12,14,8,7,14,16,12,7,8,4,3,2,2,5,6,7</span>
+						</div>
+					</div>
+					<?php } ?>
 					<div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
 						<div class="card overflow-hidden sales-card bg-danger-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
@@ -68,7 +93,7 @@
 									</div>
 								</div>
 							</div>
-							<span id="compositeline2" class="pt-1">3,2,4,6,12,14,8,7,14,16,12,7,8,4,3,2,2,5,6,7</span>
+							<span id="compositeline3" class="pt-1">3,2,4,6,12,14,8,7,14,16,12,7,8,4,3,2,2,5,6,7</span>
 						</div>
 					</div>
 					 <?php if(Auth::user()->roles->first()->id == config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
@@ -92,7 +117,7 @@
 									</div>
 								</div>
 							</div>
-							<span id="compositeline3" class="pt-1">5,10,5,20,22,12,15,18,20,15,8,12,22,5,10,12,22,15,16,10</span>
+							<span id="compositeline4" class="pt-1">5,10,5,20,22,12,15,18,20,15,8,12,22,5,10,12,22,15,16,10</span>
 						</div>
 					</div>
 					<?php } ?>
@@ -129,7 +154,7 @@
 									<h4 class="card-title mb-0">Order status</h4>
 									<i class="mdi mdi-dots-horizontal text-gray"></i>
 								</div>
-								<p class="tx-12 text-muted mb-0">Order Status and Tracking. Track your order from ship date to arrival. To begin, enter your order number.</p>
+								<p class="tx-12 text-muted mb-0">Order Status and Tracking. Track your order from ship date to arrival. Toroles begin, enter your order number.</p>
 							</div>
 							<div class="card-body">
 								<div class="total-revenue">

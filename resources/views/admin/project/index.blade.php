@@ -149,6 +149,7 @@
         var end = new Date(new Date().setYear(start.getFullYear()+1));
         $('#start_date').datepicker({
             format: 'mm/dd/yyyy',
+            orientation: 'bottom',
             autoclose: true
         // update "end_date" defaults whenever "start_date" changes
         }).on('changeDate', function(){
@@ -157,6 +158,7 @@
         }); 
         $('#end_date').datepicker({
             format: 'mm/dd/yyyy',
+            orientation: 'bottom',
             autoclose: true
         // update "start_date" defaults whenever "end_date" changes
         }).on('changeDate', function(){
