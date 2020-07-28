@@ -259,7 +259,10 @@ class ProjectController extends Controller
                 // backend start
         if(isset($request->contractor_id) && isset($request->sub_contractor)){
             foreach ($request->contractor_id as $key => $contractor_id) {
-              Project_has_sub_contractor::create(['project_id'=>$project->id,'contractor_id'=>$contractor_id,'sub_contractor'=>$request->sub_contractor[$key]]);
+              $sub_c=$request->sub_contractor[$key];
+              if($contractor_id!='' && $sub_c!=''){
+                Project_has_sub_contractor::create(['project_id'=>$project->id,'contractor_id'=>$contractor_id,'sub_contractor'=>$request->sub_contractor[$key]]);
+              }
             }
         }
         if($project->id > 0){
@@ -483,7 +486,10 @@ class ProjectController extends Controller
         if(isset($request->contractor_id) && isset($request->sub_contractor)){
             Project_has_sub_contractor::where(['project_id'=>$id])->delete();
             foreach ($request->contractor_id as $key => $contractor_id) {
-              Project_has_sub_contractor::create(['project_id'=>$id,'contractor_id'=>$contractor_id,'sub_contractor'=>$request->sub_contractor[$key]]);
+              $sub_c=$request->sub_contractor[$key];
+              if($contractor_id!='' && $sub_c!=''){
+                  Project_has_sub_contractor::create(['project_id'=>$id,'contractor_id'=>$contractor_id,'sub_contractor'=>$request->sub_contractor[$key]]);
+              }
             }
         }
         // backend start
@@ -607,6 +613,7 @@ class ProjectController extends Controller
                 return redirect()->route('admin.project.index'); 
             }else{
                $project->delete();
+               Project_has_sub_contractor::where(['project_id'=>$id])->delete();
                ProjectEnquiry::where('project_id',$id)->delete();
                $request->session()->flash('danger',__('global.messages.delete'));
                return redirect()->route('admin.project.index'); 
@@ -968,7 +975,8 @@ class ProjectController extends Controller
     }
 
     public function viewremark($id){
-        $remarks = ProjectEnquiry::with('getremarks','getProject')->where('id',$id)->first();
+        $remarks = ProjectEnquiry::with('getremarks','getProject','getProject.project_has_sub_contractor','getProject.project_has_sub_contractor.getSubcontractor')->where('id',$id)->first();
+
         $project_id=isset($remarks->getProject->id)?$remarks->getProject->id:'';
         $productcategories=ProjectHasProductCategory::with('category')->where('project_id',$project_id)->get();
         return view('admin.project.viewremarks',compact('remarks','productcategories'));

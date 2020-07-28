@@ -372,7 +372,7 @@
 <div class="row added_item">
     <div class="col-md-4">
         <div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-            <label for="project_type">Category</label>
+            <label for="project_type">Sub Contractor Category</label>
             {!! Form::select('contractor_id[]', $subcontractor, old('contractor_id', isset($sub_contractor->contractor_id)?$sub_contractor->contractor_id:''), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
             @if($errors->has('contractor_id'))
             <p class="help-block">

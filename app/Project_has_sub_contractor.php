@@ -11,5 +11,9 @@ class Project_has_sub_contractor extends Model
                'contractor_id',
                'sub_contractor',
     ];
+
+   public function getSubcontractor(){
+     	return $this->hasOne(SubContractor::class,'id','contractor_id');
+   }
     
 }

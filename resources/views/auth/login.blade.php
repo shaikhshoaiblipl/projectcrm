@@ -29,7 +29,7 @@
                     <!--  <a href="index.html"><img src="{{ asset('template/valex-theme/img/brand/favicon.png') }}" class="sign-favicon ht-40" alt="logo"></a> -->
                     <div class="card-sigin">
                       <div class="main-signup-header">
-                        <h2>Welcome back!</h2>
+                        <h2>Welcome Back!</h2>
                         <h5 class="font-weight-semibold mb-4">Please sign in to continue.</h5>
                         @if($flash = session('error'))            
                           <div class="alert alert-danger alert-dismissible" role="alert">
