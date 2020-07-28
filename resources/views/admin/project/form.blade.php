@@ -374,7 +374,7 @@
                 <div class="col-md-4">
                     <div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="project_type">Sub Contractor Category</label>
-                        {!! Form::select('contractor_id', $subcontractor, old('contractor_id', isset($projectcategory->id)?$project->project_type_id:''), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
+                        {!! Form::select('contractor_id[]', $subcontractor, old('contractor_id', isset($projectcategory->id)?$project->project_type_id:''), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
                         @if($errors->has('contractor_id'))
                         <p class="help-block">
                             <strong>{{ $errors->first('contractor_id') }}</strong>
@@ -382,16 +382,19 @@
                         @endif                       
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="col-md-12 form-group {{$errors->has('contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                         <label for="title">Sub Contractor</label>
-                        {!! Form::text('contractor', old('contractor',isset($project->contractor)?$project->contractor:''), ['id'=>'contractor', 'class' => 'form-control', 'placeholder' => 'Sub Contractor']) !!}
-                        @if($errors->has('contractor'))
+                        {!! Form::text('sub_contractor[]', old('contractor',isset($project->contractor)?$project->contractor:''), ['id'=>'contractor', 'class' => 'form-control', 'placeholder' => 'Sub Contractor']) !!}
+                        @if($errors->has('sub_contractor'))
                         <p class="help-block">
-                            <strong>{{ $errors->first('contractor') }}</strong>
+                            <strong>{{ $errors->first('sub_contractor') }}</strong>
                         </p>
                         @endif
                     </div>  
+                </div>
+                <div class="col-md-1">
+                   <a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus" aria-hidden="true"></i></a>
                 </div>
                 <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
                     <label for="sku">Product Category <span style="color:red">*</span></label>
@@ -403,6 +406,10 @@
                     </p>
                     @endif 
                 </div>
+            </div>
+            <!-- row woud be insterted -->
+            <div class="field_wrapper">
+
             </div>
             <!-- row 10 -->
             <div class="row">
@@ -757,5 +764,22 @@
 
 
 </script>
+<script type="text/javascript">
+$(function(){
+    var addButton = $('.add_button');
+    var wrapper = $('.field_wrapper');
+    var fieldHTML = '<div class="row added_item"><div class="col-md-4"><div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="project_type">Sub Contractor Category</label>{!! Form::select('contractor_id[]', $subcontractor, old('contractor_id', isset($projectcategory->id)?$project->project_type_id:''), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}@if($errors->has('contractor_id'))<p class="help-block"><strong>{{ $errors->first('contractor_id') }}</strong></p>@endif</div></div><div class="col-md-3"><div class="col-md-12 form-group {{$errors->has('sub_contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="title">Sub Contractor</label>{!! Form::text('sub_contractor[]', old('sub_contractor_id',isset($project->contractor)?$project->contractor:''), ['id'=>'contractor', 'class' => 'form-control', 'placeholder' => 'Sub Contractor']) !!}@if($errors->has('sub_contractor'))<p class="help-block"><strong>{{ $errors->first('sub_contractor') }}</strong></p>@endif</div></div><div class="col-md-1"><a href="javascript:void(0);" class="remove_button"><i class="fa fa-minus" aria-hidden="true"></i></a></div></div>'; //New 
+
+    $(addButton).click(function(){
+        $(wrapper).append(fieldHTML); 
+    });
+    $(wrapper).on('click', '.remove_button', function(e){
+        e.preventDefault();
+        $(this).parents('.added_item').remove();
+    });
+});
+</script>
+
+
 @endsection
 

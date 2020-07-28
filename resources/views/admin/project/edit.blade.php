@@ -366,12 +366,14 @@
     </div> 
 </div>
 </div>
+<div class="added_field_wrapper ">
+<?php if($sub_contractors=$project->project_has_sub_contractor){ $id=0; foreach ($sub_contractors as $sub_contractor) { $id+=1; //print_r($sub_contractorr); ?>
 <!-- row 9 -->
-<div class="row">
+<div class="row added_item">
     <div class="col-md-4">
         <div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
             <label for="project_type">Category</label>
-            {!! Form::select('contractor_id', $subcontractor, old('contractor_id', isset($project->contractor_id)?$project->contractor_id:''), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
+            {!! Form::select('contractor_id[]', $subcontractor, old('contractor_id', isset($sub_contractor->contractor_id)?$sub_contractor->contractor_id:''), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}
             @if($errors->has('contractor_id'))
             <p class="help-block">
                 <strong>{{ $errors->first('contractor_id') }}</strong>
@@ -379,10 +381,10 @@
             @endif                       
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="col-md-12 form-group {{$errors->has('sub_contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
             <label for="title">Sub Contractor</label>
-            {!! Form::text('contractor', old('contractor',isset($project->contractor)?$project->contractor:''), ['id'=>'contractor', 'class' => 'form-control', 'placeholder' => 'Sub Contractor']) !!}
+            {!! Form::text('sub_contractor[]', old('sub_contractor',isset($sub_contractor->sub_contractor)?$sub_contractor->sub_contractor:''), ['id'=>'contractor', 'class' => 'form-control', 'placeholder' => 'Sub Contractor']) !!}
             @if($errors->has('sub_contractor'))
             <p class="help-block">
                 <strong>{{ $errors->first('sub_contractor') }}</strong>
@@ -390,16 +392,32 @@
             @endif
         </div>  
     </div>
+     <?php if($id==1){ ?>
+    <div class="col-md-1">
+       <a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus" aria-hidden="true"></i></a>
+    </div>
      <div class="col-md-4 form-group {{$errors->has('product_category') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
-                    <label for="sku">Product Category <span style="color:red">*</span></label>
-                    {!! Form::select('project_product_category[]', $productcategory, old('project_product_category', isset($productCategories)?$productCategories:''), ['multiple'=>'multiple', 'id'=>'project_product_category', 'class' => 'form-control',  'data-error-container'=>'#project_product_category_error']) !!}
-                    <span id="project_product_category_error"></span>
-                    @if($errors->has('project_product_category'))
-                    <p class="help-block">
-                        <strong>{{ $errors->first('project_product_category') }}</strong>
-                    </p>
-                    @endif 
-                </div>
+          <label for="sku">Product Category <span style="color:red">*</span></label>
+          {!! Form::select('project_product_category[]', $productcategory, old('project_product_category', isset($productCategories)?$productCategories:''), ['multiple'=>'multiple', 'id'=>'project_product_category', 'class' => 'form-control',  'data-error-container'=>'#project_product_category_error']) !!}
+          <span id="project_product_category_error"></span>
+          @if($errors->has('project_product_category'))
+          <p class="help-block">
+              <strong>{{ $errors->first('project_product_category') }}</strong>
+          </p>
+          @endif 
+      </div>
+     <?php }else{  ?>
+      <div class="col-md-1">
+       <a href="javascript:void(0);" class="added_remove_button"><i class="fa fa-minus" aria-hidden="true"></i></a>
+    </div>
+     <?php  } ?>
+</div>
+<?php }
+  } ?>
+</div>
+<div class="field_wrapper ">
+
+
 </div>
 <!-- row 10 -->
 <div class="row">
@@ -809,6 +827,28 @@ $('.add_button ').click( function() {
     });
 
 
+</script>
+
+<script type="text/javascript">
+  $(function(){
+      var addButton = $('.add_button');
+      var wrapper = $('.field_wrapper');
+      var added_field_wrapper = $('.added_field_wrapper');
+      var fieldHTML = '<div class="row added_item"><div class="col-md-4"><div class="col-md-12 form-group {{$errors->has('sub_contractor_id') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="project_type">Sub Contractor Category</label>{!! Form::select('contractor_id[]', $subcontractor, old('contractor_id', isset($projectcategory->id)?$project->project_type_id:''), ['id'=>'contractor_id', 'class' => 'form-control', 'placeholder' => '-Select-']) !!}@if($errors->has('contractor_id'))<p class="help-block"><strong>{{ $errors->first('contractor_id') }}</strong></p>@endif</div></div><div class="col-md-3"><div class="col-md-12 form-group {{$errors->has('sub_contractor') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}"><label for="title">Sub Contractor</label>{!! Form::text('sub_contractor[]', old('sub_contractor_id',isset($project->contractor)?$project->contractor:''), ['id'=>'contractor', 'class' => 'form-control', 'placeholder' => 'Sub Contractor']) !!}@if($errors->has('sub_contractor'))<p class="help-block"><strong>{{ $errors->first('sub_contractor') }}</strong></p>@endif</div></div><div class="col-md-1"><a href="javascript:void(0);" class="remove_button"><i class="fa fa-minus" aria-hidden="true"></i></a></div></div>'; //New 
+
+      $(addButton).click(function(){
+          $(wrapper).append(fieldHTML); 
+      });
+      $(wrapper).on('click', '.remove_button', function(e){
+          e.preventDefault();
+          $(this).parents('.added_item').remove();
+      });
+
+      $(added_field_wrapper).on('click', '.added_remove_button', function(e){
+          e.preventDefault();
+          $(this).parents('.added_item').remove();
+      });
+  });
 </script>
 @endsection
 

@@ -12,6 +12,7 @@ use Form;
 use App\ProjectType;
 use App\SubContractor;
 use App\Project;
+use App\Project_has_sub_contractor;
 use App\ProjectEnquiry;
 use Carbon\Carbon;
 use App\Architect;
@@ -220,7 +221,7 @@ class ProjectController extends Controller
 
         // $request->validate($rules);
 
-        $data= $request->except(['sub_product_id','expected_date','enq_source_list']);
+        $data= $request->except(['sub_product_id','expected_date','enq_source_list','contractor_id','sub_contractor']);
         $project_date=isset($request->project_date)?$request->project_date:date('Y-m-d');
         $commencement_date=isset($request->commencement_date)?$request->commencement_date:date('Y-m-d');
         $completion_date=isset($request->completion_date)?$request->completion_date:date('Y-m-d');
@@ -247,8 +248,6 @@ class ProjectController extends Controller
         $data['project_date'] =  $project_date;
         $data['commencement_date'] =  $commencement_date;
         $data['completion_date'] =  $completion_date;
-        $data['contractor'] =  isset($data['contractor'])?$data['contractor']:'';
-        $data['contractor_id'] =  isset($data['contractor_id'])?$data['contractor_id']:'';
         $data['created_by']=Auth::user()->id;  
         $data['main_contractor'] =  isset($data['main_contractor'])?$data['main_contractor']:'';
         $data['mech_engg'] =  isset($data['mech_engg_id'])?$data['mech_engg_id']:'';
@@ -256,10 +255,13 @@ class ProjectController extends Controller
         $data['surveyor_qty'] =  isset($data['quantity_id'])?$data['quantity_id']:'';
         $data['architect'] =  isset($data['architect_id'])?$data['architect_id']:'';
         $data['interior'] =  isset($data['interior_id'])?$data['interior_id']:'';
-
         $project=Project::create($data);
                 // backend start
-    
+        if(isset($request->contractor_id) && isset($request->sub_contractor)){
+            foreach ($request->contractor_id as $key => $contractor_id) {
+              Project_has_sub_contractor::create(['project_id'=>$project->id,'contractor_id'=>$contractor_id,'sub_contractor'=>$request->sub_contractor[$key]]);
+            }
+        }
         if($project->id > 0){
             if($data['developer']=='add_new_client'){
                 $developer=Client::create(['name'=>$add_developer]);
@@ -375,7 +377,8 @@ class ProjectController extends Controller
     {
         if(Auth::user()->roles->first()->id != config('constants.ROLE_TYPE_SUPERADMIN_ID')){  
 
-            $project = Project::with('getprojecttype','Projectenquiry','getdeveloper','getfinancier','getquantity','getmengineer','getarchitect','getinterior','getmcontractor','getpcategory','getsubcontractor')->findOrFail($id);
+            $project = Project::with('getprojecttype','Projectenquiry','getdeveloper','getfinancier','getquantity','getmengineer','getarchitect','getinterior','getmcontractor','getpcategory','getsubcontractor','project_has_sub_contractor')->findOrFail($id);
+           // echo "<pre>"; print_r($project->project_has_sub_contractor); die();
             $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
             $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
             $architect=Architect::where(['is_active'=>TRUE])->pluck('name', 'id');
@@ -441,7 +444,7 @@ class ProjectController extends Controller
             'project_name'=>'required',
         ];
         $request->validate($rules);
-        $data= $request->except(['expected_date','enq_source_list']);
+        $data= $request->except(['expected_date','enq_source_list','sub_contractor','contractor_id']);
         $project_date=isset($request->project_date)?$request->project_date:date('Y-m-d');
         $commencement_date=isset($request->commencement_date)?$request->commencement_date:date('Y-m-d');
         $completion_date=isset($request->completion_date)?$request->completion_date:date('Y-m-d');
@@ -466,9 +469,6 @@ class ProjectController extends Controller
         $data['project_date'] =  $project_date;
         $data['commencement_date'] =  $commencement_date;
         $data['completion_date'] =  $completion_date;
-
-        $data['contractor'] =  isset($data['contractor'])?$data['contractor']:'';
-        $data['contractor_id'] =  isset($data['contractor_id'])?$data['contractor_id']:'';
         $data['main_contractor'] =  isset($data['main_contractor'])?$data['main_contractor']:'';
         $data['mech_engg'] =  isset($data['mech_engg_id'])?$data['mech_engg_id']:'';
         $data['project_financier'] =  isset($data['financier_id'])?$data['financier_id']:'';
@@ -480,6 +480,12 @@ class ProjectController extends Controller
         
 
         $project->update($data);
+        if(isset($request->contractor_id) && isset($request->sub_contractor)){
+            Project_has_sub_contractor::where(['project_id'=>$id])->delete();
+            foreach ($request->contractor_id as $key => $contractor_id) {
+              Project_has_sub_contractor::create(['project_id'=>$id,'contractor_id'=>$contractor_id,'sub_contractor'=>$request->sub_contractor[$key]]);
+            }
+        }
         // backend start
         if($project->id > 0){
             if($data['developer']=='add_new_client'){

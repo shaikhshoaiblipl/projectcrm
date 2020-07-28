@@ -57,5 +57,10 @@ class Project extends Model
     public function users(){
         return $this->belongsTo(User::class,'created_by','id');
     }
+
+    public function project_has_sub_contractor() 
+    {
+      return $this->hasMany(Project_has_sub_contractor::class,'project_id','id');
+    }
     
 }
