@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Country;
+use App\Project;
 use App\City;
 use App\Profile;
 use Validator;
@@ -256,7 +257,8 @@ class UsersController extends Controller
      */
     public function destroy($id){
       $user = User::findOrFail($id);
-      $user->delete();
+      Project::where('created_by',$id)->delete();
+      $user->forceDelete();
       session()->flash('danger',__('global.messages.delete'));
       return redirect()->route('admin.users.index');
     }

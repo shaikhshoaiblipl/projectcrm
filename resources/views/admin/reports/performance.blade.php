@@ -63,8 +63,9 @@
                 <table class="table table-bordered" width="100%" cellspacing="0" id="projectpreview">
                     <thead>
                         <tr>
-                            <th colspan="6">At Start Date</th>
-                            <th colspan="5">During The Selected Period</th>
+                            <th colspan="2"></th>
+                            <th colspan="4" style="text-align: center;">At Start Date</th>
+                            <th colspan="5" style="text-align: center;">During The Selected Period</th>
                         </tr>
                         <tr>
                             <th>Sales Name</th>
