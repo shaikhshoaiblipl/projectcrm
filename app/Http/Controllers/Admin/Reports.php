@@ -445,7 +445,7 @@ class Reports extends Controller
      * @return \Illuminate\Http\Response
      */
       public function enquiryDetails($id){
-        $remarks = ProjectEnquiry::with('getremarks','getProject')->where('id',$id)->first();
+        $remarks = ProjectEnquiry::with('getremarks','getProject','getProject.project_has_sub_contractor','getProject.project_has_sub_contractor.getSubcontractor')->where('id',$id)->first();
         $project_id=isset($remarks->getProject->id)?$remarks->getProject->id:'';
         $productcategories=ProjectHasProductCategory::with('category')->where('project_id',$project_id)->get();
         return view('admin.reports.enquirydetails',compact('remarks','productcategories'));

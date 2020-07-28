@@ -89,16 +89,26 @@
                                 <strong>Main Contractor : </strong> {{isset($remarks->getProject->getmcontractor->name)?$remarks->getProject->getmcontractor->name:''}}
                             </div> 
                             <div class="p-1">
-                                <strong>Sub Contractor Category: </strong> {{isset($remarks->getProject->getsubcontractor->title)?$remarks->getProject->getsubcontractor->title:''}}
+                                 <table class="table table-bordered">
+                                   <thead>
+                                    <tr>
+                                     <th>Sub Contractor Category</th>
+                                     <th>Sub Contractor</th>
+                                    </tr>
+                                  </thead>
+                                   <tbody>
+                               <?php if($sub_contractor_categories=$remarks->getProject->project_has_sub_contractor){ 
+                                      foreach ($remarks->getProject->project_has_sub_contractor as $key =>$sub_contractor_category) { ?>
+                                   <tr>
+                                     <td><?php  echo $sub_contractor_category->getSubcontractor->title; ?></td>
+                                     <td> <?php  echo $sub_contractor_category->sub_contractor ?></td>
+                                   </tr>
+                                <?php  }
+                                    } ?>
+                                    </tbody>
+                                 </table>
                             </div>
-                            <div class="p-1">
-                                <strong>Sub Contractor: </strong> {{isset($remarks->getProject->contractor)?$remarks->getProject->contractor:''}}
-                            </div>
-
-                          
-                        
                         </div>
-
                         <div class="col-md-12">
                            <div class="p-1">
                                   <strong>Commentery : </strong> {{isset($remarks->getProject->commentery)?$remarks->getProject->commentery:''}}
