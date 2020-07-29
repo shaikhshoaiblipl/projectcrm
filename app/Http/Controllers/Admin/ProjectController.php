@@ -179,7 +179,7 @@ class ProjectController extends Controller
     {   
         if(Auth::user()->roles->first()->id != config('constants.ROLE_TYPE_SUPERADMIN_ID')){  
             $projecttype = ProjectType::where(['is_active'=>TRUE])->pluck('title', 'id');
-            $project =Project::where(enquiryDetails['is_active'=>TRUE])->pluck('project_name', 'id');
+            $project =Project::where(['is_active'=>TRUE])->pluck('project_name', 'id');
             $productcategory=ProductCategory::where(['is_active'=>TRUE])->pluck('title', 'id');
             $subcontractor=SubContractor::where(['is_active'=>TRUE])->pluck('title', 'id');
             $architect=Architect::where(['is_active'=>TRUE])->pluck('name', 'id');
@@ -223,7 +223,7 @@ class ProjectController extends Controller
 
         $data= $request->except(['sub_product_id','expected_date','enq_source_list','contractor_id','sub_contractor']);
         $project_date=isset($request->project_date)?$request->project_date:date('Y-m-d');
-        $commencement_date=isset(enquiryDetails$request->commencement_date)?$request->commencement_date:date('Y-m-d');
+        $commencement_date=isset($request->commencement_date)?$request->commencement_date:date('Y-m-d');
         $completion_date=isset($request->completion_date)?$request->completion_date:date('Y-m-d');
 
         $add_developer=isset($data['add_developer'])?$data['add_developer']:'';
