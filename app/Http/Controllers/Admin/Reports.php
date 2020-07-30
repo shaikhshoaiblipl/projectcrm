@@ -311,7 +311,7 @@ class Reports extends Controller
                 return isset($during_live)?$during_live:0;
             })->make(true);
         } 
-    }
+    
 
     /**
      * this function for salesman reports
