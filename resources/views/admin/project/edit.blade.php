@@ -204,7 +204,8 @@
     </p>
     @endif                       
 </div> 
-</div>
+</div>Quotation Number : 111111111111111111111111
+
 <div class="col-md-4">
     <div class="col-md-12 form-group {{$errors->has('add_surveyor_qty') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}}">
         <label for="title">Add New Quantity</label>
@@ -648,7 +649,28 @@ $('.add_button ').click( function() {
               autoclose: true
           }).datepicker('setDate', 'today');
       });
-
+          // set default dates
+        var start = new Date();
+        // set end date to max one year period:
+        var end = new Date(new Date().setYear(start.getFullYear()+1));
+        $('#commencement_date').datepicker({
+            format: 'mm/dd/yyyy',
+            orientation: 'bottom',
+            autoclose: true
+        // update "completion_date" defaults whenever "commencement_date" changes
+        }).on('changeDate', function(){
+            // set the "completion_date" start to not be later than "commencement_date" ends:
+            $('#completion_date').datepicker('setStartDate', new Date($(this).val()));
+        }); 
+        $('#completion_date').datepicker({
+            format: 'mm/dd/yyyy',
+            orientation: 'bottom',
+            autoclose: true
+        // update "commencement_date" defaults whenever "completion_date" changes
+        }).on('changeDate', function(){
+            // set the "commencement_date" end to not be later than "completion_date" starts:
+            $('#commencement_date').datepicker('setEndDate', new Date($(this).val()));
+        });
         //Once remove button is clicked
         $(presentlywrapper).on('click', '.remove_button', function(e){
             e.preventDefault();

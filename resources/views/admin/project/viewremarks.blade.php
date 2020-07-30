@@ -136,6 +136,10 @@
                                 <strong>Quotation Date : </strong> {{isset($remarks->quotation_date)?date('d M Y', strtotime($remarks->quotation_date)):''}}
                             </div>
                             <div class="p-1">
+                                <strong>Quotation Number : </strong> 
+                                {{isset($remarks->quotation_number)?$remarks->quotation_number:''}}
+                            </div>
+                            <div class="p-1">
                                 <strong>Won Loss : </strong> {{isset($remarks->won_loss)?$remarks->won_loss:''}}
                             </div>
                            

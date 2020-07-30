@@ -107,14 +107,23 @@
                         </div>
             <!-- row 3 -->
              <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
-                            <label for="expected_budget">Expected Budget <span style="color:red">*</span></label>
-                            {!! Form::text('expected_budget', old('expected_budget',isset($project->expected_budget)?$project->expected_budget:''), ['required' => 'required','class' => 'form-control', 'placeholder' => 'Expected Budget']) !!}
-                            @if($errors->has('expected_budget'))
-                            <p class="help-block">
-                                <strong>{{ $errors->first('expected_budget') }}</strong>
-                            </p>
-                            @endif
-                        </div> 
+                <label for="expected_budget">Expected Budget <span style="color:red">*</span></label>
+                {!! Form::text('expected_budget', old('expected_budget',isset($project->expected_budget)?$project->expected_budget:''), ['required' => 'required','class' => 'form-control', 'placeholder' => 'Expected Budget']) !!}
+                @if($errors->has('expected_budget'))
+                <p class="help-block">
+                    <strong>{{ $errors->first('expected_budget') }}</strong>
+                </p>
+                @endif
+             </div> 
+             <div class="col-md-4 form-group {{$errors->has('quotation_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
+                <label for="sku">Quotation Date</label>
+                {!! Form::text('quotation_date', old('quotation_date',isset($project->quotation_date)?Carbon\Carbon::parse($project->quotation_date)->format('m/d/Y')   :''), ['id'=>'quotation_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+                @if($errors->has('quotation_date'))
+                <p class="help-block">
+                    <strong>{{ $errors->first('quotation_date') }}</strong>
+                </p>
+                @endif
+            </div> 
              <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Expected Date <span style="color:red">*</span></label>
                 
@@ -125,14 +134,12 @@
                 </p>
                 @endif
             </div> 
-            <div class="col-md-8 form-group  ">
-               
-            </div> 
+            
 
 
             <!-- edit mode start -->
-           <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
-                <label for="sku">Received Date <span style="color:red">*</span></label>
+           <div class="col-md-4 form-group {{$errors->has('received_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
+                <label for="sku">Received Date </label>
                 {!! Form::text('received_date', old('received_date',isset($project->received_date)?Carbon\Carbon::parse($project->received_date)->format('m/d/Y'):''), ['id'=>'received_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
                 @if($errors->has('received_date'))
                 <p class="help-block">
@@ -140,25 +147,16 @@
                 </p>
                 @endif
             </div> 
-            <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
-                <label for="sku">Quotation Date <span style="color:red">*</span></label>
-                {!! Form::text('quotation_date', old('quotation_date',isset($project->quotation_date)?Carbon\Carbon::parse($project->quotation_date)->format('m/d/Y')	:''), ['id'=>'quotation_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
-                @if($errors->has('quotation_date'))
+            
+            <div class="col-md-4 form-group {{$errors->has('quotation_number') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
+                <label for="sku">Quotation Number</label>
+                {!! Form::text('quotation_number', old('quotation_number',isset($project->quotation_number)?$project->quotation_number:''), ['id'=>'quotation_number', 'class' => 'form-control', 'placeholder' => 'Quotation Number']) !!}
+                @if($errors->has('quotation_number'))
                 <p class="help-block">
-                    <strong>{{ $errors->first('quotation_date') }}</strong>
+                    <strong>{{ $errors->first('quotation_number') }}</strong>
                 </p>
                 @endif
             </div> 
-            <div class="col-md-8 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
-                <label for="sku">Remarks</label>
-                <textarea name="remarks" id="remark"  placeholder="Remarks" cols="20" rows="4" class="form-control">{{old('remarks')}}</textarea>
-                @if($errors->has('remark'))
-                <p class="help-block">
-                    <strong>{{ $errors->first('remark') }}</strong>
-                </p>
-                @endif
-                <span style="color: red;">( If order lost, please mention name of competition to whom it was lost and reason for the same)</span>
-            </div>  
             <!-- radio button -->
              <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} "> 
                 <label for="sku">Won/loss </label> 
@@ -170,6 +168,20 @@
                 </p>
                 @endif
             </div>
+            <div class="col-md-4 form-group">
+            </div>
+            <div class="col-md-8 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
+                <label for="sku">Remarks</label>
+                <textarea name="remarks" id="remark"  placeholder="Remarks" cols="20" rows="4" class="form-control">{{old('remarks')}}</textarea>
+                @if($errors->has('remark'))
+                <p class="help-block">
+                    <strong>{{ $errors->first('remark') }}</strong>
+                </p>
+                @endif
+                <span style="color: red;">( If order lost, please mention name of competition to whom it was lost and reason for the same)</span>
+            </div>  
+
+            
             <!-- edit mode end -->
         </div>
      
@@ -248,15 +260,22 @@
 </script>
 <script type="text/javascript">
     jQuery(document).ready(function(){
+         /// code fop add new client
+        jQuery("#quotation_date").change(function(){
+            var quotation_date = jQuery(this).val();
+            if(quotation_date!=''){
+                $("#quotation_number").removeAttr("readonly");
+                $("#quotation_number").addClass("required"); 
+            }else{
+                $("#quotation_number").removeClass("required"); 
+                $("#quotation_number").parents("div").removeClass('has-error border-left-danger'); 
+                $("#quotation_number").val(""); 
+                $("#quotation_number").attr("readonly", true); 
+            }
+        });
         jQuery('#frmproject').validate({
             rules: {
                 expected_date: {
-                    required: true
-                },
-                received_date: {
-                    required: true
-                },
-                quotation_date: {
                     required: true
                 },
                 product_category: {

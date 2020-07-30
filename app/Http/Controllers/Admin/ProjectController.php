@@ -933,6 +933,7 @@ class ProjectController extends Controller
             'won_loss'=>$request->won_loss,
             'quotation_date'=>date('Y-m-d', strtotime($request->quotation_date)),
             'expected_budget' => isset($request->expected_budget)?$request->expected_budget:'',
+            'quotation_number' => isset($request->quotation_number)?$request->quotation_number:'',
             'enq_source'=>$enq[0],
             'enq_source_type'=>$enq[1],
         ];
