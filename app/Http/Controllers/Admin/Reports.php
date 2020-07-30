@@ -255,12 +255,12 @@ class Reports extends Controller
                 return $number_of_enqueries;
             })
             ->editColumn('won', function ($project){
-              $won=ProjectEnquiry::where(['won_loss'=>'Win','project_id'=>$project->id])->count();
+              $won=ProjectEnquiry::where(['won_loss'=>'Won','project_id'=>$project->id])->count();
               return $won;
             })
             ->editColumn('lost', function ($project){
-             $lost=ProjectEnquiry::where(['won_loss'=>'Lost','project_id'=>$project->id])->count();
-              return $lost;
+                $lost=ProjectEnquiry::where(['won_loss'=>'Loss','project_id'=>$project->id])->count();
+                return $lost;
             })
             ->editColumn('live', function ($project){
               $live=ProjectEnquiry::where(['won_loss'=>null,'project_id'=>$project->id])->count();
@@ -271,7 +271,7 @@ class Reports extends Controller
             })
             ->editColumn('during_won', function ($project){
               $won=$project->whereHas('Projectenquiry',function($q) use ($project){
-                   $q->where(['won_loss'=>'Win','project_id'=>$project->id]);
+                   $q->where(['won_loss'=>'Won','project_id'=>$project->id]);
               });
               $won=$won->count();
               return $won;
