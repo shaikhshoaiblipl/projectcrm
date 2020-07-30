@@ -216,8 +216,7 @@ class Reports extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getPerformanceReports(Request $request){
-         try {
-          
+      
             $projectperformances = Project::with('Projectenquiry','users');
             $sales_id = intval($request->input('sales_id'));
             if(intval($sales_id) > 0){
@@ -311,9 +310,7 @@ class Reports extends Controller
                 $during_live=$during_live->count();
                 return isset($during_live)?$during_live:0;
             })->make(true);
-        } catch (Exception $e) {
-
-        }  
+        } 
     }
 
     /**

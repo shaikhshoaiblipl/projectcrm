@@ -112,6 +112,7 @@
 @endsection
 
 @section('scripts')
+<script type="text/javascript" src="{{ asset('js/jquery-validation/dist/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('template/valex-theme/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('template/valex-theme/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
 <script src="{{ asset('template/valex-theme/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
@@ -130,7 +131,20 @@
 <script src="{{ asset('template/valex-theme/export/js/vfs_fonts.js') }}"></script>
 <script src="{{ asset('template/valex-theme/export/js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('template/valex-theme/export/js/buttons.print.min.js') }}"></script>
+
 <script type="text/javascript">   
+    jQuery(document).ready(function(){
+        jQuery('#frmFilter').validate({
+            rules: {
+                expected_date: {
+                    required: true
+                },
+                received_date: {
+                    required: true
+                },
+            }
+        });
+    });
     
     jQuery(document).ready(function(){
         // set default dates
