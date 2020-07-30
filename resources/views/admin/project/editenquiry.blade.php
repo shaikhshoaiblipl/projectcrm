@@ -115,15 +115,7 @@
                 </p>
                 @endif
              </div> 
-             <div class="col-md-4 form-group {{$errors->has('quotation_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
-                <label for="sku">Quotation Date</label>
-                {!! Form::text('quotation_date', old('quotation_date',isset($project->quotation_date)?Carbon\Carbon::parse($project->quotation_date)->format('m/d/Y')   :''), ['id'=>'quotation_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
-                @if($errors->has('quotation_date'))
-                <p class="help-block">
-                    <strong>{{ $errors->first('quotation_date') }}</strong>
-                </p>
-                @endif
-            </div> 
+              
              <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Expected Date <span style="color:red">*</span></label>
                 
@@ -144,6 +136,17 @@
                 @if($errors->has('received_date'))
                 <p class="help-block">
                     <strong>{{ $errors->first('received_date') }}</strong>
+                </p>
+                @endif
+            </div>
+            <div class="col-md-4 form-group">
+            </div>
+            <div class="col-md-4 form-group {{$errors->has('quotation_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
+                <label for="sku">Quotation Date</label>
+                {!! Form::text('quotation_date', old('quotation_date',isset($project->quotation_date)?Carbon\Carbon::parse($project->quotation_date)->format('m/d/Y')   :''), ['id'=>'quotation_date', 'class' => 'form-control datepicker', 'placeholder' => 'MM/DD/YYYY']) !!}
+                @if($errors->has('quotation_date'))
+                <p class="help-block">
+                    <strong>{{ $errors->first('quotation_date') }}</strong>
                 </p>
                 @endif
             </div> 
@@ -168,8 +171,7 @@
                 </p>
                 @endif
             </div>
-            <div class="col-md-4 form-group">
-            </div>
+            
             <div class="col-md-8 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
                 <label for="sku">Remarks</label>
                 <textarea name="remarks" id="remark"  placeholder="Remarks" cols="20" rows="4" class="form-control">{{old('remarks')}}</textarea>
