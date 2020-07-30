@@ -114,6 +114,29 @@
             orientation: 'bottom',
             autoclose: true
         });
+        
+         // set default dates
+        var start = new Date();
+        // set end date to max one year period:
+        var end = new Date(new Date().setYear(start.getFullYear()+1));
+        $('#expected_date').datepicker({
+            format: 'mm/dd/yyyy',
+            orientation: 'bottom',
+            autoclose: true
+        // update "received_date" defaults whenever "expected_date" changes
+        }).on('changeDate', function(){
+            // set the "received_date" start to not be later than "expected_date" ends:
+            $('#received_date').datepicker('setStartDate', new Date($(this).val()));
+        }); 
+        $('#received_date').datepicker({
+            format: 'mm/dd/yyyy',
+            orientation: 'bottom',
+            autoclose: true
+        // update "expected_date" defaults whenever "received_date" changes
+        }).on('changeDate', function(){
+            // set the "expected_date" end to not be later than "received_date" starts:
+            $('#expected_date').datepicker('setEndDate', new Date($(this).val()));
+        });
 
         getProjectReviwes();
 

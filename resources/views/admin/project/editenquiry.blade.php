@@ -125,6 +125,10 @@
                 </p>
                 @endif
             </div> 
+            <div class="col-md-8 form-group  ">
+               
+            </div> 
+
 
             <!-- edit mode start -->
            <div class="col-md-4 form-group {{$errors->has('expected_date') ? config('constants.ERROR_FORM_GROUP_CLASS') : ''}} ">
@@ -205,6 +209,31 @@
             autoclose: true,
             
         });
+        
+         // set default dates
+        var start = new Date();
+        // set end date to max one year period:
+        var end = new Date(new Date().setYear(start.getFullYear()+1));
+        $('#received_date').datepicker({
+            format: 'mm/dd/yyyy',
+            orientation: 'bottom',
+            autoclose: true
+        // update "quotation_date" defaults whenever "received_date" changes
+        }).on('changeDate', function(){
+            // set the "quotation_date" start to not be later than "received_date" ends:
+            $('#quotation_date').datepicker('setStartDate', new Date($(this).val()));
+        }); 
+        $('#quotation_date').datepicker({
+            format: 'mm/dd/yyyy',
+            orientation: 'bottom',
+            autoclose: true
+        // update "received_date" defaults whenever "quotation_date" changes
+        }).on('changeDate', function(){
+            // set the "received_date" end to not be later than "quotation_date" starts:
+            $('#received_date').datepicker('setEndDate', new Date($(this).val()));
+        });
+
+
         $( ".status" ).change(function() {
             var status = $(this).val();
             if(status=='Loss'){

@@ -556,6 +556,29 @@
             orientation: 'bottom',
             autoclose: true
         }).datepicker('setDate', 'today');
+
+         // set default dates
+        var start = new Date();
+        // set end date to max one year period:
+        var end = new Date(new Date().setYear(start.getFullYear()+1));
+        $('#commencement_date').datepicker({
+            format: 'mm/dd/yyyy',
+            orientation: 'bottom',
+            autoclose: true
+        // update "completion_date" defaults whenever "commencement_date" changes
+        }).on('changeDate', function(){
+            // set the "completion_date" start to not be later than "commencement_date" ends:
+            $('#completion_date').datepicker('setStartDate', new Date($(this).val()));
+        }); 
+        $('#completion_date').datepicker({
+            format: 'mm/dd/yyyy',
+            orientation: 'bottom',
+            autoclose: true
+        // update "commencement_date" defaults whenever "completion_date" changes
+        }).on('changeDate', function(){
+            // set the "commencement_date" end to not be later than "completion_date" starts:
+            $('#commencement_date').datepicker('setEndDate', new Date($(this).val()));
+        });
     // select 2
    
     // select 2 end
