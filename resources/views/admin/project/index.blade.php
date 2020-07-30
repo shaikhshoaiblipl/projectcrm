@@ -6,6 +6,8 @@
 <link href="{{asset('template/valex-theme/plugins/datatable/css/jquery.dataTables.min.css')}}" rel="stylesheet">
 <link href="{{asset('template/valex-theme/plugins/datatable/css/responsive.dataTables.min.css')}}" rel="stylesheet">
 <link href="{{ asset('css/bootstrap-datepicker3.standalone.min.css') }}" rel="stylesheet">
+<link href="{{ asset('template/valex-theme/export/css/buttons.dataTables.min.css') }}" rel="stylesheet">
+<link href="{{ asset('template/valex-theme/export/css/jquery.dataTables.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
 <!-- Begin Page Content -->
@@ -26,7 +28,7 @@
     <div class="col-xl-12">
       <div class="card">
         <div class="card-header py-3 cstm_hdr">
-             <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+             <h6 class="m-0 font-weight-bold text-primary">Projects Reports</h6>
              <?php if(Auth::user()->roles->first()->id != config('constants.ROLE_TYPE_SUPERADMIN_ID')){   ?>
             <a href="{{route('admin.project.create')}}" class="btn btn-sm btn-icon-split float-right btn-outline-warning">
                 <span class="icon text-white-50">
@@ -135,6 +137,14 @@
 <script src="{{ asset('template/valex-theme/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('template/valex-theme/plugins/datatable/js/vfs_fonts.js') }}"></script>
 <script src="{{ asset('js/datepicker/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/buttons.flash.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/jszip.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/pdfmake.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/vfs_fonts.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/buttons.print.min.js') }}"></script>
 <script type="text/javascript">   
     <?php
      $status= 'false'; 
@@ -196,6 +206,17 @@
         jQuery('#categories').dataTable().fnDestroy();
         jQuery('#categories tbody').empty();
         jQuery('#categories').DataTable({
+            dom: 'Bfrtip',
+             buttons: [   
+             {
+                  extend: 'excelHtml5',
+                  title: '',
+                  text: 'Excel',
+                  exportOptions: {
+                  columns: [0,1,2,3,4,5,6], 
+                  }
+                 }  
+            ],
             processing: true,
             serverSide: true,
             iDisplayLength:50,

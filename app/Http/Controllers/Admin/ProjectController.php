@@ -144,6 +144,9 @@ class ProjectController extends Controller
         ->editColumn('created_by', function ($project) {
                 return isset($project->users->name)?$project->users->name:'';
         })
+        ->editColumn('getprojecttype.title', function ($project) {
+                return isset($project->getprojecttype->title)?$project->getprojecttype->title:'';
+        })
         ->editColumn('commencement_date', function ($project){
                 $commencement_date=$project->commencement_date?$project->commencement_date:date('Y-m-d');
                 return  date('d M Y', strtotime($commencement_date));  
@@ -848,12 +851,15 @@ class ProjectController extends Controller
             foreach($request->enq_source as $key=>$enq){
                 $source=explode('-',$enq);
                 $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
+                $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$key]));
                 $data=[
                     'project_id'=>$request->project_id,
                     'product_category_id' => $request->product_category[$key],
                     'expected_date' =>isset($expected_date)?$expected_date:date('Y-m-d'),
+                    'quotation_date' =>isset($quotation_date)?$quotation_date:date('Y-m-d'),
                     'enq_source' => isset($source[0])?$source[0]:0,
                     'expected_budget' => isset($request->expected_budget[$key])?$request->expected_budget[$key]:'',
+                    'quotation_number' => isset($request->quotation_number[$key])?$request->quotation_number[$key]:'',
                     'enq_source_type'=>isset($source[1])?$source[1]:''
                 ];
                 ProjectEnquiry::insert($data);

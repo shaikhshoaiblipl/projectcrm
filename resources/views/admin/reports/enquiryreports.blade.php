@@ -6,6 +6,8 @@
 <link href="{{asset('template/valex-theme/plugins/datatable/css/jquery.dataTables.min.css')}}" rel="stylesheet">
 <link href="{{asset('template/valex-theme/plugins/datatable/css/responsive.dataTables.min.css')}}" rel="stylesheet">
 <link href="{{ asset('css/bootstrap-datepicker3.standalone.min.css') }}" rel="stylesheet">
+<link href="{{ asset('template/valex-theme/export/css/buttons.dataTables.min.css') }}" rel="stylesheet">
+<link href="{{ asset('template/valex-theme/export/css/jquery.dataTables.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
 <!-- Begin Page Content -->
@@ -143,6 +145,14 @@
 <script src="{{ asset('template/valex-theme/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('template/valex-theme/plugins/datatable/js/vfs_fonts.js') }}"></script>
 <script src="{{ asset('js/datepicker/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/buttons.flash.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/jszip.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/pdfmake.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/vfs_fonts.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('template/valex-theme/export/js/buttons.print.min.js') }}"></script>
 <script type="text/javascript">   
     
     jQuery(document).ready(function(){
@@ -195,6 +205,10 @@
         jQuery('#projectpreview').dataTable().fnDestroy();
         jQuery('#projectpreview tbody').empty();
         jQuery('#projectpreview').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'excel'
+            ],
             processing: true,
             serverSide: true,
             iDisplayLength:50,

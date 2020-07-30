@@ -9,7 +9,7 @@ class ProjectEnquiry extends Model
     protected $table = "project_enquiry";
 
     protected $fillable = [
-        'project_id','product_category_id','expected_date','enq_source','expected_budget'
+        'project_id','product_category_id','expected_date','enq_source','expected_budget','quotation_number'
     ];
 
     public function getproductcategory() 

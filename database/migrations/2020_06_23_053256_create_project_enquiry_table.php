@@ -23,6 +23,7 @@ class CreateProjectEnquiryTable extends Migration
             $table->string('won_loss')->nullable();
             $table->date('quotation_date')->nullable();
             $table->Integer('enq_source')->nullable();
+            $table->string('quotation_number')->nullable();
             $table->timestamps();
 
 
