@@ -258,6 +258,10 @@
                 sSearch: '',
                 lengthMenu: '_MENU_',
             },
+            dom:   
+    "<'row'<'col-sm-12 col-md-12'B>>" +
+    "<'row' <'col-sm-6 mt-4 col-md-6'l><'col-sm-6 mt-4 col-md-6'f><'col-sm-12'tr>>" +
+    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
         });
     }
 </script>
