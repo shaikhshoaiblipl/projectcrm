@@ -163,14 +163,18 @@
             ],
         });
         jQuery('#frmFilter').submit(function(){
-            getSalesReports();
+            var sales_id = jQuery('#frmFilter [name=sales_id]').val();
+            var expected_date = jQuery('#frmFilter [name=expected_date]').val();       
+            var received_date = jQuery('#frmFilter [name=received_date]').val();
+            if(sales_id!='' || expected_date!='' || received_date!=''){
+               getSalesReports();
+            }
             return false;
         });
     });
 
     function resetFilter(){
         jQuery('#frmFilter :input:not(:button, [type="hidden"])').val('');
-        getSalesReports();
     }
     
     function getSalesReports(){

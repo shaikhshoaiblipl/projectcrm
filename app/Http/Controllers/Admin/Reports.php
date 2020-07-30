@@ -219,30 +219,13 @@ class Reports extends Controller
          try {
           
             $projectperformances = Project::with('Projectenquiry','users');
-
-
             $sales_id = intval($request->input('sales_id'));
             if(intval($sales_id) > 0){
                 $projectperformances=$projectperformances->where('created_by',$sales_id);
             }
-
-            $expected_date = $request->input('expected_date');
-            if($expected_date!=''){
-               $expected_date = date('Y-m-d', strtotime($expected_date));
-               $projectperformances=$projectperformances->whereHas('Projectenquiry',function($q) use($expected_date){
-                     $q->whereDate('expected_date', '>=', $expected_date);
-               });
-            } 
-            
-            $received_date = $request->input('received_date');
-            if($received_date!=''){
-               $received_date = date('Y-m-d', strtotime($received_date));
-               $projectperformances=$projectperformances->whereHas('Projectenquiry',function($q) use($received_date){
-                     $q->whereDate('received_date', '<=', $received_date);
-               });
-            }
-            
             $projectperformances = $projectperformances->groupBy('id');
+            $expected_date = $request->input('expected_date');
+            $received_date = $request->input('received_date');
             return  DataTables::of($projectperformances)
             ->editColumn('sales_name', function ($project){
                  return  isset($project->users->name)?ucwords($project->users->name):'';
@@ -266,29 +249,67 @@ class Reports extends Controller
               $live=ProjectEnquiry::where(['won_loss'=>null,'project_id'=>$project->id])->count();
               return $live;
             })
-            ->editColumn('new', function ($project){
-                return $project->Projectenquiry->count();
+            ->editColumn('new', function ($project) use($received_date,$expected_date){
+                $new=ProjectEnquiry::where(['project_id'=>$project->id]);
+                if($expected_date!=''){
+                   $expected_date = date('Y-m-d', strtotime($expected_date));
+                   $new=$new->whereDate('expected_date', '<=', $expected_date);
+                }
+                if($received_date!=''){
+                   $received_date = date('Y-m-d', strtotime($received_date));
+                   $new=$new->whereDate('received_date', '>=', $received_date);
+                } 
+                $new=$new->count();
+                return isset($new)?$new:0;
             })
-            ->editColumn('during_won', function ($project){
-              $won=$project->whereHas('Projectenquiry',function($q) use ($project){
-                   $q->where(['won_loss'=>'Won','project_id'=>$project->id]);
-              });
-              $won=$won->count();
-              return $won;
-            })->editColumn('during_lost', function ($project){
-              $lost=$project->whereHas('Projectenquiry',function($q) use ($project){
-                   $q->where(['won_loss'=>'Loss','project_id'=>$project->id]);
-              });
-              $lost=$lost->count();
-              return $lost;
-            })->editColumn('status_updated', function ($project){
-              return $project->Projectenquiry->count();
-            })->editColumn('during_live', function ($project){
-              $live=$project->whereHas('Projectenquiry',function($q) use ($project){
-                   $q->where(['won_loss'=>null,'project_id'=>$project->id]);
-              });
-              $live=$live->count();
-              return $live;
+            ->editColumn('during_won', function ($project) use($received_date,$expected_date){
+                $won=ProjectEnquiry::where(['project_id'=>$project->id,'won_loss'=>'Won']);
+                if($expected_date!=''){
+                   $expected_date = date('Y-m-d', strtotime($expected_date));
+                   $won=$won->whereDate('expected_date', '<=', $expected_date);
+                }
+                if($received_date!=''){
+                   $received_date = date('Y-m-d', strtotime($received_date));
+                   $won=$won->whereDate('received_date', '>=', $received_date);
+                } 
+                $won=$won->count();
+                return isset($won)?$won:0;
+            })->editColumn('during_lost',  function ($project) use($received_date,$expected_date){
+                $loss=ProjectEnquiry::where(['project_id'=>$project->id,'won_loss'=>'Loss']);
+                if($expected_date!=''){
+                   $expected_date = date('Y-m-d', strtotime($expected_date));
+                   $loss=$loss->whereDate('expected_date', '<=', $expected_date);
+                }
+                if($received_date!=''){
+                   $received_date = date('Y-m-d', strtotime($received_date));
+                   $loss=$loss->whereDate('received_date', '>=', $received_date);
+                } 
+                $loss=$loss->count();
+                return isset($loss)?$loss:0;
+            })->editColumn('status_updated', function ($project) use($received_date,$expected_date){
+                $status_updated=ProjectEnquiry::where(['project_id'=>$project->id]);
+                if($expected_date!=''){
+                   $expected_date = date('Y-m-d', strtotime($expected_date));
+                   $status_updated=$status_updated->whereDate('expected_date', '<=', $expected_date);
+                }
+                if($received_date!=''){
+                   $received_date = date('Y-m-d', strtotime($received_date));
+                   $status_updated=$status_updated->whereDate('received_date', '>=', $received_date);
+                } 
+                $status_updated=$status_updated->count();
+                return isset($status_updated)?$status_updated:0;
+            })->editColumn('during_live',function ($project) use($received_date,$expected_date){
+                $during_live=ProjectEnquiry::where(['project_id'=>$project->id,'won_loss'=>NULL]);
+                if($expected_date!=''){
+                   $expected_date = date('Y-m-d', strtotime($expected_date));
+                   $during_live=$during_live->whereDate('expected_date', '<=', $expected_date);
+                }
+                if($received_date!=''){
+                   $received_date = date('Y-m-d', strtotime($received_date));
+                   $during_live=$during_live->whereDate('received_date', '>=', $received_date);
+                } 
+                $during_live=$during_live->count();
+                return isset($during_live)?$during_live:0;
             })->make(true);
         } catch (Exception $e) {
 
