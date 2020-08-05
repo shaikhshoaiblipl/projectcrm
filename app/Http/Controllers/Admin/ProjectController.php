@@ -850,8 +850,10 @@ class ProjectController extends Controller
         if(isset($request->product_category)){
             foreach($request->enq_source as $key=>$enq){
                 $source=explode('-',$enq);
-                $expected_date = date('Y-m-d', strtotime($request->expected_date[$key]));
-                $quotation_date = date('Y-m-d', strtotime($request->quotation_date[$key]));
+                $expected_date= isset($request->expected_date[$key])?$request->expected_date[$key]:date('Y-m-d');
+                $expected_date = date('Y-m-d', strtotime($expected_date));
+                $quotation_date= isset($request->quotation_date[$key])?$request->quotation_date[$key]:date('Y-m-d');
+                $quotation_date = date('Y-m-d', strtotime($quotation_date));
                 $data=[
                     'project_id'=>$request->project_id,
                     'product_category_id' => $request->product_category[$key],
